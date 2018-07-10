@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+		<typeAliases>
+		<typeAlias alias="GroupVo" type="com.modu.vo.ModuGroupVo" />
+    	</typeAliases>	
+    	
+	<mappers>
+		<mapper resource="mybatis/mappers/user.xml" />
+		<mapper resource="mybatis/mappers/accountbook.xml" />
+		<mapper resource="mybatis/mappers/group.xml" />
+		<mapper resource="mybatis/mappers/report.xml" />
+	</mappers>
+	
+</configuration>

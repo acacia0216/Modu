@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="report">
+
+    <select id="getRecentEvent" parameterType="String" resultType="int">
+select tagName
+from (select ROWNUM rnum, tagName,tagDate
+from (select tagDate, tagName
+from (select *
+from accountbook_tbl join accountbook_tag_tbl using (accountbookNo)
+where groupNo = #{groupNo})tmp join tag_tbl using (tagNo)
+order by tagDate desc))
+where rnum = 1
+ </select>
+
+
+</mapper>
