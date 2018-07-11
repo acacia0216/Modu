@@ -113,6 +113,8 @@
         <input type="button" name="" value="보고서 출력" onClick="fnPrint()">
     </div>
     <br><br>
+    <input type="hidden" name="" id="month" value="${month}">
+    <input type="hidden" name="" id="year" value="${year}">
 
     <c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
 
@@ -149,27 +151,13 @@
         $(document).ready(function(){
             $('.menuTab').removeClass("active");
             $("#btn_report").addClass("active");
-        });
 
-        var fnPrint = function() {
-            window.print();
-        };
-        var isChanged = function(){
-            var mm = $("#monthOutput").val();
-            var yearMonth = $("#monthOutput").val();
-            var tmp = yearMonth.replace(/[^0-9]/g,'');
-            var year = Number(tmp.substr(0,4));
-            var month = Number(tmp.substr(4,6));
-            $("#monthOutput").val(year+"년"+month+"월");
-            $("#monthlyReportTitle").html("<strong>"+year+"년 "+month+"월 보고서</strong>");
-        };
-        $(document).on("ready",function(){
-            var today = new Date();
-            var yyyy = today.getFullYear();
-            var mm = today.getMonth()+1;
-            var dd = today.getDate();
-            $("#monthlyReportTitle").html("<strong>"+yyyy+"년 "+mm+"월 보고서</strong>");
-            $("#monthOutput").val(yyyy+"년 "+mm+"월");
+            var getYear = $("#year").val();
+            var getMonth = $("#month").val();
+
+            $("#monthlyReportTitle").html("<strong>"+getYear+"년 "+getMonth+"월 보고서</strong>");
+            $("#monthOutput").val(getYear+"년 "+getMonth+"월");
+
             $('.form_month').datetimepicker({
                 language:  'ko',
                 weekStart: 1,
@@ -209,6 +197,20 @@
                 $("#monthlyReportTitle").html("<strong>"+year+"년 "+month+"월 보고서</strong>");
             });
         });
+
+        var fnPrint = function() {
+            window.print();
+        };
+        var isChanged = function(){
+            var mm = $("#monthOutput").val();
+            var yearMonth = $("#monthOutput").val();
+            var tmp = yearMonth.replace(/[^0-9]/g,'');
+            var year = Number(tmp.substr(0,4));
+            var month = Number(tmp.substr(4,6));
+            $("#monthOutput").val(year+"년"+month+"월");
+            $("#monthlyReportTitle").html("<strong>"+year+"년 "+month+"월 보고서</strong>");
+        };
+
 
 
         $(function() {

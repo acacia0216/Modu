@@ -3,10 +3,26 @@
 
 <mapper namespace="report">
 
+    <select id="getCategoryList" parameterType="int" resultType="com.modu.vo.ReportVo">
+        select CATEGORYNAME,CATEGORYNO
+        from CATEGORY_TBL
+        where GROUPNO=#{groupNo}
+    </select>
+
+    <select id="getMonthlyAnnualList" parameterType="Map" resultType="com.modu.vo.ReportVo">
+select CategoryNo,CategoryName,accountbookSpend,accountbookIncome,month
+from (select sum(accountbookSpend)accountbookSpend , sum(accountbookIncome)accountbookIncome , CategoryNo, to_char(min(accountbookRegDate),'MM') month
+from accountbook_tbl join category_tbl using (CategoryNo)
+where category_tbl.groupNo=#{groupNo} and accountbookRegDate between #{startDay} and #{lastDay}
+group by CategoryNo) join category_tbl using (CategoryNo)
+    </select>
+
+
+
     <select id="getRecentEvent" parameterType="String" resultType="int">
-select tagName
-from (select ROWNUM rnum, tagName,tagDate
-from (select tagDate, tagName
+select TAGNO
+from (select ROWNUM rnum, TAGNO, tagDate
+from (select tagDate, TAGNO
 from (select *
 from accountbook_tbl join accountbook_tag_tbl using (accountbookNo)
 where groupNo = #{groupNo})tmp join tag_tbl using (tagNo)

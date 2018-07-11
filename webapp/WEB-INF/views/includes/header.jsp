@@ -237,17 +237,20 @@
         </div>
     </div>
 </div>
+<input type="hidden" name="groupNo" id="groupNo" value="${authUser.groupNo}">
 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script type="text/javascript">
     /*  이미지 미리보기 , 확장자 체크  */
 
     var goToAnnualReport = function () {
-        var now = new Date().getFullYear();
-        $("#goToAnnual").attr("href","${pageContext.request.contextPath }/annualreport/"+now);
+        var getYear = new Date().getFullYear();
+        var getGroupNo = $("#groupNo").val();
+        $("#goToAnnual").attr("href","${pageContext.request.contextPath }/annualreport/"+getGroupNo+"/"+getYear);
     }
     var goToMonthlyReport = function () {
-        var now = new Date().getMonth()+1;
-        $("#goToMonthly").attr("href","${pageContext.request.contextPath }/monthlyreport/"+now);
+        var getYear = new Date().getFullYear();
+        var getMonth = new Date().getMonth()+1;
+        $("#goToMonthly").attr("href","${pageContext.request.contextPath }/monthlyreport/"+getYear+"/"+getMonth);
     }
 
     var loadFile = function (event) {
