@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 
 <html>
@@ -29,9 +30,7 @@
 
 <div class="container">
 
-    <br><br>
-    <!-- <div align="Right" style="margin-right: 60px;"><input type="button" name="" value="막대형"><input type="button" name="" value="파이형"></div>
-        <br> -->
+
     <div align="center" style="margin-top: 50px">
 
         <input type="button" value="<" id="yearPrev">
@@ -61,88 +60,20 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <%--카테고리별 월별 지출내역 상반기--%>
-                    <%--<c:forEach var="categoryList" items="${categoryList}">--%>
-                    <%--<tr>--%>
-                    <%--<th>${categoryList.categoryName}</th>--%>
-                    <%--<c:forEach var="list" items="${list}" end="${list.size()-7}">--%>
-                    <%--<td>--%>
-                    <%--<c:forEach var="i" items="${list}">--%>
-                    <%--<c:choose>--%>
-                    <%--<c:when test="${categoryList.categoryNo eq i.categoryNo and i.accountbookIncome eq 0}">--%>
-                    <%--${i.accountbookSpend}--%>
-                    <%--</c:when>--%>
-                    <%--<c:when test="${categoryList.categoryNo eq i.categoryNo and i.accountbookSpend eq 0}">--%>
-                    <%--${i.accountbookIncome}--%>
-                    <%--</c:when>--%>
-                    <%--<c:otherwise>--%>
-                    <%--0--%>
-                    <%--</c:otherwise>--%>
-                    <%--</c:choose>--%>
-                    <%--</c:forEach>--%>
-                    <%--</td>--%>
-                    <%--</c:forEach>--%>
-                    <%--</tr>--%>
-                    <%--</c:forEach>--%>
-                    <c:set var="jan" value="0"/>
-                    <c:set var="feb" value="0"/>
-                    <c:set var="march" value="0"/>
-                    <c:set var="april" value="0"/>
-                    <c:set var="may" value="0"/>
-                    <c:set var="jun" value="0"/>
-                    <c:forEach var="cateList" items="${categoryList}">
+
+                    <c:forEach var="item" items="${list}">
                         <tr>
-                            <th>${cateList.categoryName}</th>
-                            <c:forEach var="i" items="${list}" end="${list.size()-7}">
-                                <td>
-                                    <c:forEach var="j" items="${i}" varStatus="status">
-                                        <c:if test="${cateList.categoryNo eq j.categoryNo and j.accountbookIncome eq 0}">
-                                            ${j.accountbookSpend}
-                                            <c:if test="${j.month eq 1}">
-                                                <c:set var="jan" value="${jan+j.accountbookSpend}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 2}">
-                                                <c:set var="feb" value="${feb+j.accountbookSpend}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 3}">
-                                                <c:set var="march" value="${march+j.accountbookSpend}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 4}">
-                                                <c:set var="april" value="${april+j.accountbookSpend}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 5}">
-                                                <c:set var="may" value="${may+j.accountbookSpend}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 6}">
-                                                <c:set var="jun" value="${jun+j.accountbookSpend}"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${cateList.categoryNo eq j.categoryNo and j.accountbookSpend eq 0}">
-                                            ${j.accountbookIncome}
-                                            <c:if test="${j.month eq 1}">
-                                                <c:set var="jan_income" value="${jan_income+j.accountbookIncome}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 2}">
-                                                <c:set var="feb_income" value="${feb_income+j.accountbookIncome}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 3}">
-                                                <c:set var="march_income" value="${march_income+j.accountbookIncome}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 4}">
-                                                <c:set var="april_income" value="${april_income+j.accountbookIncome}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 5}">
-                                                <c:set var="may_income" value="${may_income+j.accountbookIncome}"/>
-                                            </c:if>
-                                            <c:if test="${j.month eq 6}">
-                                                <c:set var="jun_income" value="${jun_income+j.accountbookIncome}"/>
-                                            </c:if>
-                                        </c:if>
-                                        <c:if test="${empty j}">
-                                            0
-                                        </c:if>
-                                    </c:forEach>
-                                </td>
+                            <td>${item.get(0).categoryName}</td>
+                            <c:forEach var="list" items="${item}" end="${list.size()-5}">
+                                <c:if test="${list.totalSpend eq 0 and list.monthNo ne 0}">
+                                    <td>+${list.totalIncome}</td>
+                                </c:if>
+                                <c:if test="${list.totalIncome eq 0 and list.monthNo ne 0}">
+                                    <td>-${list.totalSpend}</td>
+                                </c:if>
+                                <c:if test="${list.totalIncome eq 0 and list.totalSpend eq 0}">
+                                    <td>0</td>
+                                </c:if>
                             </c:forEach>
                         </tr>
                     </c:forEach>
@@ -151,12 +82,17 @@
                     <tfoot>
                     <tr>
                         <th>지출 합계</th>
-                        <td><c:out value="-${jan-jan_income}원"/></td>
-                        <td><c:out value="-${feb-feb_income}원"/></td>
-                        <td><c:out value="-${march-march_income}원"/></td>
-                        <td><c:out value="-${april-april_income}원"/></td>
-                        <td><c:out value="-${may-may_income}원"/></td>
-                        <td><c:out value="-${jun-jun_income}원"/></td>
+                        <c:forEach var="firstHalf" items="${annualSum}" end="${annualSum.size()-7}">
+                            <c:if test="${fn:contains(firstHalf,'-')}">
+                                <th style="color: red;">${firstHalf}</th>
+                            </c:if>
+                            <c:if test="${!fn:contains(firstHalf,'-') and firstHalf ne '0'}">
+                                <th>${firstHalf}</th>
+                            </c:if>
+                            <c:if test="${!fn:contains(firstHalf,'-') and firstHalf eq '0'}">
+                                <th>${firstHalf}</th>
+                            </c:if>
+                        </c:forEach>
                     </tr>
                     </tfoot>
                 </table>
@@ -182,17 +118,41 @@
                     </thead>
                     <tbody>
                     <%--카테고리별 월별 지출내역 하반기--%>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                    </tr>
+
+                    <c:forEach var="item" items="${list}">
+                        <tr>
+                            <td>${item.get(0).categoryName}</td>
+                            <c:forEach var="list" items="${item}" begin="${list.size()-4}">
+                                <c:if test="${list.totalSpend eq 0 and list.monthNo ne 0}">
+                                    <td>+${list.totalIncome}</td>
+                                </c:if>
+                                <c:if test="${list.totalIncome eq 0 and list.monthNo ne 0}">
+                                    <td>-${list.totalSpend}</td>
+                                </c:if>
+                                <c:if test="${list.totalIncome eq 0 and list.totalSpend eq 0}">
+                                    <td>0</td>
+                                </c:if>
+                            </c:forEach>
+                        </tr>
+                    </c:forEach>
 
                     </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>지출 합계</th>
+                        <c:forEach var="secondHalf" items="${annualSum}" begin="${annualSum.size()-6}">
+                            <c:if test="${fn:contains(secondHalf, '-')}">
+                                <th style="color: red;">${secondHalf}</th>
+                            </c:if>
+                            <c:if test="${!fn:contains(secondHalf, '-') and secondHalf ne '0'}">
+                                <th style="color: blue;">${secondHalf}</th>
+                            </c:if>
+                            <c:if test="${!fn:contains(secondHalf, '-') and secondHalf eq '0'}">
+                                <th>${secondHalf}</th>
+                            </c:if>
+                        </c:forEach>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -203,6 +163,33 @@
     </div>
     <br>
     <input type="hidden" name="" id="year" value="${year}">
+    <%--지출--%>
+    <c:set var="januarySpend" value="${monthlySpend.get(0)}"/>
+    <c:set var="febuarySpend" value="${monthlySpend.get(1)}"/>
+    <c:set var="marchSpend" value="${monthlySpend.get(2)}"/>
+    <c:set var="aprilSpend" value="${monthlySpend.get(3)}"/>
+    <c:set var="maySpend" value="${monthlySpend.get(4)}"/>
+    <c:set var="juneSpend" value="${monthlySpend.get(5)}"/>
+    <c:set var="julySpend" value="${monthlySpend.get(6)}"/>
+    <c:set var="augustSpend" value="${monthlySpend.get(7)}"/>
+    <c:set var="septemberSpend" value="${monthlySpend.get(8)}"/>
+    <c:set var="octoberSpend" value="${monthlySpend.get(9)}"/>
+    <c:set var="novemberSpend" value="${monthlySpend.get(10)}"/>
+    <c:set var="decemberSpend" value="${monthlySpend.get(11)}"/>
+    <%--수입--%>
+    <c:set var="januaryIncome" value="${monthlyIncome.get(0)}"/>
+    <c:set var="febuaryIncome" value="${monthlyIncome.get(1)}"/>
+    <c:set var="marchIncome" value="${monthlyIncome.get(2)}"/>
+    <c:set var="aprilIncome" value="${monthlyIncome.get(3)}"/>
+    <c:set var="mayIncome" value="${monthlyIncome.get(4)}"/>
+    <c:set var="juneIncome" value="${monthlyIncome.get(5)}"/>
+    <c:set var="julyIncome" value="${monthlyIncome.get(6)}"/>
+    <c:set var="augustIncome" value="${monthlyIncome.get(7)}"/>
+    <c:set var="septemberIncome" value="${monthlyIncome.get(8)}"/>
+    <c:set var="octoberIncome" value="${monthlyIncome.get(9)}"/>
+    <c:set var="novemberIncome" value="${monthlyIncome.get(10)}"/>
+    <c:set var="decemberIncome" value="${monthlyIncome.get(11)}"/>
+
 
 
 </div>
@@ -277,17 +264,19 @@
             var year = $("#yearOutput").val();
             year = Number(year.substr(0, 4));
             year -= 1;
-            $("#yearOutput").val(year + "년");
-            $("#annualReportTitle1").html("<strong>" + year + "년 상반기</strong>");
-            $("#annualReportTitle2").html("<strong>" + year + "년 하반기</strong>");
+            // $("#yearOutput").val(year + "년");
+            // $("#annualReportTitle1").html("<strong>" + year + "년 상반기</strong>");
+            // $("#annualReportTitle2").html("<strong>" + year + "년 하반기</strong>");
+            location.href = "${pageContext.request.contextPath }/annualreport/${groupNo}/" + year;
         });
         $('#yearNext').on("click", function () {
             var year = $("#yearOutput").val();
             year = Number(year.substr(0, 4));
             year += 1;
-            $("#yearOutput").val(year + "년");
-            $("#annualReportTitle1").html("<strong>" + year + "년 상반기</strong>");
-            $("#annualReportTitle2").html("<strong>" + year + "년 하반기</strong>");
+            // $("#yearOutput").val(year + "년");
+            // $("#annualReportTitle1").html("<strong>" + year + "년 상반기</strong>");
+            // $("#annualReportTitle2").html("<strong>" + year + "년 하반기</strong>");
+            location.href = "${pageContext.request.contextPath }/annualreport/${groupNo}/" + year;
         });
 
         // var lastDay = ( new Date( 2016, 1, 0) ).getDate();
@@ -313,8 +302,8 @@
 
     $(function () {
         //for문으로 합계 구하기
-        var spend1 = [${jan}, ${feb}, ${march}, ${april}, ${may}, ${jun}];
-        var income1 = [${jan_income}, ${feb_income}, ${march_income}, ${april_income}, ${may_income}, ${jun_income}];
+        var spend1 = [${januarySpend}, ${febuarySpend}, ${marchSpend}, ${aprilSpend}, ${maySpend}, ${juneSpend}];
+        var income1 = [${januaryIncome}, ${febuaryIncome}, ${marchIncome}, ${aprilIncome}, ${mayIncome}, ${juneIncome}];
         $.jqplot('graph1', [income1, spend1], {
             title: '',
             animate: true,
@@ -372,18 +361,19 @@
             axes: {//축 설정
                 xaxis: {
                     renderer: $.jqplot.CategoryAxisRenderer
-                ,ticks:['1월','2월','3월','4월','5월','6월']
+                    , ticks: [' ', '  ', '   ', '    ', '     ', '      ']
                 },
                 yaxis: {
                     tickOptions: {formatString: "%'d"}
                 }
             }
         });
-        var income2 = [[' ', 560000], ['  ', 560000], ['   ', 560000], ['    ', 560000], ['     ', 560000], ['      ', 560000]];
-        var spend2 = [[' ', 2900000], ['  ', 4800000], ['   ', 2700000], ['    ', 1500000], ['     ', 5000000], ['      ', 5700000]];
+        var spend2 = [${julySpend}, ${augustSpend}, ${septemberSpend}, ${octoberSpend}, ${novemberSpend}, ${decemberSpend}];
+        var income2 = [${julyIncome}, ${augustIncome}, ${septemberIncome}, ${octoberIncome}, ${novemberIncome}, ${decemberIncome}];
         $.jqplot('graph2', [income2, spend2], {
             title: '',
             animate: true,
+            // seriesColors:['#ff0000','#0000ff'],
             legend: {
                 renderer: $.jqplot.EnhancedLegendRenderer,//범례 설정
                 show: true,//출력유무
@@ -391,11 +381,11 @@
                 location: 'ne',
                 marginTop: '15px'
             },
-            series: [{
-                renderer: $.jqplot.BarRenderer
+            series: [{//첫번째 그래프 설정
+                renderer: $.jqplot.BarRenderer//막대그래프로 출력
                 , label: '수입'//막대 이름설정
-                , pointLabels: {show: true, stackedValue: true}
-                , rendererOptions: {
+                , pointLabels: {show: true, stackedValue: true}//수치 표기
+                , rendererOptions: {//만들기 옵션
                     animation: {
                         speed: 1500    //animation 설정 시 속도
                     }
@@ -433,14 +423,13 @@
                         , barMargin: 0      //bar간 간격
                     }
                 }],
-            axes: {
+
+            axes: {//축 설정
                 xaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer,
-                    label: ""
+                    renderer: $.jqplot.CategoryAxisRenderer
+                    , ticks: [' ', '  ', '   ', '    ', '     ', '      ']
                 },
                 yaxis: {
-                    label: "",
-
                     tickOptions: {formatString: "%'d"}
                 }
             }
