@@ -2,7 +2,7 @@ package com.modu.vo;
 
 public class ReportVo {
     private int year;
-    private int month;
+    private int monthNo;
     //그룹 테이블
     private int groupNo;
     private String groupName;
@@ -17,8 +17,8 @@ public class ReportVo {
 //    private int accountbookNo;
     private String accountbookRegdate;
     private String accountbookUsage;
-    private int accountbookSpend;
-    private int accountbookIncome;
+    private int totalSpend;
+    private int totalIncome;
     //멤버피 테이블
 //    private int memberFeeNo;
 //    private int paymentFee;
@@ -39,21 +39,17 @@ public class ReportVo {
     public ReportVo() {
     }
 
-    public ReportVo(int year) {
+    public ReportVo(int year, int monthNo, int groupNo, String groupName, int categoryNo, String categoryName, String accountbookRegdate, String accountbookUsage, int totalSpend, int totalIncome, int paymentAmount, String paymentDay, String si, String gu, String tagName, String tagDate, String tagPlace, int tagPersonnel) {
         this.year = year;
-    }
-
-    public ReportVo(int year, int month, int groupNo, String groupName, int categoryNo, String categoryName, String accountbookRegdate, String accountbookUsage, int accountbookSpend, int accountbookIncome, int paymentAmount, String paymentDay, String si, String gu, String tagName, String tagDate, String tagPlace, int tagPersonnel) {
-        this.year = year;
-        this.month = month;
+        this.monthNo = monthNo;
         this.groupNo = groupNo;
         this.groupName = groupName;
         this.categoryNo = categoryNo;
         this.categoryName = categoryName;
         this.accountbookRegdate = accountbookRegdate;
         this.accountbookUsage = accountbookUsage;
-        this.accountbookSpend = accountbookSpend;
-        this.accountbookIncome = accountbookIncome;
+        this.totalSpend = totalSpend;
+        this.totalIncome = totalIncome;
         this.paymentAmount = paymentAmount;
         this.paymentDay = paymentDay;
         this.si = si;
@@ -72,12 +68,12 @@ public class ReportVo {
         this.year = year;
     }
 
-    public int getMonth() {
-        return month;
+    public int getMonthNo() {
+        return monthNo;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
+    public void setMonthNo(int monthNo) {
+        this.monthNo = monthNo;
     }
 
     public int getGroupNo() {
@@ -128,20 +124,20 @@ public class ReportVo {
         this.accountbookUsage = accountbookUsage;
     }
 
-    public int getAccountbookSpend() {
-        return accountbookSpend;
+    public int getTotalSpend() {
+        return totalSpend;
     }
 
-    public void setAccountbookSpend(int accountbookSpend) {
-        this.accountbookSpend = accountbookSpend;
+    public void setTotalSpend(int totalSpend) {
+        this.totalSpend = totalSpend;
     }
 
-    public int getAccountbookIncome() {
-        return accountbookIncome;
+    public int getTotalIncome() {
+        return totalIncome;
     }
 
-    public void setAccountbookIncome(int accountbookIncome) {
-        this.accountbookIncome = accountbookIncome;
+    public void setTotalIncome(int totalIncome) {
+        this.totalIncome = totalIncome;
     }
 
     public int getPaymentAmount() {
@@ -212,19 +208,19 @@ public class ReportVo {
     public String toString() {
         return "ReportVo{" +
                 "year=" + year +
-                ", month=" + month +
+                ", monthNo=" + monthNo +
                 ", groupNo=" + groupNo +
-                ", groupName='" + groupName + '\'' +"\n"+
+                ", groupName='" + groupName + '\'' +
                 ", categoryNo=" + categoryNo +
                 ", categoryName='" + categoryName + '\'' +
                 ", accountbookRegdate='" + accountbookRegdate + '\'' +
                 ", accountbookUsage='" + accountbookUsage + '\'' +
-                ", accountbookSpend=" + accountbookSpend +
-                ", accountbookIncome=" + accountbookIncome +"\n"+
+                ", totalSpend=" + totalSpend +
+                ", totalIncome=" + totalIncome +
                 ", paymentAmount=" + paymentAmount +
                 ", paymentDay='" + paymentDay + '\'' +
                 ", si='" + si + '\'' +
-                ", gu='" + gu + '\'' +"\n"+
+                ", gu='" + gu + '\'' +
                 ", tagName='" + tagName + '\'' +
                 ", tagDate='" + tagDate + '\'' +
                 ", tagPlace='" + tagPlace + '\'' +

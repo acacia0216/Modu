@@ -21,9 +21,11 @@ public class ReportController {
     public String annualReport(@PathVariable String year,@PathVariable int groupNo,Model model){
         model.addAttribute("year",year);
         System.out.println("연간 보고서로 이동");
-        Map<String,Object> map = reportService.annualReport(groupNo,year);
-        model.addAttribute("list",map.get("list"));
-        model.addAttribute("categoryList",map.get("categoryList"));
+        Map<String,Object> tmp = reportService.annualReport(groupNo,year);
+        model.addAttribute("list",tmp.get("outputList"));
+        model.addAttribute("annualSum",tmp.get("annualSum"));
+        model.addAttribute("monthlyIncome",tmp.get("monthlyIncome"));
+        model.addAttribute("monthlySpend",tmp.get("monthlySpend"));
         return "/report/annual_report";
     }
 

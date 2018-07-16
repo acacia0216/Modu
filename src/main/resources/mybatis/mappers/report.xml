@@ -3,21 +3,43 @@
 
 <mapper namespace="report">
 
-    <select id="getCategoryList" parameterType="int" resultType="com.modu.vo.ReportVo">
-        select CATEGORYNAME,CATEGORYNO
+    <select id="getCategoryList" parameterType="int" resultType="int">
+        select CATEGORYNO
         from CATEGORY_TBL
         where GROUPNO=#{groupNo}
     </select>
 
     <select id="getMonthlyAnnualList" parameterType="Map" resultType="com.modu.vo.ReportVo">
-select CategoryNo,CategoryName,accountbookSpend,accountbookIncome,month
-from (select sum(accountbookSpend)accountbookSpend , sum(accountbookIncome)accountbookIncome , CategoryNo, to_char(min(accountbookRegDate),'MM') month
-from accountbook_tbl join category_tbl using (CategoryNo)
-where category_tbl.groupNo=#{groupNo} and accountbookRegDate between #{startDay} and #{lastDay}
-group by CategoryNo) join category_tbl using (CategoryNo)
+select CategoryNo,CategoryName,totalIncome,totalSpend,monthNo
+from (select sum(accountbookSpend) totalSpend , sum(accountbookIncome) totalIncome , CategoryNo, to_char(min(accountbookRegDate),'MM') monthNo
+      from accountbook_tbl
+      join category_tbl using (CategoryNo)
+      where category_tbl.groupNo=#{groupNo} and accountbookRegDate between #{startDay} and #{lastDay} and CategoryNo=#{categoryNo}
+      group by CategoryNo)
+            join category_tbl using (CategoryNo)
     </select>
 
+    <select id="getCategoryName" parameterType="int" resultType="String">
+        select CATEGORYNAME from CATEGORY_TBL where CATEGORYNO=#{cateNo}
+    </select>
 
+    <select id="getAnnualSum" parameterType="map" resultType="String">
+        select to_char(sum(accountbookIncome)-sum(accountbookSpend),'999,999,999')
+        from accountbook_tbl
+        where groupNo=#{groupNo} and accountbookRegDate between #{startDay} and #{lastDay}
+    </select>
+
+    <select id="getMonthlySpend" parameterType="map" resultType="String">
+        select sum(ACCOUNTBOOKSPEND)
+from accountbook_tbl
+where groupNo=#{groupNo} and accountbookRegDate between #{startDay} and #{lastDay}
+    </select>
+
+    <select id="getMonthlyIncome" parameterType="map" resultType="String">
+        select sum(ACCOUNTBOOKINCOME)
+from accountbook_tbl
+where groupNo=#{groupNo} and accountbookRegDate between #{startDay} and #{lastDay}
+    </select>
 
     <select id="getRecentEvent" parameterType="String" resultType="int">
 select TAGNO

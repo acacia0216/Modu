@@ -17,12 +17,28 @@ public class ReportDao {
         return sqlSession.selectOne("report.getRecentEvent",groupNo);
     }
 
-    public List<ReportVo> getMonthlyAnnualList(Map<String,Object> inputMap) {
+    public ReportVo getMonthlyAnnualList(Map<String,Object> inputMap) {
         System.out.println("연간보고서 긁기");
-        return sqlSession.selectList("report.getMonthlyAnnualList",inputMap);
+        return sqlSession.selectOne("report.getMonthlyAnnualList",inputMap);
     }
 
-    public List<ReportVo> getCategory(int groupNo) {
+    public List<Integer> getCategory(int groupNo) {
         return sqlSession.selectList("report.getCategoryList",groupNo);
+    }
+
+    public String getCategoryName(Integer cateNo) {
+        return sqlSession.selectOne("report.getCategoryName",cateNo);
+    }
+
+    public String getAnnualSum(Map<String, Object> inputMap) {
+        return sqlSession.selectOne("report.getAnnualSum",inputMap);
+    }
+
+    public String getMonthlyIncome(Map<String, Object> inputMap) {
+        return sqlSession.selectOne("report.getMonthlyIncome",inputMap);
+    }
+
+    public String getMonthlySpend(Map<String, Object> inputMap) {
+        return sqlSession.selectOne("report.getMonthlySpend",inputMap);
     }
 }
