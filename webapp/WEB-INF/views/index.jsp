@@ -117,7 +117,6 @@
     </div>
 </div>
 
-
 <c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
 
 
@@ -270,9 +269,12 @@
             </div>
         </div>
     </div>
+
 </div>
 
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<%--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>--%>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<%--<script type="text/javascript" src="${pageContext.request.contextPath }/assets/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>--%>
 <script src="${pageContext.request.contextPath }/assets/js/bootstrap.js"></script>
 <script src="${pageContext.request.contextPath }/assets/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/js/header.js"></script>
@@ -283,20 +285,65 @@
         charset="UTF-8"></script>
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript">
-    //달력 생성
-    $(document).on("ready", function () {
-        $('.form_day').datetimepicker({
-            language: 'ko',
-            weekStart: 1,
-            todayBtn: 1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            minView: 2,
-            forceParse: 0
-        });
+
+    //쿠키설정하기
+    function setCookie(cookieName, value, exdays) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+        var cookieValue = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toGMTString());
+        document.cookie = cookieName + "=" + cookieValue;
+    }
+
+    function deleteCookie(cookieName) {
+        var expireDate = new Date();
+        expireDate.setDate(expireDate.getDate() - 1);
+        document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+    }
+
+    function getCookie(cookieName) {
+        cookieName = cookieName + '=';
+        var cookieData = document.cookie;
+        var start = cookieData.indexOf(cookieName);
+        var cookieValue = '';
+        if (start != -1) {
+            start += cookieName.length;
+            var end = cookieData.indexOf(';', start);
+            if (end == -1) end = cookieData.length;
+            cookieValue = cookieData.substring(start, end);
+        }
+        return unescape(cookieValue);
+    }
+    $(document).ready (function () {
+
+        //    아이디기억용 쿠키
+        //    시작되면 이메일칸에 쿠키정보 가져와서 뿌리기
+        var userEmail = getCookie("userEmail");
+        $("#loginEmail").val(userEmail);
+        //만약 이메일칸에 정보가 있으면 체크박스를 체크상태로 바꾸고
+        if ($("#loginEmail").val() != "") {
+            $("input:checkbox[id='customCheck1']").prop("checked", true);
+        }
     });
-    $("#joinForm").on("click",function () {
+    //체크박스에 변화가 있을때
+    $("#customCheck1").on("change", function () {
+        // 체크된상태이면 쿠키를 세팅해라
+        if ($("#customCheck1").is(":checked")) {
+            var getUserEmail = $("#loginEmail").val();
+            setCookie("userEmail", getUserEmail, 7);
+        } else {//체크되지 않은 상태면 쿠키를 지워라
+            deleteCookie("userEmail");
+        }
+    });
+    //    아이디저장하기가 체크된 상태에서 아이디를 새로 입력했을 때도 쿠키를 저장해라
+    $("#loginEmail").on("keyup", function () {
+        if ($("#customCheck1").is(":checked")) {
+            var getUserEmail = $("#loginEmail").val();
+            setCookie("userEmail", getUserEmail, 7);
+        }
+    });
+
+
+    $("#joinForm").on("click", function () {
         $("#exampleModalCenter").modal("hide");
         $("#exampleModalCenter3").modal();
     });
@@ -474,14 +521,14 @@
                     $("#loginEmail").val("");
                     $("#loginPassword").val("");
                     location.href = "${pageContext.request.contextPath }/main";
-                } else {
+                } else if (result == 0) {
                     $("#loginCheck").html("로그인 정보를 확인하세요");
                     $("#loginCheck").css("color", "red");
                 }
             }, error: function (request, status, error) {
                 console.error(request, status, error);
                 alert("통신 실패");
-                alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                // alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
             }
         });
     }
@@ -520,7 +567,6 @@
             $("#kakaoAlertMessage").css("color", "red");
             return false;
         } else {
-            alert("ㅇㅋㅇㅋ");
             return true;
         }
 
@@ -554,7 +600,7 @@
                         dataType: "json",
                         success: function (result) {
                             if (result > 0) {
-                                location.href = "${pageContext.request.contextPath }/kakaoLogin?userEmail="+res.id;
+                                location.href = "${pageContext.request.contextPath }/kakaoLogin?userEmail=" + res.id;
                             } else {
                                 $("#kakaoUserEmail").val(res.id);
                                 $("#exampleModalCenter").modal("hide");

@@ -154,4 +154,28 @@ public class ReportService {
         System.out.println("만들어진 마지막 날짜 : " + lastDate);
         return lastDate;
     }
+
+    public Map<String,Object> monthlyReport(String groupNo, String year, String month) {
+        //        월별 지출
+        List<String> monthlySpend = new ArrayList<>();
+        for (int i=1; i<=12; i++){
+            Map<String, Object> inputMap = new HashMap<>();
+            inputMap.put("groupNo", groupNo);
+            String startDay = year + "/" + i + "/01";
+            inputMap.put("startDay", startDay);
+            inputMap.put("lastDay", getLastDay(Integer.parseInt(year), i));
+
+            String spend = reportDao.getMonthlySpend(inputMap);
+            if (spend == null) {
+                monthlySpend.add("0");
+            } else {
+                monthlySpend.add(spend);
+            }
+        }
+//        해당 월의 태그별 총 지출
+
+        Map<String,Object> outputMap = new HashMap<>();
+        outputMap.put("monthlySpend",monthlySpend);
+        return outputMap;
+    }
 }

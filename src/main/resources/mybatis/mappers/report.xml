@@ -52,5 +52,10 @@ order by tagDate desc))
 where rnum = 1
  </select>
 
+    <select id="totalSpendByTag" parameterType="map" resultType="com.modu.vo.ReportVo">
+
+    </select>
+
+
 
 </mapper>

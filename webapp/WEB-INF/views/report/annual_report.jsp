@@ -264,24 +264,14 @@
             var year = $("#yearOutput").val();
             year = Number(year.substr(0, 4));
             year -= 1;
-            // $("#yearOutput").val(year + "년");
-            // $("#annualReportTitle1").html("<strong>" + year + "년 상반기</strong>");
-            // $("#annualReportTitle2").html("<strong>" + year + "년 하반기</strong>");
             location.href = "${pageContext.request.contextPath }/annualreport/${groupNo}/" + year;
         });
         $('#yearNext').on("click", function () {
             var year = $("#yearOutput").val();
             year = Number(year.substr(0, 4));
             year += 1;
-            // $("#yearOutput").val(year + "년");
-            // $("#annualReportTitle1").html("<strong>" + year + "년 상반기</strong>");
-            // $("#annualReportTitle2").html("<strong>" + year + "년 하반기</strong>");
             location.href = "${pageContext.request.contextPath }/annualreport/${groupNo}/" + year;
         });
-
-        // var lastDay = ( new Date( 2016, 1, 0) ).getDate();
-        // var ifReady = $("#yearOutput").val();
-        // ifReady = ifReady.substr(0,4);
 
     });
 
@@ -291,12 +281,9 @@
     };
 
     var isChanged = function () {
-        var mm = $("#yearOutput").val();
         var year = $("#yearOutput").val();
         year = Number(year.substr(0, 4));
-        $("#yearOutput").val(year + "년");
-        $("#annualReportTitle1").html("<strong>" + year + "년 상반기</strong>");
-        $("#annualReportTitle2").html("<strong>" + year + "년 하반기</strong>");
+        location.href = "${pageContext.request.contextPath }/annualreport/${groupNo}/" + year;
     };
 
 

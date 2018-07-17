@@ -4,6 +4,8 @@
 
 <!-----------header------------------>
 <header>
+
+
     <%--첫번째 네비바--%>
     <nav class="container navbar navbar-expand-lg navbar-light bg-light">
         <%-- 공통 로고 --%>
@@ -162,9 +164,9 @@
             </div>
 
         </nav>
-        <%--<input type="hidden" id="userNo" value="${authUser.userNo}">--%>
-        <%--<input type="hidden" id="groupNo" value="${authUser.groupNo}">--%>
     </c:if>
+
+
 </header>
 
 
@@ -250,7 +252,8 @@
     var goToMonthlyReport = function () {
         var getYear = new Date().getFullYear();
         var getMonth = new Date().getMonth()+1;
-        $("#goToMonthly").attr("href","${pageContext.request.contextPath }/monthlyreport/"+getYear+"/"+getMonth);
+        var getGroupNo = $("#groupNo").val();
+        $("#goToMonthly").attr("href","${pageContext.request.contextPath }/monthlyreport/"+getGroupNo+"/"+getYear+"/"+getMonth);
     }
 
     var loadFile = function (event) {

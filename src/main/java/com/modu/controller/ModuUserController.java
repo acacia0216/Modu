@@ -59,7 +59,6 @@ public class ModuUserController {
 
     @RequestMapping(value = "/kakaoLogin", method = RequestMethod.GET)
     public String kakaoLogin(@RequestParam String userEmail,HttpSession session) {
-        System.out.println(1231414124);
         System.out.println("카카오톡 로그인하기 : "+userEmail);
         ModuUserVo userVo = moduUserService.kakaoLogin(userEmail);
         System.out.println("유저 세션 세팅 : "+userVo.toString());

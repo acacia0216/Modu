@@ -19,8 +19,8 @@ public class ReportController {
 
     @RequestMapping(value = "/annualreport/{groupNo}/{year}",method = RequestMethod.GET)
     public String annualReport(@PathVariable String year,@PathVariable int groupNo,Model model){
-        model.addAttribute("year",year);
         System.out.println("연간 보고서로 이동");
+        model.addAttribute("year",year);
         Map<String,Object> tmp = reportService.annualReport(groupNo,year);
         model.addAttribute("list",tmp.get("outputList"));
         model.addAttribute("annualSum",tmp.get("annualSum"));
@@ -29,11 +29,14 @@ public class ReportController {
         return "/report/annual_report";
     }
 
-    @RequestMapping(value = "/monthlyreport/{year}/{month}",method = RequestMethod.GET)
-    public String monthlyReport(@PathVariable String year,@PathVariable String month,Model model){
+    @RequestMapping(value = "/monthlyreport/{groupNo}/{year}/{month}",method = RequestMethod.GET)
+    public String monthlyReport(@PathVariable String groupNo,@PathVariable String year,@PathVariable String month,Model model){
+        System.out.println("월간 보고서로 이동");
+        model.addAttribute("groupNo",groupNo);
         model.addAttribute("year",year);
         model.addAttribute("month",month);
-        System.out.println("월간 보고서로 이동");
+        Map<String,Object> tmp = reportService.monthlyReport(groupNo,year,month);
+        model.addAttribute("monthlySpend",tmp.get("monthlySpend"));
         return "/report/monthly_report";
     }
 
