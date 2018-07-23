@@ -6,17 +6,18 @@ public class AccountbookVo {
 	private String accountbookUsage;
 	private int accountbookSpend;
 	private int accountbookIncome;
-	private String categoryNo;
+	private int categoryNo;
 	private String categoryName;
 	private int groupNo;
+	private int tagNo;
 	private String tagName;
 
 	public AccountbookVo() {
 
 	}
-
+	
 	public AccountbookVo(String accountbookRegDate, String accountbookUsage, int accountbookSpend,
-			int accountbookIncome, String categoryNo, String categoryName, int groupNo, String tagName) {
+			int accountbookIncome, int categoryNo, String categoryName, int groupNo, int tagNo, String tagName) {
 		this.accountbookRegDate = accountbookRegDate;
 		this.accountbookUsage = accountbookUsage;
 		this.accountbookSpend = accountbookSpend;
@@ -24,11 +25,12 @@ public class AccountbookVo {
 		this.categoryNo = categoryNo;
 		this.categoryName = categoryName;
 		this.groupNo = groupNo;
+		this.tagNo = tagNo;
 		this.tagName = tagName;
 	}
 
 	public AccountbookVo(int accountbookno, String accountbookRegDate, String accountbookUsage, int accountbookSpend,
-			int accountbookIncome, String categoryNo, String categoryName, int groupNo, String tagName) {
+			int accountbookIncome, int categoryNo, String categoryName, int groupNo, int tagNo, String tagName) {
 		this.accountbookno = accountbookno;
 		this.accountbookRegDate = accountbookRegDate;
 		this.accountbookUsage = accountbookUsage;
@@ -37,6 +39,7 @@ public class AccountbookVo {
 		this.categoryNo = categoryNo;
 		this.categoryName = categoryName;
 		this.groupNo = groupNo;
+		this.tagNo = tagNo;
 		this.tagName = tagName;
 	}
 
@@ -80,11 +83,11 @@ public class AccountbookVo {
 		this.accountbookIncome = accountbookIncome;
 	}
 
-	public String getCategoryNo() {
+	public int getCategoryNo() {
 		return categoryNo;
 	}
 
-	public void setCategoryNo(String categoryNo) {
+	public void setCategoryNo(int categoryNo) {
 		this.categoryNo = categoryNo;
 	}
 
@@ -104,6 +107,14 @@ public class AccountbookVo {
 		this.groupNo = groupNo;
 	}
 
+	public int getTagNo() {
+		return tagNo;
+	}
+
+	public void setTagNo(int tagNo) {
+		this.tagNo = tagNo;
+	}
+
 	public String getTagName() {
 		return tagName;
 	}
@@ -117,10 +128,7 @@ public class AccountbookVo {
 		return "AccountbookVo [accountbookno=" + accountbookno + ", accountbookRegDate=" + accountbookRegDate
 				+ ", accountbookUsage=" + accountbookUsage + ", accountbookSpend=" + accountbookSpend
 				+ ", accountbookIncome=" + accountbookIncome + ", categoryNo=" + categoryNo + ", categoryName="
-				+ categoryName + ", groupNo=" + groupNo + ", tagName=" + tagName + "]";
+				+ categoryName + ", groupNo=" + groupNo + ", tagNo=" + tagNo + ", tagName=" + tagName + "]";
 	}
-	
-	
-	
-	
+
 }

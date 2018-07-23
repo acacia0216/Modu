@@ -272,9 +272,7 @@
 
 </div>
 
-<%--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>--%>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath }/assets/jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>--%>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="${pageContext.request.contextPath }/assets/js/bootstrap.js"></script>
 <script src="${pageContext.request.contextPath }/assets/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath }/assets/js/header.js"></script>

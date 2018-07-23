@@ -34,7 +34,7 @@
 					<h4 class="mx-auto" style="color: black;text-shadow:none;" >사진과 가계부를</h4>
 					<h4 class="mx-auto" style="color: black;text-shadow:none;"> 멤버들과 <span style="color:#00b0f0; text-shadow:none;"> 공유 </span>하세요</h4>
 	        
-	        	<a class="btn btn-primary  mt-4 mx-auto" style="text-shadow:none; " href="${pageContext.request.contextPath }/board/write">첫 글 올리기</a>       
+	        	<a class="btn btn-primary  mt-4 mx-auto" style="text-shadow:none; " href="${pageContext.request.contextPath }/board/${authUser.groupNo}/write">첫 글 올리기</a>       
 	            </div>
 			
 				<br>

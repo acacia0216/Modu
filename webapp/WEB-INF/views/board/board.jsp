@@ -28,7 +28,7 @@
 <div class="container" >
 			
 <div class="mb-5 text-center">
-      <a href="${pageContext.request.contextPath }/board/write" class="btn btn-lg btn-outline-primary" style="font-weight:bold; border:solid 2px; width:900px; ">
+      <a href="${pageContext.request.contextPath }/board/${authUser.groupNo}/write" class="btn btn-lg btn-outline-primary" style="font-weight:bold; border:solid 2px; width:900px; ">
 						총무만 할 수 있는 '새 글쓰기'		
 		</a>
 </div>
@@ -52,6 +52,26 @@
 						<div class="modal-footer">
 							<button type="button" class="btn btn-outline-dark" data-dismiss="modal">닫기</button>
 							<button type="button" class="btn btn-outline-danger" id="btn_del" >삭제</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Delete Comment Modal -->
+
+			<div class="modal fade" id="deleteCmtModal" tabindex="-1" role="dialog">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							
+						
+						</div>
+						<div class="modal-body d-flex" style="align-items: center; justify-content: center;">
+							<div style="font-weight: bold;">정말로 삭제 하시겠습니까?</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-dark" data-dismiss="modal">닫기</button>
+							<button type="button" class="btn btn-outline-danger" id="btn_delCmt" >삭제</button>
 						</div>
 					</div>
 				</div>
@@ -134,7 +154,7 @@
 		
 			$.ajax({
 				  
-				  url : "${pageContext.request.contextPath}/board/getList",
+				  url : "${pageContext.request.contextPath}/board/${authUser.groupNo}/getList",
 				  type : "POST",
 				  /*   data : {begin : 1},
 				  dataType : "json", */
@@ -149,7 +169,7 @@
 								src ='${pageContext.request.contextPath}/assets/images/like_on.png';
 							} 
 							render(val,"down",src);
-								  
+							fetchComment(val.boardNo);	  
 					   });
 					  
 				  
@@ -164,7 +184,9 @@
 		}
 		
 		
-
+		
+		
+		
 	
 		/* 게시글 그리기 함수 */
 		function render(vo,updown,src){
@@ -176,7 +198,7 @@
 			  str+= "		<h4 class='card-title mt-3'>" +vo.boardTitle +"</h4>";
 			  str+= "		<div class='text-left ml-5'>" +vo.boardRegDate +"</div>";
 			  str+= "		<div class='text-right mr-5'>";
-			  str+= "			<a href='${pageContext.request.contextPath }/board/write' class='btn btn-sm btn-secondary'>";
+			  str+= "			<a href='${pageContext.request.contextPath }/board/${authUser.groupNo}/write' class='btn btn-sm btn-secondary'>";
 			  str+= "			     수정	</a>	";
 			  str+= "			<button type='button' class='btn btn-sm btn-secondary' data-toggle='modal' data-target='#deleteModal'>";
 			  str+= "			     삭제	</button>";
@@ -282,6 +304,7 @@
 			  str+= "	    </div>";
 			  
 			  
+			  
 			  str+= "	    <div class='card-footer p-1'> ";
 			  str+= "	    	<div class='text-left my-2'>";
 			  str+= "	   			<span>";
@@ -291,62 +314,24 @@
 			  str+= "	  				"+vo.likeCount+"명의 회원이 좋아합니다.";
 			  str+= "	  			</span>";
 			  str+= "	        </div>";
-			
 			  
-			  
-			  
-			  str+= "	    	 <div>";
-			  str+= "	      		<div class='my-2 text-left comment-top ' id='multiCollapseExample1'>";
-			  str+= "	   				 <div class='card'>";
-			  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span>김삼겹</span></h5>";
-			  str+= "	   					  <div class='card-body comment'>";
-			  str+= "	  					        <p class='comment'>삼겹살에 김치 꿉고 상추에 쌈싸서 크흐~</p>";
-			  str+= "	   					  </div>";
-			  str+= "	  				 </div>";
-			  str+= "	   		 	</div>";
-			  str+= "	 		 </div>";
-			  
-			  
-			  
-			  str+= "	   		 <p>";
-			  str+= "	   			 <button class='btn btn-sm btn-secondary btn-comment' id='btn-comment' type='button' data-toggle='collapse' data-target='.multi-collapse' aria-expanded='false' aria-controls='multiCollapseExample1 multiCollapseExample2' value='0'>댓글 더 보기</button>";
-			  str+= "	    	 </p>";
-			  
-			  
-			  str+= "	   	 	 <div>";
-			  str+= "	      			<div class='collapse multi-collapse my-2 text-left' id='multiCollapseExample1'>";
-			  str+= "	   					 <div class='card'>";
-			  str+= "							 <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span>김삼겹</span></h5>";
-			  str+= "	   						  <div class='card-body comment'>";
-			  str+= "	  						        <p class='comment'>삼겹살에 김치 꿉고 상추에 쌈싸서 크흐~</p>";
-			  str+= "	   				 		 </div>";
-			  str+= "	  			 		</div>";
-			  str+= "	    			</div>";
-			  str+= "	   		  </div>";
-			  
-			  
-			  str+= "	  		  <div>";
-			  str+= "	 		     	<div class='collapse multi-collapse my-2 text-left' id='multiCollapseExample1'>";
-			  str+= "	 		  			 <div class='card'>";
-			  str+= "							 <h5 class='card-header'><span class='mr-3 mb-1'><img src='${pageContext.request.contextPath }/assets/images/club01.png'></span><span>김태클</span></h5>";
-			  str+= "	 		  				  <div class='card-body comment'>";
-			  str+= "			  				        <p  class='comment'>근데 여기 사이트 댓글 형식 좀 이상하지 않냐?</p>";
-			  str+= "			   				  </div>";
-			  str+= "			  			 </div>";
-			  str+= "			    	</div>";
-			  str+= "	 		  </div>";
-			  
-			  
-			  
-			  
+			 
+			  str+= "		<div>";
 			  str+= "	   		  <div class='input-group my-3'>";
 			  str+= "	 		 		<div class='input-group-prepend'>";
-			  str+= "	 				<span class='input-group-text' id=''>장현수</span>";
+			  str+= "	 				<span class='input-group-text' > ${authUser.userName} </span>";
 			  str+= "	  		  </div>";
-			  str+= "	 		  <input type='text' class='form-control' placeholder='댓글을 입력하세요' aria-label='Recipient's username' aria-describedby='basic-addon2'>";
+			  str+= "	 		  <textarea class='form-control' placeholder='댓글을 입력하세요' id='commentContent_"+vo.boardNo+"' aria-label='Recipient's username' aria-describedby='basic-addon2' />";
 			  str+= "	   		  <div class='input-group-append'>";
-			  str+= "	   				<button class='btn btn-outline-secondary' type='button'><img src='${pageContext.request.contextPath }/assets/images/write01.png'></button>";
+			  str+= "	   				<button class='btn btn-outline-secondary' type='button' data-writeno="+vo.boardNo+"><img src='${pageContext.request.contextPath }/assets/images/write01.png'></button>";
 			  str+= "	   		  </div>";
+			  str+= "		</div>";
+			  str+= "		<div class='text-left my-3'><span>";
+			  str+= "			                       <span class='ml-3' style='color:gray;'>  댓글 "+vo.cmtCount+"개</span></div>";
+ 			  str+= "	    	 <div id='cmtList_"+vo.boardNo+"' style=' overflow-x:hidden; overflow-y:auto;  max-height:720px;'>";
+			  
+			  str+= "	    	 </div>";
+			  
 			  str+= "	    </div>";
 			  str+= "	 </div>";
 			  str+= "</div>";
@@ -364,7 +349,172 @@
 			  }
 				  
 		}
+			  
+
+			  
+		/* 댓글 등록 이벤트 */
+		$("div").on('click','button[data-writeno]',function(){
 		
+			var boardNo = $(this).data("writeno");
+			var commentContent = $("#commentContent_"+boardNo).val(); 
+			
+			$.ajax ({
+				
+				url: "${pageContext.request.contextPath}/board/${authUser.groupNo}/addCmt",
+				type:"POST",
+				data: {boardNo:boardNo, commentContent:commentContent},
+				dataType : "json",
+				
+				
+				success : function(flag){
+					
+					if(flag==1){
+						
+						$("#cmtList_"+boardNo).empty();
+						$("#commentContent_"+boardNo).val("");
+						fetchComment(boardNo);
+					
+					}
+					
+					
+				},
+				
+				error : function(XHR, status, error){
+					
+					console.error(XHR+status+error);
+					
+				}
+				
+			});
+				
+			
+			return false;
+		
+		});
+		
+		
+		
+		/* 댓글 지우기 */
+		function removeComment(){
+			
+		
+		}
+		
+		
+		/*  댓글 불러오기 AJAX */
+		function fetchComment(boardNo){
+		 
+			$.ajax({
+				  
+				  url : "${pageContext.request.contextPath}/board/${authUser.groupNo}/getCmtList",
+				  type : "POST",
+				  data : {boardNo : boardNo},
+				  dataType : "json", 
+				 
+				  success : function(list){
+					  
+				      if(list.length!=0){
+				    	  
+				      
+				    	  $.each(list, function(idx, val) {
+								console.log(idx + " " + val.boardNo);
+								render_comment(val,"down",idx);
+						   });
+				      }					  
+				  
+				  },
+				  
+				  error : function(XHR, status, error){
+					 console.error(XHR+status+error);
+				  }
+				  
+			  });
+			  
+		}
+		
+		
+			  
+		/* 댓글 그리기 함수 */
+		function render_comment(vo,updown,idx){
+
+			  
+			  str= " ";
+			  
+			  if(idx==0){
+				  
+				  str+= "	    	 <div id='cmt_"+vo.commentNo+"'>";
+				  str+= "	      		<div class='my-2 text-left' id='multiCollapseExample1' >";
+				  str+= "	   				 <div class='card' id='top_"+vo.boardNo+"'>";
+				  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
+				  str+= "						  <span style='color:gray;margin-left:10px;'>"+vo.commentRegDate+"</span><span class='ml-3 float-right mt-2 pt-1 delCmt' data-delcmtno='"+vo.commentNo+"' data-cmtresetno='"+vo.boardNo+"' style='cursor:pointer' >&times</span></h5>";
+				  str+= "	   					  <div class='card-body comment'>";
+				  str+= "	  					        <pre class='comment'>"+vo.commentContent+"</pre>";
+				  str+= "	   					  </div>";
+				  str+= "	  				 </div>";
+				  str+= "	   		 	</div>";
+				  str+= "	 		 </div>";
+				  
+				  
+				  str+= "	    	 <div id='cmt_"+vo.commentNo+"'>";
+				  str+= "	      		<div class='collapse multi-collapse"+vo.boardNo+" my-2 text-left' id='multiCollapseExample1'>";
+				  str+= "	   				 <div class='card'>";
+				  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
+				  str+= "						  <span style='color:gray;margin-left:10px;'>"+vo.commentRegDate+"</span><span class='ml-3 float-right mt-2 pt-1 delCmt' data-delcmtno='"+vo.commentNo+"' data-cmtresetno='"+vo.boardNo+"' style='cursor:pointer' >&times</span></h5>";
+				  str+= "	   					  <div class='card-body comment'>";
+				  str+= "	  					        <pre class='comment'>"+vo.commentContent+"</pre>";
+				  str+= "	   					  </div>";
+				  str+= "	  				 </div>";
+				  str+= "	   		 	</div>";
+				  str+= "	 		 </div>";
+				  
+			  } else if(idx==1) {
+				  
+				  str+= "	   		 <p>";
+				  str+= "	   			 <button class='btn btn-sm btn-secondary btn-comment' id='btn-comment' data-toggle='collapse' data-target='.multi-collapse"+vo.boardNo+"' aria-expanded='false' aria-controls='multiCollapseExample1' value='0' data-cmtboardno='"+vo.boardNo+"'>댓글 더 보기</button>";
+				  str+= "	    	 </p>";
+			  
+				  str+= "	    	 <div id='cmt_"+vo.commentNo+"'>";
+				  str+= "	      		<div class='collapse multi-collapse"+vo.boardNo+" my-2 text-left' id='multiCollapseExample1'>";
+				  str+= "	   				 <div class='card'>";
+				  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
+				  str+= "						  <span style='color:gray;margin-left:10px;'>"+vo.commentRegDate+"</span><span class='ml-3 float-right mt-2 pt-1 delCmt' data-delcmtno='"+vo.commentNo+"' data-cmtresetno='"+vo.boardNo+"' style='cursor:pointer' >&times</span></h5>";
+				  str+= "	   					  <div class='card-body comment'>";
+				  str+= "	  					        <pre class='comment'>"+vo.commentContent+"</pre>";
+				  str+= "	   					  </div>";
+				  str+= "	  				 </div>";
+				  str+= "	   		 	</div>";
+				  str+= "	 		 </div>";
+				  
+			  } else {
+			  
+				  
+				  str+= "	    	 <div id='cmt_"+vo.commentNo+"'>";
+				  str+= "	      		<div class='collapse multi-collapse"+vo.boardNo+" my-2 text-left' id='multiCollapseExample1"+vo.boardNo+"'>";
+				  str+= "	   				 <div class='card'>";
+				  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
+				  str+= "						  <span style='color:gray;margin-left:10px;'>"+vo.commentRegDate+"</span><span class='ml-3 float-right mt-2 pt-1 delCmt' data-delcmtno='"+vo.commentNo+"' data-cmtresetno='"+vo.boardNo+"' style='cursor:pointer' >&times</span></h5>";
+				  str+= "	   					  <div class='card-body comment'>";
+				  str+= "	  					        <pre class='comment'>"+vo.commentContent+"</pre>";
+				  str+= "	   					  </div>";
+				  str+= "	  				 </div>";
+				  str+= "	   		 	</div>";
+				  str+= "	 		 </div>";
+				  
+			  
+			  
+			  
+			  }
+			  
+			  
+  			  if(updown=="up"){
+				  
+				  $("#cmtList_"+vo.boardNo).prepend(str);
+				  
+			  } else{
+				  $("#cmtList_"+vo.boardNo).append(str);
+			  }
+			
+		}
 			  
 		
 		
@@ -391,7 +541,7 @@
 			
 			$.ajax({
 				  
-				  url : "${pageContext.request.contextPath}/board/upLike",
+				  url : "${pageContext.request.contextPath}/board/${authUser.groupNo}/upLike",
 				  type : "POST",
 				  data : {boardNo:boardNo, likeState: likeState},
 				  dataType : "json",	
@@ -432,11 +582,11 @@
 		/* 게시글 삭제 Ajax */
 		$("#btn_del").on("click",function(){
 			
+			
 			var boardNo = $("#board").data('no');
-		
 			$.ajax({
 				  
-				  url : "${pageContext.request.contextPath}/board/delete",
+				  url : "${pageContext.request.contextPath}/board/${authUser.groupNo}/delete",
 				  type : "POST",
 				  data : {boardNo:boardNo},
 				  dataType : "json",	
@@ -459,29 +609,76 @@
 			
 			 
 		});
+		
+		
+		/* 댓글 삭제 이벤트 핸들러 */
+		$(document).on("click","div span[data-delcmtno]",function(){
+			
+			
+			var commentNo = $(this).data('delcmtno');
+			var boardNo = $(this).data('cmtresetno'); 
+			$('#deleteCmtModal').attr('delboardno',boardNo);
+			$('#deleteCmtModal').attr('delcommentno',commentNo);
+			$('#deleteCmtModal').modal();
+			
+			 
+		});
+		
+		
+		/* 댓글 삭제 ajax */
+		$("#btn_delCmt").on("click",function(){
+			
+	     	var boardNo = $('#deleteCmtModal').attr('delboardno');
+		    var commentNo = $('#deleteCmtModal').attr('delcommentno');
+			$.ajax({
+				  
+				  url : "${pageContext.request.contextPath}/board/${authUser.groupNo}/delCmt",
+				  type : "POST",
+				  data : {commentNo: commentNo},
+				  dataType : "json",	
+				
+				  success : function(flag){
+						 
+						if(flag==1){
+							
+							  alert("삭제되었습니다.");
+							  $("#cmtList_"+boardNo).empty();
+							  fetchComment(boardNo);
+							  $("#deleteCmtModal").modal('hide');
+						
+						}
+						
+											
+				  },
+				  
+				  error : function(XHR, status, error){
+					 console.error(XHR+status+error);
+				  }
+				  
+			  });
+			
+		});
 
 		/*   댓글 펼치기,감추기   */
 
-
-		$("#btn-comment").on("click",function(){
-
+	 	$(document).on("click","div #btn-comment",function(event){
+			
 			var val = $(this).val();
-			console.log(val);
-
+			var boardNo = $(this).data('cmtboardno');
+			console.log(boardNo+"  ---"+val);
 			if(val==0){
-				$('.comment-top').hide();
+				$('#top_'+boardNo).hide();
 				$(this).val("1");
 				$(this).html("댓글 감추기");
+				
 			} else {
 
-				$('.comment-top').show();
+				$('#top_'+boardNo).show();
 				$(this).val("0");
 				$(this).html("댓글 더 보기");
 			}
 			
-			return	
-
-		});    
+		});   
 
 
 		/*  이미지 미리보기 , 확장자 체크  */		
@@ -539,19 +736,17 @@
          // If they scrolled down and are past the navbar, add class .nav-up. 
          // This is necessary so you never see what is "behind" the navbar. 
          if (st > lastScrollTop && st > navbarHeight){ 
-         // Scroll Down 
-         $('header').removeClass('nav-down').addClass('nav-up');
-     } else { 
-         // Scroll Up 
-         if(st + $(window).height() < $(document).height()) { 
-         	$('header').removeClass('nav-up').addClass('nav-down'); 
-         } 
-     } 
-
-     lastScrollTop = st; 
-
+	         // Scroll Down 
+	         $('header').removeClass('nav-down').addClass('nav-up');
+   		  } else { 
+	         // Scroll Up 
+	         if(st + $(window).height() < $(document).height()) { 
+	         	$('header').removeClass('nav-up').addClass('nav-down'); 
+	         } 
+   		  } 
+	
+   		  lastScrollTop = st; 
      
-
- }
+ 		}
 </script>
 </body>

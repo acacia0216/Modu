@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,21 +19,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.modu.service.BoardService;
+import com.modu.service.ModuGroupService;
 import com.modu.vo.BoardVo;
 import com.modu.vo.FileVo;
+import com.modu.vo.ModuGroupVo;
 import com.modu.vo.ModuUserVo;
 
 @Controller
-@RequestMapping("/board")
+@RequestMapping("/board/{groupNo}")
 public class BoardController {
 
 	
 	@Autowired
 	BoardService service;
-	
-	
+	@Autowired
+	private ModuGroupService groupService;
+
+
+
 	@RequestMapping(value="", method={RequestMethod.GET,RequestMethod.POST})
-	public String goBoard(Model model){
+	public String goBoard(Model model, @PathVariable("groupNo") int groupNo, HttpSession session){
+
+		// 모임 카테고리
+	    ModuUserVo uservo =  (ModuUserVo) session.getAttribute("authUser");
+		List<ModuGroupVo> gList  = groupService.selectGroup(uservo.getUserNo());
+		model.addAttribute("gList",gList);
+
+		// 클릭한 모임  가계부 보여주기
+	    ModuGroupVo gvo = groupService.selectGroupImg(groupNo);
+		model.addAttribute("gvo",gvo);
 		
 		int postCheck= service.postCheck();
 	    
@@ -75,7 +90,17 @@ public class BoardController {
 	
 	
 	@RequestMapping("/write")
-	public String goBoardWrite(){
+	public String goBoardWrite(Model model, @PathVariable("groupNo") int groupNo, HttpSession session){
+
+		// 모임 카테고리
+	    ModuUserVo uservo =  (ModuUserVo) session.getAttribute("authUser");
+		List<ModuGroupVo> gList  = groupService.selectGroup(uservo.getUserNo());
+		model.addAttribute("gList",gList);
+
+		// 클릭한 모임  가계부 보여주기
+	    ModuGroupVo gvo = groupService.selectGroupImg(groupNo);
+		model.addAttribute("gvo",gvo);
+
 		System.out.println("글쓰기 입장");
 		return "/board/boardWrite";
 		
@@ -112,7 +137,28 @@ public class BoardController {
 		
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping(value="/addCmt", method=RequestMethod.POST)
+	public int addCmt(@ModelAttribute BoardVo boardVo, HttpSession session) {
+
+		ModuUserVo authVo = (ModuUserVo)session.getAttribute("authUser");
+		String userNo = String.valueOf(authVo.getUserNo());
+		boardVo.setUserNo(userNo);
+		System.out.println("왓썹맨~"+boardVo.toString());
+		int flag = service.addCmt(boardVo);
+		return flag;
+
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/getCmtList", method=RequestMethod.POST)
+	public List<BoardVo> getCmtList(@ModelAttribute BoardVo boardVo) {
+
+		List<BoardVo> list= service.getCmtList(boardVo);
+		return list;
+	}
+
+
 	@ResponseBody
 	@RequestMapping(value="/upLike")
 	public BoardVo upLike(@ModelAttribute BoardVo boardVo, HttpSession session) {
@@ -129,7 +175,17 @@ public class BoardController {
 		
 	}
 	
-	
+	@ResponseBody
+	@RequestMapping(value="/delCmt", method=RequestMethod.POST)
+	public int deleteCmt(@RequestParam String commentNo){
+
+		int flag = service.deleteCmt(commentNo);
+		return flag;
+	}
+
+
+
+
 }
 	/*
 	@ResponseBody

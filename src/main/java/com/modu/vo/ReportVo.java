@@ -14,7 +14,7 @@ public class ReportVo {
     //어카운트북_태그 테이블
 //    private int accountbookTagNo;
     //어카운트북 테이블
-//    private int accountbookNo;
+    private int accountbookNo;
     private String accountbookRegdate;
     private String accountbookUsage;
     private int totalSpend;
@@ -30,22 +30,23 @@ public class ReportVo {
     private String si;
     private String gu;
     //태그 테이블
-//    private int tagNo;
+    private int tagNo;
     private String tagName;
     private String tagDate;
-    private String tagPlace;
-    private int tagPersonnel;
+    private String accountbookPlace;
+    private int accountbookPersonnel;
 
     public ReportVo() {
     }
 
-    public ReportVo(int year, int monthNo, int groupNo, String groupName, int categoryNo, String categoryName, String accountbookRegdate, String accountbookUsage, int totalSpend, int totalIncome, int paymentAmount, String paymentDay, String si, String gu, String tagName, String tagDate, String tagPlace, int tagPersonnel) {
+    public ReportVo(int year, int monthNo, int groupNo, String groupName, int categoryNo, String categoryName, int accountbookNo, String accountbookRegdate, String accountbookUsage, int totalSpend, int totalIncome, int paymentAmount, String paymentDay, String si, String gu, int tagNo, String tagName, String tagDate, String accountbookPlace, int accountbookPersonnel) {
         this.year = year;
         this.monthNo = monthNo;
         this.groupNo = groupNo;
         this.groupName = groupName;
         this.categoryNo = categoryNo;
         this.categoryName = categoryName;
+        this.accountbookNo = accountbookNo;
         this.accountbookRegdate = accountbookRegdate;
         this.accountbookUsage = accountbookUsage;
         this.totalSpend = totalSpend;
@@ -54,10 +55,11 @@ public class ReportVo {
         this.paymentDay = paymentDay;
         this.si = si;
         this.gu = gu;
+        this.tagNo = tagNo;
         this.tagName = tagName;
         this.tagDate = tagDate;
-        this.tagPlace = tagPlace;
-        this.tagPersonnel = tagPersonnel;
+        this.accountbookPlace = accountbookPlace;
+        this.accountbookPersonnel = accountbookPersonnel;
     }
 
     public int getYear() {
@@ -106,6 +108,14 @@ public class ReportVo {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public int getAccountbookNo() {
+        return accountbookNo;
+    }
+
+    public void setAccountbookNo(int accountbookNo) {
+        this.accountbookNo = accountbookNo;
     }
 
     public String getAccountbookRegdate() {
@@ -172,6 +182,14 @@ public class ReportVo {
         this.gu = gu;
     }
 
+    public int getTagNo() {
+        return tagNo;
+    }
+
+    public void setTagNo(int tagNo) {
+        this.tagNo = tagNo;
+    }
+
     public String getTagName() {
         return tagName;
     }
@@ -188,20 +206,20 @@ public class ReportVo {
         this.tagDate = tagDate;
     }
 
-    public String getTagPlace() {
-        return tagPlace;
+    public String getAccountbookPlace() {
+        return accountbookPlace;
     }
 
-    public void setTagPlace(String tagPlace) {
-        this.tagPlace = tagPlace;
+    public void setAccountbookPlace(String accountbookPlace) {
+        this.accountbookPlace = accountbookPlace;
     }
 
-    public int getTagPersonnel() {
-        return tagPersonnel;
+    public int getAccountbookPersonnel() {
+        return accountbookPersonnel;
     }
 
-    public void setTagPersonnel(int tagPersonnel) {
-        this.tagPersonnel = tagPersonnel;
+    public void setAccountbookPersonnel(int accountbookPersonnel) {
+        this.accountbookPersonnel = accountbookPersonnel;
     }
 
     @Override
@@ -213,6 +231,7 @@ public class ReportVo {
                 ", groupName='" + groupName + '\'' +
                 ", categoryNo=" + categoryNo +
                 ", categoryName='" + categoryName + '\'' +
+                ", accountbookNo=" + accountbookNo +
                 ", accountbookRegdate='" + accountbookRegdate + '\'' +
                 ", accountbookUsage='" + accountbookUsage + '\'' +
                 ", totalSpend=" + totalSpend +
@@ -221,10 +240,11 @@ public class ReportVo {
                 ", paymentDay='" + paymentDay + '\'' +
                 ", si='" + si + '\'' +
                 ", gu='" + gu + '\'' +
+                ", tagNo=" + tagNo +
                 ", tagName='" + tagName + '\'' +
                 ", tagDate='" + tagDate + '\'' +
-                ", tagPlace='" + tagPlace + '\'' +
-                ", tagPersonnel=" + tagPersonnel +
+                ", accountbookPlace='" + accountbookPlace + '\'' +
+                ", accountbookPersonnel=" + accountbookPersonnel +
                 '}'+"\n";
     }
 }

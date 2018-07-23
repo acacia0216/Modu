@@ -13,14 +13,6 @@ public class ReportDao {
     @Autowired
     SqlSession sqlSession;
 
-    public int getRecentEvent(String groupNo) {
-        return sqlSession.selectOne("report.getRecentEvent",groupNo);
-    }
-
-    public ReportVo getMonthlyAnnualList(Map<String,Object> inputMap) {
-        System.out.println("연간보고서 긁기");
-        return sqlSession.selectOne("report.getMonthlyAnnualList",inputMap);
-    }
 
     public List<Integer> getCategory(int groupNo) {
         return sqlSession.selectList("report.getCategoryList",groupNo);
@@ -30,8 +22,8 @@ public class ReportDao {
         return sqlSession.selectOne("report.getCategoryName",cateNo);
     }
 
-    public String getAnnualSum(Map<String, Object> inputMap) {
-        return sqlSession.selectOne("report.getAnnualSum",inputMap);
+    public ReportVo getReportByPeriod(Map<String,Object> inputMap) {
+        return sqlSession.selectOne("report.getReportByPeriod",inputMap);
     }
 
     public String getMonthlyIncome(Map<String, Object> inputMap) {
@@ -40,5 +32,23 @@ public class ReportDao {
 
     public String getMonthlySpend(Map<String, Object> inputMap) {
         return sqlSession.selectOne("report.getMonthlySpend",inputMap);
+    }
+
+    public String getMonthlyTotal(Map<String,Object> inputMap) {
+        return sqlSession.selectOne("report.getMonthlyTotal",inputMap);
+    }
+
+    public int getRecentTag(String groupNo) {
+        return sqlSession.selectOne("report.getRecentTag",groupNo);
+    }
+
+    public List<ReportVo> getTagList(int groupNo) {
+        List<ReportVo> list = sqlSession.selectList("report.getTagList",groupNo);
+        System.out.println(list.toString());
+        return list;
+    }
+
+    public List<ReportVo> getAccountbookListByTag(int tagNo) {
+        return sqlSession.selectList("report.getAccountbookListByTag",tagNo);
     }
 }

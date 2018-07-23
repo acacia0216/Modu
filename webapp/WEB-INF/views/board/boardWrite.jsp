@@ -27,7 +27,7 @@
 	<div class="text-center">
 		<h4>글쓰기</h4> ${authUser.userNo}
 	</div>
-	<form id="form_board" action="${pageContext.request.contextPath}/board/add" method="post" enctype="multipart/form-data"  >
+	<form id="form_board" action="${pageContext.request.contextPath}/board/${authUser.groupNo}/add" method="post" enctype="multipart/form-data"  >
 		<input type="hidden" name="userNo" value="${authUser.userNo}">
 		<div>
 		<input class="form-control mx-auto col-9 my-3" name="boardTitle" placeholder="제목을 입력하세요">
@@ -78,6 +78,7 @@
 							</tr>
 						</thead>
 						<tbody>
+							
 							<tr>
 								<th scope="row">
 									<div>
@@ -90,7 +91,7 @@
 								<td>강남역 하남돼지</td>
 								<td><button type="button" class="btn t-button p-0 " data-toggle="modal" data-target="#mapModal"><img src="${pageContext.request.contextPath }/assets/images/mapIcon.png"></button></td>
 								<td>30</td>
-								<td><img src="${pageContext.request.contextPath }/assets/images/x.png"></td>
+								<td>&times;</td>
 	
 							</tr>
 							<tr>
@@ -134,27 +135,35 @@
 		</div>
 
 			<div class="form-group p-2 col-9 mx-auto my-3" style="position: relative;">
-				<input type="file" class="custom-file-input" id="boardUpload"  name="files" multiple="true" onchange="loadFile(event);">
+				<input type="file" class="custom-file-input" id="boardUpload"  name="files" multiple="multiple" onchange="loadFile(event);">
 				<label class="custom-file-label up-label text-center pr-5" for="inputGroupFile04">이미지 업로드 &emsp;</label>
-				<div class="rounded col-2" style="float : left"><img id="addImg01"  src="" class="w-100 mx-auto mt-3"></div>
-				<div class="col-2" style="float : left"><img id="addImg02"  src="" class="w-100 mx-auto mt-3"></div>
-				<div class="col-2" style="float : left"><img id="addImg03"  src="" class="w-100 mx-auto mt-3"></div>
-				<div class="col-2" style="float : left"><img id="addImg04"  src="" class="w-100 mx-auto mt-3"></div>
-				<div class="col-2" style="float : left"><img id="addImg05"  src="" class="w-100 mx-auto mt-3"></div>
-				<div class="col-2" style="float : left"><img id="addImg06"  src="" class="w-100 mx-auto mt-3"></div>
-				<div style="clear:both;"> </div>
-				
-				
-				
-				<div style="clear:both;"> </div>
-				<div class="col-3" style="float : left"><img id="addImg07"  src="" class="w-100 mx-auto mt-3"></div>
-				<div class="col-3" style="float : left"><img id="addImg08"  src="" class="w-100 mx-auto mt-3"></div>
-				<div class="col-3" style="float : left"><img id="addImg09"  src="" class="w-100 mx-auto mt-3"></div>
-				<div style="clear:both;"> </div>
+				<div id="imgPreview">
+					<div class="rounded col-2" style="float : left"><img id="addImg0"  src=""   class="w-100 mx-auto mt-3"></div>
+					<div class="rounded col-2" style="float : left"><img id="addImg1"   src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg2"  src=""    class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg3"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg4"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg5"  src="" class="w-100 mx-auto mt-3"></div>
+					<div style="clear:both;"> </div>
+					<div class="col-2" style="float : left"><img id="addImg6"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg7"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg8"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg9"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg10"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg11"  src="" class="w-100 mx-auto mt-3"></div>
+					<div style="clear:both;"> </div>
+					<div class="col-2" style="float : left"><img id="addImg12"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg13"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg14"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg15"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg16"  src="" class="w-100 mx-auto mt-3"></div>
+					<div class="col-2" style="float : left"><img id="addImg17"  src="" class="w-100 mx-auto mt-3"></div>
+					<div style="clear:both;"> </div>
+				</div>
 			</div>
 			<div class="text-right mb-5 mx-auto w-75"  >
 				<input class="btn btn-primary btn-lg mr-2" type="submit" value="저  장">
-				<input type="button"  class="btn btn-secondary btn-lg" onclick="location.href='${pageContext.request.contextPath }/board'" value="취 소">		
+				<input type="button"  class="btn btn-secondary btn-lg" onclick="location.href='${pageContext.request.contextPath }/board/${authUser.groupNo}'" value="취 소">		
  			</div>
 	 </form>		
 			
@@ -324,45 +333,43 @@
 
 
 
-	/*  이미지 미리보기 , 확장자 체크  */		
+	/*  다중 이미지 미리보기 , 확장자 체크  */		
 
 	var loadFile = function(event) {
 
-		var addImg01 = document.getElementById('addImg01');
-		var addImg02 = document.getElementById('addImg02');
-		var addImg03 = document.getElementById('addImg03');
-		var addImg04 = document.getElementById('addImg04');
-		var addImg05 = document.getElementById('addImg05');
-		var addImg06 = document.getElementById('addImg06');
-		var addImg07 = document.getElementById('addImg07');
-		var addImg08 = document.getElementById('addImg08');
-		var addImg09 = document.getElementById('addImg09');
-		addImg01.src = URL.createObjectURL(event.target.files[0]);
-		addImg02.src = URL.createObjectURL(event.target.files[1]);
-		addImg03.src = URL.createObjectURL(event.target.files[2]);
-		addImg04.src = URL.createObjectURL(event.target.files[3]);
-		addImg05.src = URL.createObjectURL(event.target.files[4]);
-		addImg06.src = URL.createObjectURL(event.target.files[5]);
-		addImg07.src = URL.createObjectURL(event.target.files[6]);
-		addImg08.src = URL.createObjectURL(event.target.files[7]);
-		addImg09.src = URL.createObjectURL(event.target.files[8]);
+		var addImg = new Array();
+		
+		for(var i=0;i<event.target.files.length; i++ ){
+			$("#imgPreview").show();
+			$("#addImg"+i).show();
+			addImg[i]= document.getElementById('addImg'+i);
+			addImg[i].src = URL.createObjectURL(event.target.files[i]);
+			var fileName= new Array();
+			
+			fileName[i] = event.target.files[i].name;
+			fileName[i] = fileName[i].slice(fileName[i].indexOf(".") + 1).toLowerCase();
+			console.log(fileName[i]);
+			
+			if(fileName[i] != "jpg" && fileName[i] != "png" &&  fileName[i] != "gif" &&  fileName[i] != "bmp"){
+	
+				alert("이미지 파일은 (jpg, png, gif, bmp) 형식만 등록 가능합니다.");
+	
+				$("#boardUpload").val('');
+				$("#imgPreview").hide();
+				for(var i=0;i<event.target.files.length; i++ ){
+				addImg[i].src='';
+				}
+				return false;
+				/*$('#boardUploadModal').modal('hide');*/
+	
+			} else{
+				
+			}
 
-		var fileName = $("#boardUpload").val();
-
-		fileName = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
-		console.log(fileName);
-		if(fileName != "jpg" && fileName != "png" &&  fileName != "gif" &&  fileName != "bmp"){
-
-			alert("이미지 파일은 (jpg, png, gif, bmp) 형식만 등록 가능합니다.");
-
-			$("#boardUpload").val('');
-			$("#addImg").hide();
-
-			/*$('#boardUploadModal').modal('hide');*/
-
-		} else{
-			$("#addImg").show();
 		}
+
+		
+		
 
 	};
 
