@@ -35,11 +35,15 @@ public class ReportVo {
     private String tagDate;
     private String accountbookPlace;
     private int accountbookPersonnel;
+//페이징
+final int listCnt = 3;
+    final int pageBtnCount = 2;
+    private int crtPage;
 
     public ReportVo() {
     }
 
-    public ReportVo(int year, int monthNo, int groupNo, String groupName, int categoryNo, String categoryName, int accountbookNo, String accountbookRegdate, String accountbookUsage, int totalSpend, int totalIncome, int paymentAmount, String paymentDay, String si, String gu, int tagNo, String tagName, String tagDate, String accountbookPlace, int accountbookPersonnel) {
+    public ReportVo(int year, int monthNo, int groupNo, String groupName, int categoryNo, String categoryName, int accountbookNo, String accountbookRegdate, String accountbookUsage, int totalSpend, int totalIncome, int paymentAmount, String paymentDay, String si, String gu, int tagNo, String tagName, String tagDate, String accountbookPlace, int accountbookPersonnel, int crtPage) {
         this.year = year;
         this.monthNo = monthNo;
         this.groupNo = groupNo;
@@ -60,6 +64,7 @@ public class ReportVo {
         this.tagDate = tagDate;
         this.accountbookPlace = accountbookPlace;
         this.accountbookPersonnel = accountbookPersonnel;
+        this.crtPage = crtPage;
     }
 
     public int getYear() {
@@ -222,6 +227,22 @@ public class ReportVo {
         this.accountbookPersonnel = accountbookPersonnel;
     }
 
+    public int getListCnt() {
+        return listCnt;
+    }
+
+    public int getPageBtnCount() {
+        return pageBtnCount;
+    }
+
+    public int getCrtPage() {
+        return crtPage;
+    }
+
+    public void setCrtPage(int crtPage) {
+        this.crtPage = crtPage;
+    }
+
     @Override
     public String toString() {
         return "ReportVo{" +
@@ -245,6 +266,9 @@ public class ReportVo {
                 ", tagDate='" + tagDate + '\'' +
                 ", accountbookPlace='" + accountbookPlace + '\'' +
                 ", accountbookPersonnel=" + accountbookPersonnel +
+                ", listCnt=" + listCnt +
+                ", pageBtnCount=" + pageBtnCount +
+                ", crtPage=" + crtPage +
                 '}'+"\n";
     }
 }

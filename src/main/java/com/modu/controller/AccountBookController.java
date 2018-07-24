@@ -48,6 +48,23 @@ public class AccountBookController {
 		return "/accountbook/accountbook";
 	}
 	
+	@RequestMapping("/{date}")
+	public String accountbook(@PathVariable("groupNo") String groupNo,Model model, HttpSession session, @PathVariable("date") String date){
+
+		// 모임 카테고리
+	      ModuUserVo uservo =  (ModuUserVo) session.getAttribute("authUser");
+	      List<ModuGroupVo> gList  = groupService.selectGroup(uservo.getUserNo());
+	      model.addAttribute("gList",gList);
+
+	      // 클릭한 모임  가계부 보여주기
+	      ModuGroupVo gvo = groupService.selectGroupImg(Integer.parseInt(groupNo));
+	      model.addAttribute("gvo",gvo);
+
+	      model.addAttribute("date",date);
+
+		return "/accountbook/accountbook";
+	}
+
 	@ResponseBody
 	@RequestMapping( "/getaccountlist")
 	public Map<String,Object> getAccountList(@RequestParam("month") String month,
@@ -62,7 +79,7 @@ public class AccountBookController {
 	public int saveaccountbook(
 			@RequestParam( value="usage", required=false, defaultValue="사용내역") String usage,
 			@RequestParam( value="spend", required=false, defaultValue="0") String spend,
-			@RequestParam( value="category", required=false, defaultValue="1") String category,
+			@RequestParam( value="category", required=false, defaultValue="0") String category,
 			@PathVariable("groupNo") String groupNo,
 			@RequestParam("date") String date,
 			@RequestParam("spendFlag") String spendFlag){
@@ -104,8 +121,8 @@ public class AccountBookController {
 	
 	@ResponseBody
 	@RequestMapping( "/inserttag")
-	public void insertTag(@RequestParam("accountbookNo") String accountbookNo, @RequestParam("tagname") String tagname){	
-		moduAccountbookService.insertTag(accountbookNo,tagname);
+	public AccountbookTagVo insertTag(@RequestParam("accountbookNo") String accountbookNo, @RequestParam("tagname") String tagname){
+		return moduAccountbookService.insertTag(accountbookNo,tagname);
 	}
 	
 	@ResponseBody

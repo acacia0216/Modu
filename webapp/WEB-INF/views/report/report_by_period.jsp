@@ -54,23 +54,25 @@
             </div>
             <br>
             <br>
-            <c:set var="periodTotalSpend" value="0"/>
-            <c:set var="periodTotalIncome" value="0"/>
-            <c:forEach var="i" items="${monthlySpend}">
-                <c:set var="periodTotalSpend" value="${periodTotalSpend+i}"/>
-            </c:forEach>
-            <c:forEach var="i" items="${monthlyIncome}">
-                <c:set var="periodTotalIncome" value="${periodTotalIncome+i}"/>
-            </c:forEach>
+            <c:if test="${!empty monthlySpend}">
+                <c:set var="periodTotalSpend" value="0"/>
+                <c:set var="periodTotalIncome" value="0"/>
+                <c:forEach var="i" items="${monthlySpend}">
+                    <c:set var="periodTotalSpend" value="${periodTotalSpend+i}"/>
+                </c:forEach>
+                <c:forEach var="i" items="${monthlyIncome}">
+                    <c:set var="periodTotalIncome" value="${periodTotalIncome+i}"/>
+                </c:forEach>
+            </c:if>
             <table align="right" style="font-size: 25px;margin-right: 70px;">
                 <tr>
                     <td>총 수입 :</td>
-                    <td style="color:blue;" id="periodTotalIncome"></td>
+                    <td style="color:blue;" align="center" id="periodTotalIncome"></td>
                     <td>원</td>
                 </tr>
                 <tr>
                     <td>총 지출 :</td>
-                    <td style="color:red;" id="periodTotalSpend"></td>
+                    <td style="color:red;" align="center" id="periodTotalSpend"></td>
                     <td>원</td>
                 </tr>
             </table>
@@ -79,17 +81,16 @@
             <br>
             <div class="mx-auto" id="graph1" style="width: 90%; height: 500px;"></div>
             <div style="width: 1173px;">
-                <%--<span>${list.get(0).get(0).categoryName}</span>--%>
+                <c:if test="${!empty reportListByCategory}">
                 <c:if test="${reportListByCategory.get(0).size() > 9}">
                 <table class="table" style="text-align: center; table-layout: fixed; font-size: 13px;"
                        id="firstHalfTable">
-                    </c:if>
-                    <c:if test="${reportListByCategory.get(0).size() < 10}">
-                    <table class="table" style="text-align: center; table-layout: fixed;"
-                           id="firstHalfTable">
-                        </c:if>
+                </c:if>
+                <c:if test="${reportListByCategory.get(0).size() < 10}">
+                <table class="table" style="text-align: center; table-layout: fixed;"
+                       id="firstHalfTable">
+                </c:if>
                         <thead>
-                        <%--for문으로 교체--%>
                         <tr>
                             <th scope="col" style="width: 127px;"></th>
                             <c:if test="${fromYear eq toYear}">
@@ -97,15 +98,6 @@
                                     <th scope="col">${month}월</th>
                                 </c:forEach>
                             </c:if>
-                            <%----%>
-                            <%----%>
-                            <%----%>
-                            <%----%>
-                            <%--문제 해결 필요 부분--%>
-                            <%--년도가 바뀌면 월 출력이 안됨--%>
-                            <%--23월이 말이되냐--%>
-                            <%----%>
-                            <%----%>
                             <c:if test="${fromYear ne toYear}">
                                 <c:forEach var="month" begin="${fromMonth}" end='12'>
                                     <th scope="col">${month}월</th>
@@ -117,7 +109,6 @@
                         </tr>
                         </thead>
                         <tbody>
-
                         <c:forEach var="item" items="${reportListByCategory}" varStatus="index">
                             <tr>
                                 <td>${item.get(0).categoryName}</td>
@@ -134,12 +125,11 @@
                                 </c:forEach>
                             </tr>
                         </c:forEach>
-
                         </tbody>
                         <tfoot>
                         <tr style="border-top: 2px black solid;">
                             <th>수입</th>
-                            <%--for문--%>
+                                <%--for문--%>
                             <c:forEach var="income" items="${monthlyIncome}" varStatus="index">
                                 <c:if test="${income gt 0}">
                                     <td style="color:blue;" id="totalIncome${index.index}">+${income}</td>
@@ -151,7 +141,7 @@
                         </tr>
                         <tr>
                             <th>지출</th>
-                            <%--for문--%>
+                                <%--for문--%>
                             <c:forEach var="spend" items="${monthlySpend}" varStatus="index">
                                 <c:if test="${spend gt 0}">
                                     <td style="color:red;" id="totalSpend${index.index}">-${spend}</td>
@@ -163,7 +153,7 @@
                         </tr>
                         <tr>
                             <th>합계</th>
-                            <%--for문--%>
+                                <%--for문--%>
                             <c:forEach var="total" items="${monthlyTotal}" varStatus="index">
                                 <c:if test="${total eq 0}">
                                     <td>${total}</td>
@@ -175,6 +165,7 @@
                                     <td style="color:red;" id="totalSum${index.index}">${total}</td>
                                 </c:if>
                             </c:forEach>
+                            </c:if>
                         </tr>
                         </tfoot>
                     </table>

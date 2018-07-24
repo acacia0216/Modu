@@ -94,6 +94,10 @@ public class ModuAccountbookDao {
 		sqlSession.delete("accountbook.deleteTag",map);
 	}
 	
+	public void tagCleaner() {
+		sqlSession.delete("accountbook.tagCleaner");
+	}
+
 	public void deleteaccountbook(Map map) {
 		sqlSession.delete("accountbook.deleteaccountbook",map);
 	}

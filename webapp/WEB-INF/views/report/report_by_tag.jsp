@@ -44,67 +44,90 @@
             <br>
             <br>
             <div style="float:left">
-                <table style="margin-left: 80px;margin-top: 30px">
+                <table style="margin-left: 80px;margin-top: 30px" id="shortcutByAjax">
                     <tr style="border-bottom: 1px black solid;">
                         <td style="font-size: 20px"><strong>태그 바로가기</strong></td>
                     </tr>
-                    <c:forEach var="tag" items="${tagList}">
+                    <tbody id="removeBody" align="center">
+                    <c:forEach var="pagingList" items="${pagingList}">
                         <tr>
-                            <td align="center">
-                                <a href="${pageContext.request.contextPath}/reportbytag/${tag.tagNo}">${tag.tagName}</a>
+                            <td>
+                                <a href="/reportbytag/${crtPage}/${pagingList.tagNo}">${pagingList.tagName}</a>
                             </td>
                         </tr>
-                        <c:if test="${tagNo eq tag.tagNo}">
-                            <c:set var="tagNameForTitle" value="${tag.tagName}"/>
-                        </c:if>
                     </c:forEach>
+                    <tr>
+                        <td>
+                            <c:if test="${prev eq true}">
+                                <button id="btnPrev">◀</button>
+                            </c:if>
+                            <c:forEach var="pagingBtn" begin="${startPageBtnNo}" end="${endPageBtnNo}">
+                                <button class="pagingBtn" id="${pagingBtn}pagingBtn">${pagingBtn}</button>
+                            </c:forEach>
+                            <c:if test="${next eq true}">
+                                <button id="btnNext">▶</button>
+                            </c:if>
+                        </td>
+                    </tr>
+                    </tbody>
                 </table>
             </div>
-            <div style="float:right;margin-top: 80px;">
-                <table align="right" style="font-size: 25px;margin-right: 70px;">
+            <c:forEach var="tag" items="${tagList}">
+                <c:if test="${tagNo eq tag.tagNo}">
+                    <c:set var="tagNameForTitle" value="${tag.tagName}"/>
+                </c:if>
+            </c:forEach>
+            <div style="float:right;margin-top: 50px;">
+                <table align="right" style="font-size: 25px;margin-right: 70px; width:150px;">
                     <tr>
-                        <td align="center">총 수입 :</td>
+                        <th align="center" colspan="2">총 수입</th>
+                    </tr>
+                    <tr>
                         <td style="color:blue;" id="periodTotalIncome" align="center"></td>
                         <td align="center">원</td>
                     </tr>
                     <tr>
-                        <td align="center">총 지출 :</td>
+                        <th align="center" colspan="2">총 지출</th>
+                    </tr>
+                    <tr>
                         <td style="color:red;" id="periodTotalSpend" align="center"></td>
                         <td align="center">원</td>
                     </tr>
                 </table>
             </div>
             <div class="mx-auto">
-                <table align="center" class="table" style="width:500px;">
-                    <thead>
-                    <tr>
-                        <th scope="col" colspan="3" style="font-size: 25px;text-align: center">장소, 인원별 사용금액</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td align="center">장소</td>
-                        <td align="center">인원</td>
-                        <td align="center">1인당 금액</td>
-                    </tr>
-                    <c:set var="spend" value="0"/>
-                    <c:set var="income" value="0"/>
-                    <c:forEach var="item" items="${accountbookListByTag}" varStatus="index">
-                        <c:if test="${item.totalSpend > 0 and item.accountbookPlace ne null}">
-                            <tr>
-                                <td scope="row" align="center">${item.accountbookPlace}</td>
-                                <td align="center">${item.accountbookPersonnel}</td>
-                                <td align="center"
-                                    id="spendByPersonnel${index.index}">${item.totalSpend/item.accountbookPersonnel}</td>
-                            </tr>
-                            <c:set var="spend" value="${spend+item.totalSpend}"/>
-                        </c:if>
-                        <c:if test="${item.totalIncome > 0}">
-                            <c:set var="income" value="${income+item.totalIncome}"/>
-                        </c:if>
-                    </c:forEach>
-                    </tbody>
-                </table>
+                <c:if test="${!empty accountbookListByTag}">
+                    <table align="center" class="table" style="width:700px;">
+                        <thead>
+                        <tr>
+                            <th scope="col" colspan="5" style="font-size: 25px;text-align: center">장소, 인원별 사용금액</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td align="center">날짜</td>
+                            <td align="center">내역</td>
+                            <td align="center">장소</td>
+                            <td align="center">인원</td>
+                            <td align="center">1인당 금액</td>
+                        </tr>
+
+                        <c:forEach var="item" items="${accountbookListByTag}" varStatus="index">
+                            <c:if test="${item.totalSpend > 0 and item.accountbookPlace ne null}">
+                                <tr>
+                                    <td align="center">${item.accountbookRegdate}</td>
+                                    <td align="center">${item.accountbookUsage}</td>
+                                    <td align="center">${item.accountbookPlace}</td>
+                                    <td align="center">${item.accountbookPersonnel}</td>
+                                    <td align="center"
+                                        id="spendByPersonnel${index.index}">${item.totalSpend/item.accountbookPersonnel}</td>
+                                </tr>
+
+                            </c:if>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:if>
             </div>
 
             <div style="clear: both;"></div>
@@ -121,6 +144,8 @@
             </tr>
             </thead>
             <tbody>
+            <c:set var="spend" value="0"/>
+            <c:set var="income" value="0"/>
             <c:set var="incomeEmptyCheck" value="0"/>
             <c:forEach var="accountList" items="${accountbookListByTag}" varStatus="index">
                 <c:if test="${accountList.totalSpend ne 0}">
@@ -129,6 +154,7 @@
                         <td id="usage${index.index}">${accountList.accountbookUsage}</td>
                         <td id="details${index.index}" name="spend">${accountList.totalSpend}</td>
                     </tr>
+                    <c:set var="spend" value="${spend+accountList.totalSpend}"/>
                 </c:if>
                 <c:if test="${accountList.totalIncome ne 0}">
                     <tr style="display: none">
@@ -137,6 +163,7 @@
                         <td id="details${index.index}" name="income">${accountList.totalIncome}</td>
                     </tr>
                     <c:set var="incomeEmptyCheck" value="${incomeEmptyCheck+1}"/>
+                    <c:set var="income" value="${income+accountList.totalIncome}"/>
                 </c:if>
             </c:forEach>
             </tbody>
@@ -144,24 +171,24 @@
         <br>
 
         <c:if test="${incomeEmptyCheck ne 0}">
-        <table class="table" style="text-align: center; table-layout: fixed;">
-            <thead>
-            <tr>
-                <th scope="col" colspan="3" style="font-size: 20px;">찬조금 내역</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:forEach var="accountList" items="${accountbookListByTag}" varStatus="index">
-                <c:if test="${accountList.totalIncome ne 0}">
-                    <tr>
-                        <td scope="row">${accountList.accountbookRegdate}</td>
-                        <td>${accountList.accountbookUsage}</td>
-                        <td id="detailIncome${index.index}">${accountList.totalIncome}</td>
-                    </tr>
-                </c:if>
-            </c:forEach>
-            </tbody>
-        </table>
+            <table class="table" style="text-align: center; table-layout: fixed;">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="3" style="font-size: 20px;">찬조금 내역</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="accountList" items="${accountbookListByTag}" varStatus="index">
+                    <c:if test="${accountList.totalIncome ne 0}">
+                        <tr>
+                            <td scope="row">${accountList.accountbookRegdate}</td>
+                            <td>${accountList.accountbookUsage}</td>
+                            <td id="detailIncome${index.index}">${accountList.totalIncome}</td>
+                        </tr>
+                    </c:if>
+                </c:forEach>
+                </tbody>
+            </table>
         </c:if>
     </div>
     <div align="Right" style="margin-right: 80px;margin-top: 30px;">
@@ -169,7 +196,7 @@
     </div>
 </div>
 <br>
-
+<input type="hidden" value="${crtPage}" id="crtPageForPaging">
 
 </div>
 
@@ -251,10 +278,70 @@
             var spendByPersonnel = $("#spendByPersonnel" + i).text();
             $("#spendByPersonnel" + i).text(Number(spendByPersonnel).toLocaleString('en') + "원");
 
-            // var detailIncome = $("#detailIncome" + i).text();
-            // $("#detailIncome" + i).text(Number(detailIncome).toLocaleString('en') + "원");
+            var detailIncome = $("#detailIncome" + i).text();
+            $("#detailIncome" + i).text(Number(detailIncome).toLocaleString('en') + "원");
         }
+    });
 
+    $("#shortcutByAjax").on("click", "button", function () {
+        var tagNo = ${tagNo};
+        var crtPage = $("#crtPageForPaging").val();
+        var groupNo = ${authUser.groupNo};
+        var tmpText = $(this).attr("id");
+
+        console.log(tmpText);
+        if (tmpText == 'btnNext'){
+            crtPage++;
+            $("#crtPageForPaging").val(crtPage);
+        }else if(tmpText == 'btnPrev'){
+            crtPage--;
+            $("#crtPageForPaging").val(crtPage);
+        }else if(tmpText.search('pagingBtn') >= 0){
+            crtPage = tmpText.replace(/[^0-9]/g,'');
+            $("#crtPageForPaging").val(crtPage);
+        }
+        console.log(tagNo);
+        console.log(crtPage);
+        $.ajax({
+            url: "${pageContext.request.contextPath }/report/getTagListForPaging",
+            type: "post",
+            data: {tagNo: tagNo, crtPage: crtPage, groupNo: groupNo},
+
+            dataType: "json",
+            success: function (result) {
+                var prev = result.prev;
+                var next = result.next;
+                var endPageBtnNo = result.endPageBtnNo;
+                var startPageBtnNo = result.startPageBtnNo;
+                var crtPage = result.crtPage;
+                var pagingList = result.pagingList;
+                $("#removeBody").empty();
+                $.each(pagingList, function (index, value) {
+                    var str = "";
+                    str += "<tr>";
+                    str += "<td>";
+                    str += "<a href='${pageContext.request.contextPath}/reportbytag/" + crtPage + "/" + value.tagNo + "'>" + value.tagName + "</a>";
+                    str += "</td>";
+                    str += "</tr>";
+                    $("#removeBody").append(str);
+                });
+                $("#removeBody").append("<tr><td style='text-align: center'>");
+                if (prev == true) {
+                    $("#removeBody").append("<button id='btnPrev'>◀</button>");
+                }
+                for (var i = startPageBtnNo; i <= endPageBtnNo; i++) {
+                    var str = "";
+                    str += "<button class='pagingBtn' id='" + i + "pagingBtn'>" + i + "</button>";
+                    $("#removeBody").append(str);
+                }
+                if (next == true) {
+                    $("#removeBody").append("<button id='btnNext'>▶</button>");
+                }
+                $("#removeBody").append("</td></tr>");
+            }, error: function () {
+                alert("통신 실패");
+            }
+        });
     });
 
     var fnPrint = function () {

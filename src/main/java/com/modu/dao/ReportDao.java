@@ -23,7 +23,15 @@ public class ReportDao {
     }
 
     public ReportVo getReportByPeriod(Map<String,Object> inputMap) {
-        return sqlSession.selectOne("report.getReportByPeriod",inputMap);
+        ReportVo reportVo = null;
+        try{
+            reportVo = sqlSession.selectOne("report.getReportByPeriod",inputMap);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return reportVo;
+        }
+
     }
 
     public String getMonthlyIncome(Map<String, Object> inputMap) {
@@ -39,7 +47,14 @@ public class ReportDao {
     }
 
     public int getRecentTag(String groupNo) {
-        return sqlSession.selectOne("report.getRecentTag",groupNo);
+        int tagNo = 0;
+        try{
+            tagNo = sqlSession.selectOne("report.getRecentTag",groupNo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            return tagNo;
+        }
     }
 
     public List<ReportVo> getTagList(int groupNo) {
@@ -51,4 +66,17 @@ public class ReportDao {
     public List<ReportVo> getAccountbookListByTag(int tagNo) {
         return sqlSession.selectList("report.getAccountbookListByTag",tagNo);
     }
+
+    public List<Integer> getTagNoList(Map<String, Object> inputMap) {
+        return sqlSession.selectList("report.getTagNoList",inputMap);
+    }
+
+    public int postCount(int groupNo) {
+        return sqlSession.selectOne("report.getTotalCount",groupNo);
+    }
+
+    public ReportVo getTagListForPaging(int tagNo) {
+        return sqlSession.selectOne("report.getTagListForPaging",tagNo);
+    }
+
 }

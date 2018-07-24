@@ -107,27 +107,27 @@
                         </c:choose> --%>
 
 
-                        <%--모임 리스트--%>
-                    <c:choose>
-                        <c:when test="${gList ne null}">
-                            <%-- <li class="nav-item" >
-                            <div class="clubIcon active"  id="gClick" >
-                                <img src="${pageContext.request.contextPath }/upload/${gvo.groupImg}" alt="" style="max-height: 50px; max-width: 50px;"> <br>
-                                <a class="nav-link"  href="${pageContext.request.contextPath }/groupmain" style="font-size: 3px">${gvo.groupName }</a>
-                            </div>
-                        </li>	 --%>
-                            <div class="btn-group active ml-0">
-                                <div style="width:200px;  overflow:hidden; text-overflow:ellipsis; height: 50px;">
-                                    <c:if test="${gvo.groupImg==null}">
-                                        <img src="${pageContext.request.contextPath }/assets/images/groupImg00.png"
-                                             alt="" style="max-height: 50px; max-width: 50px; ">
-                                    </c:if>
-                                    <c:if test="${gvo.groupImg!=null}">
-                                        <img src="${pageContext.request.contextPath }/upload/${gvo.groupImg}"
-                                             alt="" style="max-height: 50px; max-width: 50px; ">
-                                    </c:if>
-                                        ${gvo.groupName!=null?gvo.groupName:'모임을 선택하세요' }
-                                </div>
+					<%--모임 리스트--%>
+					<c:choose>
+						<c:when test="${gList ne null}">
+							<%-- <li class="nav-item" >
+							<div class="clubIcon active"  id="gClick" >
+								<img src="${pageContext.request.contextPath }/upload/${gvo.groupImg}" alt="" style="max-height: 50px; max-width: 50px;"> <br>
+							    <a class="nav-link"  href="${pageContext.request.contextPath }/groupmain" style="font-size: 3px">${gvo.groupName }</a>
+							</div>
+						</li>	 --%>
+							<div class="btn-group active ml-0 dropdown">
+								<div style="width:200px;  overflow:hidden; text-overflow:ellipsis; height: 50px;">
+									<c:if test="${gvo.groupImg==null}" >
+										<img src="${pageContext.request.contextPath }/assets/images/groupImg00.png"
+											alt="" style="max-height: 50px; max-width: 50px; ">
+									</c:if>
+									<c:if test="${gvo.groupImg!=null}" >
+										<img src="${pageContext.request.contextPath }/upload/${gvo.groupImg}"
+											alt="" style="max-height: 50px; max-width: 50px; ">
+									</c:if>
+										${gvo.groupName!=null?gvo.groupName:'모임을 선택하세요' }
+								</div>
 
                                 <button class="btn btn-light btn-lg dropdown-toggle ml-0 dropdown"
                                         type="button" id="dropdownMenuButton" data-toggle="dropdown"
@@ -275,10 +275,10 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+                <center>
             <form id="join-form" name="joinForm" method="post"
                   action="${pageContext.request.contextPath}/plusgroup?userNo=${authUser.userNo}"
                   enctype="multipart/form-data">
-                <center>
                     <div class="modal-body">
                         <!-- <label for="gname1">모임 이름</label> -->
                         <input type="text" name="groupName"
