@@ -136,10 +136,11 @@
 <script src="${pageContext.request.contextPath }/assets/js/bootstrap.js"></script>
 <script src="${pageContext.request.contextPath }/assets/js/header.js"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=slvC1SL1B78rI5IoCUhs&submodules=geocoder"></script>
+<script type="text/javascript" src="https://openapi.naver.com/v1/search/local"></script>
 <script type="text/javascript">
     $(".carousel").carousel({
         interval: 10000
-    })
+    });
     var map = new naver.maps.Map('map');
     var myaddress = '서울특별시 서초구 서초대로74길33';// 도로명 주소나 지번 주소만 가능 (건물명 불가!!!!)
     naver.maps.Service.geocode({address: myaddress}, function(status, response) {
