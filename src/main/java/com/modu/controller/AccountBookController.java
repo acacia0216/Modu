@@ -1,10 +1,20 @@
 package com.modu.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,8 +58,8 @@ public class AccountBookController {
 		return "/accountbook/accountbook";
 	}
 	
-	@RequestMapping("/{date}")
-	public String accountbook(@PathVariable("groupNo") String groupNo,Model model, HttpSession session, @PathVariable("date") String date){
+	@RequestMapping("/{urlDate}")
+	public String accountbook(@PathVariable("groupNo") String groupNo,Model model, HttpSession session, @PathVariable("urlDate") String urlDate){
 
 		// 모임 카테고리
 	      ModuUserVo uservo =  (ModuUserVo) session.getAttribute("authUser");
@@ -59,12 +69,15 @@ public class AccountBookController {
 	      // 클릭한 모임  가계부 보여주기
 	      ModuGroupVo gvo = groupService.selectGroupImg(Integer.parseInt(groupNo));
 	      model.addAttribute("gvo",gvo);
-
-	      model.addAttribute("date",date);
+	      
+	      String yy = urlDate.substring(0, 4);
+	      String mm = urlDate.substring(6, 8);
+	      
+	      model.addAttribute("urlDate",yy + " / " + mm);
 
 		return "/accountbook/accountbook";
 	}
-
+	
 	@ResponseBody
 	@RequestMapping( "/getaccountlist")
 	public Map<String,Object> getAccountList(@RequestParam("month") String month,
@@ -76,7 +89,7 @@ public class AccountBookController {
 	
 	@ResponseBody
 	@RequestMapping( "/saveaccountbook")
-	public int saveaccountbook(
+	public AccountbookVo saveaccountbook(
 			@RequestParam( value="usage", required=false, defaultValue="사용내역") String usage,
 			@RequestParam( value="spend", required=false, defaultValue="0") String spend,
 			@RequestParam( value="category", required=false, defaultValue="0") String category,
@@ -121,7 +134,7 @@ public class AccountBookController {
 	
 	@ResponseBody
 	@RequestMapping( "/inserttag")
-	public AccountbookTagVo insertTag(@RequestParam("accountbookNo") String accountbookNo, @RequestParam("tagname") String tagname){
+	public AccountbookTagVo insertTag(@RequestParam("accountbookNo") String accountbookNo, @RequestParam("tagname") String tagname){	
 		return moduAccountbookService.insertTag(accountbookNo,tagname);
 	}
 	
@@ -144,9 +157,9 @@ public class AccountBookController {
 	}
 	
 	@ResponseBody
-	@RequestMapping( "/getcategorylist")
-	public List<AccountbookCategoryVo> getcategorylist(@PathVariable("groupNo") String groupNo){
-		return moduAccountbookService.getCategoryList(groupNo);
+	@RequestMapping( "/getmodalcategorylist")
+	public List<AccountbookCategoryVo> getModalcCtegoryList(@PathVariable("groupNo") String groupNo){
+		return moduAccountbookService.getModalcCtegoryList(groupNo);
 	}
 	
 	@ResponseBody
@@ -163,8 +176,8 @@ public class AccountBookController {
 	
 	@ResponseBody
 	@RequestMapping( "/insertcategory")
-	public void insertCategory(@PathVariable("groupNo") String groupNo,@RequestParam("categoryname") String categoryname){
-		moduAccountbookService.categoryInsert(groupNo,categoryname);
+	public int insertCategory(@PathVariable("groupNo") String groupNo,@RequestParam("categoryname") String categoryname){
+		return moduAccountbookService.categoryInsert(groupNo,categoryname);
 	}
 
 	///////////////////////////////////////로그인/////////////////////////////////////////////
@@ -187,4 +200,5 @@ public class AccountBookController {
 			return "redirect:/main";
 		}
 	}
+	
 }

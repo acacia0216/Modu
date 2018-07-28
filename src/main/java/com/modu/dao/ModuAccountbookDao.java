@@ -27,6 +27,11 @@ public class ModuAccountbookDao {
 		return sqlSession.selectList("accountbook.getCategoryList",groupNo);
 	}
 	
+	public List<AccountbookCategoryVo> getModalcCtegoryList(String groupNo) {
+		//가계부 카테고리 리스팅
+		return sqlSession.selectList("accountbook.getModalcCtegoryList",groupNo);
+	}
+	
 	public List<AccountbookVo> searchAccountListByTag(Map map) {
 		//태그 검색
 		return sqlSession.selectList("accountbook.searchAccountListByTag",map);
@@ -81,7 +86,7 @@ public class ModuAccountbookDao {
 		return accountbookVo;
 	}
 	
-	public AccountbookVo saveAccountbookIncome(AccountbookVo accountbookVo) {
+	public AccountbookVo saveAccountbookIncome(AccountbookVo accountbookVo) {	
 		sqlSession.insert("accountbook.saveAccountbookIncome",accountbookVo);
 		return accountbookVo;
 	}
@@ -97,7 +102,7 @@ public class ModuAccountbookDao {
 	public void tagCleaner() {
 		sqlSession.delete("accountbook.tagCleaner");
 	}
-
+	
 	public void deleteaccountbook(Map map) {
 		sqlSession.delete("accountbook.deleteaccountbook",map);
 	}
@@ -126,7 +131,12 @@ public class ModuAccountbookDao {
 		sqlSession.update("accountbook.categoryUpdate",map);
 	}
 	
-	public void categoryInsert(Map map) {
-		sqlSession.insert("accountbook.categoryInsert",map);
+	public AccountbookCategoryVo categoryInsert(AccountbookCategoryVo categoryVo) {
+		sqlSession.insert("accountbook.categoryInsert",categoryVo);
+		return categoryVo;
+	}
+	
+	public List<AccountbookCategoryVo> getRecommendCategory(String usage) {
+		return sqlSession.selectList("accountbook.getRecommendCategory",usage);
 	}
 }
