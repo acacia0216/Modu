@@ -1,5 +1,10 @@
 package com.modu.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 
@@ -89,7 +94,8 @@ public class BoardController {
 	
 	
 	@RequestMapping("/write")
-	public String goBoardWrite(Model model, @PathVariable("groupNo") int groupNo, HttpSession session){
+	public String goBoardWrite(Model model, @PathVariable("groupNo") int groupNo, HttpSession session,
+			@RequestParam( value="AccountbookList", required=false, defaultValue="") String AccountbookList){
 
 		// 모임 카테고리
 	    ModuUserVo uservo =  (ModuUserVo) session.getAttribute("authUser");
@@ -104,6 +110,10 @@ public class BoardController {
 		model.addAttribute("tagList",tagList);
 		System.out.println(tagList);
 		System.out.println("글쓰기 입장");
+
+//		List<BoardVo> AccountList = service.getAccountbookList(AccountbookList);
+//		model.addAttribute("fromAccountbookList",AccountList);
+
 		return "/board/boardWrite";
 		
 	}
@@ -319,6 +329,52 @@ public class BoardController {
 		
 	}
 
+
+    @RequestMapping(value = "/searchLocal", method = RequestMethod.POST)
+    @ResponseBody
+    public StringBuffer searchLocal(@RequestParam String localName) {
+        try {
+            String text = URLEncoder.encode(localName, "UTF-8");
+            String apiURL = "https://openapi.naver.com/v1/search/local.json?query=" + text + "&display=10&start=1&sort=sim"; // json 결과
+            //String apiURL = "https://openapi.naver.com/v1/search/local.xml?query="+ text; // xml 결과
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            con.setRequestProperty("X-Naver-Client-Id", "slvC1SL1B78rI5IoCUhs");
+            con.setRequestProperty("X-Naver-Client-Secret", "I3wiN8EgGo");
+            System.out.println("가져온 지역이름 : " + localName);
+            int responseCode = con.getResponseCode();
+            BufferedReader br;
+
+            if (responseCode == 200) { // 정상 호출
+                br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+            } else {  // 에러 발생
+                System.out.println("에러 발생했으니까 여기로 올꺼고...");
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+            }
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine);
+            }
+            br.close();
+            System.out.println("이게 에러메시지인가? " + response.toString());
+
+            return response;
+        } catch (Exception e) {
+            System.out.println("이건 안나오는거지? " + e);
+        }
+        System.out.println("check point 5");
+        return null;
+    }
+
+    @RequestMapping(value = "/whenShopIsSelected", method = RequestMethod.POST)
+    @ResponseBody
+    public int whenShopIsSelected(@RequestParam String country, @RequestParam String sido, @RequestParam String sigugun, @RequestParam String dongmyun, @RequestParam String ri,@RequestParam String rest) {
+        System.out.println("in");
+        System.out.println(country+" "+sido+" "+sigugun+" "+dongmyun+" "+ri+" "+rest);
+        return 1;
+    }
 
 }
 	/*

@@ -26,7 +26,7 @@
              ,#{groupNo}
              ,#{joinMessage}
              ,#{joinState}
-             ,sysdate)
+             ,to_date(#{joinDate},'yyyy-MM-dd'))
 		]]>
 	</insert>
 	
@@ -69,7 +69,7 @@
 
 	<select id="selectImg"  parameterType="int"  resultType="GroupVo">
 	 <![CDATA[
-             Select groupNo,groupName,groupExplain,groupImg,groupType,manager,memberFeeAmount
+             Select groupNo,groupName,groupExplain,groupImg,groupType,manager,groupAccountHolder
                from group_tbl
                where groupNo=#{groupNo}
              ]]>
@@ -109,6 +109,5 @@
 	</update>
 	
 	
-
 	
 </mapper>

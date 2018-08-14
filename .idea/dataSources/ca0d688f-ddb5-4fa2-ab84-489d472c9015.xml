@@ -6,10 +6,10 @@
     </root>
     <schema id="2" parent="1" name="ACCOUNTBOOK">
       <ObjectId>52</ObjectId>
-      <IntrospectionTimestamp>2018-07-28.01:57:03</IntrospectionTimestamp>
+      <IntrospectionTimestamp>2018-08-02.00:32:22</IntrospectionTimestamp>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
-      <ModifiedTimestamp>2018-07-28.01:57:02</ModifiedTimestamp>
-      <CommentsHash>575363944315228</CommentsHash>
+      <ModifiedTimestamp>2018-08-02.00:32:22</ModifiedTimestamp>
+      <CommentsHash>637162100420862</CommentsHash>
       <Current>1</Current>
       <Visible>1</Visible>
     </schema>
@@ -164,7 +164,7 @@
     <table id="35" parent="2" name="ACCOUNTBOOKADDRESS_TBL">
       <ObjectId>22328</ObjectId>
       <CreatedTimestamp>2018-07-28.01:57:02</CreatedTimestamp>
-      <ModifiedTimestamp>2018-07-28.01:57:02</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-08-02.00:32:22</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
     <table id="36" parent="2" name="ACCOUNTBOOK_TAG_TBL">
@@ -178,7 +178,7 @@
       <ObjectId>21759</ObjectId>
       <Comment>가계부</Comment>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
-      <ModifiedTimestamp>2018-07-18.01:52:56</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-07-31.05:47:28</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
     <table id="38" parent="2" name="BOARD_IMG_TBL">
@@ -213,7 +213,7 @@
       <ObjectId>21751</ObjectId>
       <Comment>모임</Comment>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
-      <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-08-02.00:29:29</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
     <table id="43" parent="2" name="LIKE_TBL">
@@ -241,14 +241,14 @@
       <ObjectId>21755</ObjectId>
       <Comment>가계부태그</Comment>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
-      <ModifiedTimestamp>2018-07-18.01:49:08</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-08-01.01:24:57</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
     <table id="47" parent="2" name="USER_GROUP_TBL">
       <ObjectId>21753</ObjectId>
       <Comment>회원_모임(n:n)</Comment>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
-      <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
+      <ModifiedTimestamp>2018-08-02.00:28:20</ModifiedTimestamp>
       <TemporaryPreserve>1</TemporaryPreserve>
     </table>
     <table id="48" parent="2" name="USER_TBL">
@@ -265,29 +265,50 @@
     </column>
     <column id="50" parent="35" name="COUNTRY">
       <Position>2</Position>
+      <Comment>나라</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
     <column id="51" parent="35" name="SIDO">
       <Position>3</Position>
+      <Comment>도/시</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
     <column id="52" parent="35" name="SIGUGUN">
       <Position>4</Position>
+      <Comment>시/군/구</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
     <column id="53" parent="35" name="DONGMYUN">
       <Position>5</Position>
+      <Comment>동/면</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
     <column id="54" parent="35" name="RI">
       <Position>6</Position>
+      <Comment>리</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
     <column id="55" parent="35" name="REST">
       <Position>7</Position>
+      <Comment>나머지주소</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <index id="56" parent="35" name="SYS_C007519">
+    <column id="56" parent="35" name="TELEPHONE">
+      <Position>8</Position>
+      <Comment>전화번호</Comment>
+      <DataType>VARCHAR2(200 byte)|0s</DataType>
+    </column>
+    <column id="57" parent="35" name="PLACECATEGORY">
+      <Position>9</Position>
+      <Comment>식당분류</Comment>
+      <DataType>VARCHAR2(200 byte)|0s</DataType>
+    </column>
+    <column id="58" parent="35" name="TITLE">
+      <Position>10</Position>
+      <Comment>상호</Comment>
+      <DataType>VARCHAR2(200 byte)|0s</DataType>
+    </column>
+    <index id="59" parent="35" name="SYS_C007519">
       <ObjectId>22329</ObjectId>
       <NameSurrogate>1</NameSurrogate>
       <CreatedTimestamp>2018-07-28.01:57:02</CreatedTimestamp>
@@ -296,7 +317,7 @@
       <ColNames>ACCOUNTBOOKADDRESSNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="57" parent="35" name="SYS_C007519">
+    <key id="60" parent="35" name="SYS_C007519">
       <NameSurrogate>1</NameSurrogate>
       <ModifiedTimestamp>2018-07-28.01:57:02</ModifiedTimestamp>
       <ColNames>ACCOUNTBOOKADDRESSNO</ColNames>
@@ -304,23 +325,23 @@
       <UnderlyingIndexName>SYS_C007519</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="58" parent="36" name="ACCOUNTBOOKTAGNO">
+    <column id="61" parent="36" name="ACCOUNTBOOKTAGNO">
       <Position>1</Position>
       <Comment>가계부_태그 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="59" parent="36" name="ACCOUNTBOOKNO">
+    <column id="62" parent="36" name="ACCOUNTBOOKNO">
       <Position>2</Position>
       <Comment>가계부번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="60" parent="36" name="TAGNO">
+    <column id="63" parent="36" name="TAGNO">
       <Position>3</Position>
       <Comment>태그번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <index id="61" parent="36" name="PK_ACCOUNTBOOK_TAG_TBL">
+    <index id="64" parent="36" name="PK_ACCOUNTBOOK_TAG_TBL">
       <ObjectId>21762</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -328,14 +349,14 @@
       <ColNames>ACCOUNTBOOKTAGNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="62" parent="36" name="PK_ACCOUNTBOOK_TAG_TBL">
+    <key id="65" parent="36" name="PK_ACCOUNTBOOK_TAG_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>ACCOUNTBOOKTAGNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_ACCOUNTBOOK_TAG_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="63" parent="36" name="FK_A_T_TO_A_T_T8">
+    <foreign-key id="66" parent="36" name="FK_A_T_TO_A_T_T8">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>ACCOUNTBOOKNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -343,7 +364,7 @@
       <RefKeyName>PK_ACCOUNTBOOK_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="64" parent="36" name="FK_T_T_TO_A_T_T9">
+    <foreign-key id="67" parent="36" name="FK_T_T_TO_A_T_T9">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>TAGNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -351,58 +372,62 @@
       <RefKeyName>PK_TAG_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="65" parent="37" name="ACCOUNTBOOKNO">
+    <column id="68" parent="37" name="ACCOUNTBOOKNO">
       <Position>1</Position>
       <Comment>가계부번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="66" parent="37" name="ACCOUNTBOOKREGDATE">
+    <column id="69" parent="37" name="ACCOUNTBOOKREGDATE">
       <Position>2</Position>
       <Comment>가계부작성일</Comment>
       <DataType>DATE|0s</DataType>
     </column>
-    <column id="67" parent="37" name="ACCOUNTBOOKUSAGE">
+    <column id="70" parent="37" name="ACCOUNTBOOKUSAGE">
       <Position>3</Position>
       <Comment>사용내역</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="68" parent="37" name="ACCOUNTBOOKSPEND">
+    <column id="71" parent="37" name="ACCOUNTBOOKSPEND">
       <Position>4</Position>
       <Comment>지출액</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="69" parent="37" name="ACCOUNTBOOKINCOME">
+    <column id="72" parent="37" name="ACCOUNTBOOKINCOME">
       <Position>5</Position>
       <Comment>수입액</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="70" parent="37" name="CATEGORYNO">
+    <column id="73" parent="37" name="CATEGORYNO">
       <Position>6</Position>
       <Comment>카테고리번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="71" parent="37" name="GROUPNO">
+    <column id="74" parent="37" name="GROUPNO">
       <Position>7</Position>
       <Comment>모임번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="72" parent="37" name="MEMBERFEENO">
+    <column id="75" parent="37" name="MEMBERFEENO">
       <Position>8</Position>
       <Comment>회비 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="73" parent="37" name="ACCOUNTBOOKPERSONNEL">
+    <column id="76" parent="37" name="ACCOUNTBOOKPERSONNEL">
       <Position>9</Position>
       <Comment>인원</Comment>
       <DataType>NUMBER(*)|0s</DataType>
     </column>
-    <column id="74" parent="37" name="ACCOUNTBOOKPLACE">
+    <column id="77" parent="37" name="ACCOUNTBOOKPLACE">
       <Position>10</Position>
       <Comment>장소</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <index id="75" parent="37" name="PK_ACCOUNTBOOK_TBL">
+    <column id="78" parent="37" name="ACCOUNTBOOKADDRESSNO">
+      <Position>11</Position>
+      <DataType>NUMBER(10 digit)|0s</DataType>
+    </column>
+    <index id="79" parent="37" name="PK_ACCOUNTBOOK_TBL">
       <ObjectId>21760</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -410,74 +435,82 @@
       <ColNames>ACCOUNTBOOKNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="76" parent="37" name="PK_ACCOUNTBOOK_TBL">
+    <key id="80" parent="37" name="PK_ACCOUNTBOOK_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>ACCOUNTBOOKNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_ACCOUNTBOOK_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="77" parent="37" name="FK_C_T_TO_C_T5">
-      <ModifiedTimestamp>2018-07-18.01:52:56</ModifiedTimestamp>
+    <foreign-key id="81" parent="37" name="FK_C_T_TO_C_T5">
+      <ModifiedTimestamp>2018-07-31.05:47:28</ModifiedTimestamp>
       <ColNames>CATEGORYNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
       <RefTableName>CATEGORY_TBL</RefTableName>
       <RefKeyName>PK_CATEGORY_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="78" parent="37" name="FK_G_T_TO_A_T6">
-      <ModifiedTimestamp>2018-07-18.01:52:56</ModifiedTimestamp>
+    <foreign-key id="82" parent="37" name="FK_G_T_TO_A_T6">
+      <ModifiedTimestamp>2018-07-31.05:47:28</ModifiedTimestamp>
       <ColNames>GROUPNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
       <RefTableName>GROUP_TBL</RefTableName>
       <RefKeyName>PK_GROUP_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="79" parent="37" name="FK_M_T_TO_A_T7">
-      <ModifiedTimestamp>2018-07-18.01:52:56</ModifiedTimestamp>
+    <foreign-key id="83" parent="37" name="FK_M_T_TO_A_T7">
+      <ModifiedTimestamp>2018-07-31.05:47:28</ModifiedTimestamp>
       <ColNames>MEMBERFEENO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
       <RefTableName>MEMBERFEE_TBL</RefTableName>
       <RefKeyName>PK_MEMBERFEE_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="80" parent="38" name="BOARDIMGNO">
+    <foreign-key id="84" parent="37" name="ACCOUNTBOOKADDRESSNOFK">
+      <ModifiedTimestamp>2018-07-31.05:47:28</ModifiedTimestamp>
+      <ColNames>ACCOUNTBOOKADDRESSNO</ColNames>
+      <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
+      <RefTableName>ACCOUNTBOOKADDRESS_TBL</RefTableName>
+      <RefKeyName>SYS_C007519</RefKeyName>
+      <OnDelete>restrict</OnDelete>
+    </foreign-key>
+    <column id="85" parent="38" name="BOARDIMGNO">
       <Position>1</Position>
       <Comment>게시판 이미지 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="81" parent="38" name="ORIGINALNAME">
+    <column id="86" parent="38" name="ORIGINALNAME">
       <Position>2</Position>
       <Comment>실제파일명</Comment>
       <DataType>VARCHAR2(1000 byte)|0s</DataType>
     </column>
-    <column id="82" parent="38" name="SAVENAME">
+    <column id="87" parent="38" name="SAVENAME">
       <Position>3</Position>
       <Comment>파일저장명</Comment>
       <DataType>VARCHAR2(1000 byte)|0s</DataType>
     </column>
-    <column id="83" parent="38" name="IMGSIZE">
+    <column id="88" parent="38" name="IMGSIZE">
       <Position>4</Position>
       <Comment>파일크기</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="84" parent="38" name="BOARDIMGPATH">
+    <column id="89" parent="38" name="BOARDIMGPATH">
       <Position>5</Position>
       <Comment>이미지 경로</Comment>
       <DataType>VARCHAR2(1000 byte)|0s</DataType>
     </column>
-    <column id="85" parent="38" name="BOARDNO">
+    <column id="90" parent="38" name="BOARDNO">
       <Position>6</Position>
       <Comment>게시판 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="86" parent="38" name="USERNO">
+    <column id="91" parent="38" name="USERNO">
       <Position>7</Position>
       <Comment>회원번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <index id="87" parent="38" name="PK_BOARD_IMG_TBL">
+    <index id="92" parent="38" name="PK_BOARD_IMG_TBL">
       <ObjectId>21766</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -485,14 +518,14 @@
       <ColNames>BOARDIMGNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="88" parent="38" name="PK_BOARD_IMG_TBL">
+    <key id="93" parent="38" name="PK_BOARD_IMG_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>BOARDIMGNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_BOARD_IMG_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="89" parent="38" name="FK_B_T_TO_B_I_T13">
+    <foreign-key id="94" parent="38" name="FK_B_T_TO_B_I_T13">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>BOARDNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -500,7 +533,7 @@
       <RefKeyName>PK_BOARD_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="90" parent="38" name="FK_U_T_TO_B_I_T14">
+    <foreign-key id="95" parent="38" name="FK_U_T_TO_B_I_T14">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>USERNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -508,42 +541,42 @@
       <RefKeyName>PK_USER_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="91" parent="39" name="BOARDNO">
+    <column id="96" parent="39" name="BOARDNO">
       <Position>1</Position>
       <Comment>게시판 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="92" parent="39" name="BOARDTITLE">
+    <column id="97" parent="39" name="BOARDTITLE">
       <Position>2</Position>
       <Comment>게시글 제목</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="93" parent="39" name="BOARDCONTENT">
+    <column id="98" parent="39" name="BOARDCONTENT">
       <Position>3</Position>
       <Comment>게시글 내용</Comment>
       <DataType>VARCHAR2(4000 byte)|0s</DataType>
     </column>
-    <column id="94" parent="39" name="TAGNO">
+    <column id="99" parent="39" name="TAGNO">
       <Position>4</Position>
       <Comment>태그번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="95" parent="39" name="GROUPNO">
+    <column id="100" parent="39" name="GROUPNO">
       <Position>5</Position>
       <Comment>모임번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="96" parent="39" name="USERNO">
+    <column id="101" parent="39" name="USERNO">
       <Position>6</Position>
       <Comment>회원번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="97" parent="39" name="BOARDREGDATE">
+    <column id="102" parent="39" name="BOARDREGDATE">
       <Position>7</Position>
       <DataType>DATE|0s</DataType>
     </column>
-    <index id="98" parent="39" name="PK_BOARD_TBL">
+    <index id="103" parent="39" name="PK_BOARD_TBL">
       <ObjectId>21764</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -551,14 +584,14 @@
       <ColNames>BOARDNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="99" parent="39" name="PK_BOARD_TBL">
+    <key id="104" parent="39" name="PK_BOARD_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>BOARDNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_BOARD_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="100" parent="39" name="FK_T_T_TO_B_T10">
+    <foreign-key id="105" parent="39" name="FK_T_T_TO_B_T10">
       <ModifiedTimestamp>2018-07-18.01:09:29</ModifiedTimestamp>
       <ColNames>TAGNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -566,7 +599,7 @@
       <RefKeyName>PK_TAG_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="101" parent="39" name="FK_G_T_TO_B_T11">
+    <foreign-key id="106" parent="39" name="FK_G_T_TO_B_T11">
       <ModifiedTimestamp>2018-07-18.01:09:29</ModifiedTimestamp>
       <ColNames>GROUPNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -574,7 +607,7 @@
       <RefKeyName>PK_GROUP_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="102" parent="39" name="FK_U_T_TO_B_T12">
+    <foreign-key id="107" parent="39" name="FK_U_T_TO_B_T12">
       <ModifiedTimestamp>2018-07-18.01:09:29</ModifiedTimestamp>
       <ColNames>USERNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -582,23 +615,23 @@
       <RefKeyName>PK_USER_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="103" parent="40" name="CATEGORYNO">
+    <column id="108" parent="40" name="CATEGORYNO">
       <Position>1</Position>
       <Comment>카테고리번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="104" parent="40" name="CATEGORYNAME">
+    <column id="109" parent="40" name="CATEGORYNAME">
       <Position>2</Position>
       <Comment>카테고리명</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="105" parent="40" name="GROUPNO">
+    <column id="110" parent="40" name="GROUPNO">
       <Position>3</Position>
       <Comment>모임번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <index id="106" parent="40" name="PK_CATEGORY_TBL">
+    <index id="111" parent="40" name="PK_CATEGORY_TBL">
       <ObjectId>21758</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -606,14 +639,14 @@
       <ColNames>CATEGORYNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="107" parent="40" name="PK_CATEGORY_TBL">
+    <key id="112" parent="40" name="PK_CATEGORY_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>CATEGORYNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_CATEGORY_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="108" parent="40" name="FK_G_T_TO_C_T4">
+    <foreign-key id="113" parent="40" name="FK_G_T_TO_C_T4">
       <ModifiedTimestamp>2018-07-06.20:09:42</ModifiedTimestamp>
       <ColNames>GROUPNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -621,32 +654,32 @@
       <RefKeyName>PK_GROUP_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="109" parent="41" name="COMMENTNO">
+    <column id="114" parent="41" name="COMMENTNO">
       <Position>1</Position>
       <Comment>댓글번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="110" parent="41" name="COMMENTCONTENT">
+    <column id="115" parent="41" name="COMMENTCONTENT">
       <Position>2</Position>
       <Comment>댓글내용</Comment>
       <DataType>VARCHAR2(4000 byte)|0s</DataType>
     </column>
-    <column id="111" parent="41" name="USERNO">
+    <column id="116" parent="41" name="USERNO">
       <Position>3</Position>
       <Comment>회원번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="112" parent="41" name="BOARDNO">
+    <column id="117" parent="41" name="BOARDNO">
       <Position>4</Position>
       <Comment>게시판 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="113" parent="41" name="COMMENTREGDATE">
+    <column id="118" parent="41" name="COMMENTREGDATE">
       <Position>5</Position>
       <DataType>DATE|0s</DataType>
     </column>
-    <index id="114" parent="41" name="PK_COMMENT_TBL">
+    <index id="119" parent="41" name="PK_COMMENT_TBL">
       <ObjectId>21768</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -654,14 +687,14 @@
       <ColNames>COMMENTNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="115" parent="41" name="PK_COMMENT_TBL">
+    <key id="120" parent="41" name="PK_COMMENT_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>COMMENTNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_COMMENT_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="116" parent="41" name="FK_U_T_TO_C_T15">
+    <foreign-key id="121" parent="41" name="FK_U_T_TO_C_T15">
       <ModifiedTimestamp>2018-07-18.01:47:35</ModifiedTimestamp>
       <ColNames>USERNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -669,7 +702,7 @@
       <RefKeyName>PK_USER_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="117" parent="41" name="FK_B_T_TO_C_T16">
+    <foreign-key id="122" parent="41" name="FK_B_T_TO_C_T16">
       <ModifiedTimestamp>2018-07-18.01:47:35</ModifiedTimestamp>
       <ColNames>BOARDNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -677,69 +710,74 @@
       <RefKeyName>PK_BOARD_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="118" parent="42" name="GROUPNO">
+    <column id="123" parent="42" name="GROUPNO">
       <Position>1</Position>
       <Comment>모임번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="119" parent="42" name="GROUPNAME">
+    <column id="124" parent="42" name="GROUPNAME">
       <Position>2</Position>
       <Comment>모임이름</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="120" parent="42" name="GROUPEXPLAIN">
+    <column id="125" parent="42" name="GROUPEXPLAIN">
       <Position>3</Position>
       <Comment>모임설명</Comment>
       <DataType>VARCHAR2(4000 byte)|0s</DataType>
     </column>
-    <column id="121" parent="42" name="GROUPIMG">
+    <column id="126" parent="42" name="GROUPIMG">
       <Position>4</Position>
       <Comment>모임 이미지</Comment>
       <DataType>VARCHAR2(1000 byte)|0s</DataType>
     </column>
-    <column id="122" parent="42" name="GROUPTYPE">
+    <column id="127" parent="42" name="GROUPTYPE">
       <Position>5</Position>
       <Comment>모임성격</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="123" parent="42" name="MEMBERFEEAMOUNT">
+    <column id="128" parent="42" name="MEMBERFEEAMOUNT">
       <Position>6</Position>
       <Comment>회비금액</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="124" parent="42" name="MEMBERFEEDATE">
+    <column id="129" parent="42" name="MEMBERFEEDATE">
       <Position>7</Position>
       <Comment>납부일</Comment>
       <DataType>DATE|0s</DataType>
     </column>
-    <column id="125" parent="42" name="MEMBERFEEINTERVAL">
+    <column id="130" parent="42" name="MEMBERFEEINTERVAL">
       <Position>8</Position>
       <Comment>납부간격</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="126" parent="42" name="MANAGER">
+    <column id="131" parent="42" name="MANAGER">
       <Position>9</Position>
       <Comment>매니저번호(회원번호)</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="127" parent="42" name="GROUPBANK">
+    <column id="132" parent="42" name="GROUPBANK">
       <Position>10</Position>
       <Comment>은행</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="128" parent="42" name="GROUPACCOUNT">
+    <column id="133" parent="42" name="GROUPACCOUNT">
       <Position>11</Position>
       <Comment>계좌번호</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="129" parent="42" name="GROUPACCOUNTHOLDER">
+    <column id="134" parent="42" name="GROUPACCOUNTHOLDER">
       <Position>12</Position>
       <Comment>예금주</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <index id="130" parent="42" name="PK_GROUP_TBL">
+    <column id="135" parent="42" name="GROUPREGDATE">
+      <Position>13</Position>
+      <Comment>그룹생성일</Comment>
+      <DataType>DATE|0s</DataType>
+    </column>
+    <index id="136" parent="42" name="PK_GROUP_TBL">
       <ObjectId>21752</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
@@ -747,35 +785,35 @@
       <ColNames>GROUPNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="131" parent="42" name="PK_GROUP_TBL">
+    <key id="137" parent="42" name="PK_GROUP_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
       <ColNames>GROUPNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_GROUP_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="132" parent="43" name="LIKENO">
+    <column id="138" parent="43" name="LIKENO">
       <Position>1</Position>
       <Comment>좋아요 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="133" parent="43" name="LIKESTATE">
+    <column id="139" parent="43" name="LIKESTATE">
       <Position>2</Position>
       <Comment>좋아요 상태</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="134" parent="43" name="BOARDNO">
+    <column id="140" parent="43" name="BOARDNO">
       <Position>3</Position>
       <Comment>게시판 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="135" parent="43" name="USERNO">
+    <column id="141" parent="43" name="USERNO">
       <Position>4</Position>
       <Comment>회원번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <index id="136" parent="43" name="PK_LIKE_TBL">
+    <index id="142" parent="43" name="PK_LIKE_TBL">
       <ObjectId>21770</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -783,14 +821,14 @@
       <ColNames>LIKENO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="137" parent="43" name="PK_LIKE_TBL">
+    <key id="143" parent="43" name="PK_LIKE_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>LIKENO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_LIKE_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="138" parent="43" name="FK_B_T_TO_L_T17">
+    <foreign-key id="144" parent="43" name="FK_B_T_TO_L_T17">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>BOARDNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -798,7 +836,7 @@
       <RefKeyName>PK_BOARD_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="139" parent="43" name="FK_U_T_TO_L_T18">
+    <foreign-key id="145" parent="43" name="FK_U_T_TO_L_T18">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>USERNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -806,38 +844,38 @@
       <RefKeyName>PK_USER_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="140" parent="44" name="MEMBERFEENO">
+    <column id="146" parent="44" name="MEMBERFEENO">
       <Position>1</Position>
       <Comment>회비 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="141" parent="44" name="USER_GROUPNO">
+    <column id="147" parent="44" name="USER_GROUPNO">
       <Position>2</Position>
       <Comment>회원_모임 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="142" parent="44" name="PAYMENTFEE">
+    <column id="148" parent="44" name="PAYMENTFEE">
       <Position>3</Position>
       <Comment>납부해야할금액</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="143" parent="44" name="PAYMENTDATE">
+    <column id="149" parent="44" name="PAYMENTDATE">
       <Position>4</Position>
       <Comment>납부해야할날짜</Comment>
       <DataType>DATE|0s</DataType>
     </column>
-    <column id="144" parent="44" name="PAYMENTAMONT">
+    <column id="150" parent="44" name="PAYMENTAMONT">
       <Position>5</Position>
       <Comment>납부액</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="145" parent="44" name="PAYMENTDAY">
+    <column id="151" parent="44" name="PAYMENTDAY">
       <Position>6</Position>
       <Comment>납부일</Comment>
       <DataType>DATE|0s</DataType>
     </column>
-    <index id="146" parent="44" name="PK_MEMBERFEE_TBL">
+    <index id="152" parent="44" name="PK_MEMBERFEE_TBL">
       <ObjectId>21772</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -845,14 +883,14 @@
       <ColNames>MEMBERFEENO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="147" parent="44" name="PK_MEMBERFEE_TBL">
+    <key id="153" parent="44" name="PK_MEMBERFEE_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>MEMBERFEENO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_MEMBERFEE_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="148" parent="44" name="FK_U_G_T_TO_M_T19">
+    <foreign-key id="154" parent="44" name="FK_U_G_T_TO_M_T19">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>USER_GROUPNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
@@ -860,23 +898,23 @@
       <RefKeyName>PK_USER_GROUP_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="149" parent="45" name="TAGPLACENO">
+    <column id="155" parent="45" name="TAGPLACENO">
       <Position>1</Position>
       <Comment>태그장소번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="150" parent="45" name="SI">
+    <column id="156" parent="45" name="SI">
       <Position>2</Position>
       <Comment>도/시</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="151" parent="45" name="GU">
+    <column id="157" parent="45" name="GU">
       <Position>3</Position>
       <Comment>구/군/시</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <index id="152" parent="45" name="PK_TAG_PLACE_TBL">
+    <index id="158" parent="45" name="PK_TAG_PLACE_TBL">
       <ObjectId>21774</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:40</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
@@ -884,35 +922,30 @@
       <ColNames>TAGPLACENO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="153" parent="45" name="PK_TAG_PLACE_TBL">
+    <key id="159" parent="45" name="PK_TAG_PLACE_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
       <ColNames>TAGPLACENO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_TAG_PLACE_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <column id="154" parent="46" name="TAGNO">
+    <column id="160" parent="46" name="TAGNO">
       <Position>1</Position>
       <Comment>태그번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="155" parent="46" name="TAGNAME">
+    <column id="161" parent="46" name="TAGNAME">
       <Position>2</Position>
       <Comment>태그명</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="156" parent="46" name="TAGDATE">
+    <column id="162" parent="46" name="TAGDATE">
       <Position>3</Position>
       <Comment>태그날짜</Comment>
       <DataType>DATE|0s</DataType>
     </column>
-    <column id="157" parent="46" name="TAGPLACENO">
-      <Position>4</Position>
-      <Comment>태그장소번호</Comment>
-      <DataType>NUMBER(10 digit)|0s</DataType>
-    </column>
-    <index id="158" parent="46" name="PK_TAG_TBL">
+    <index id="163" parent="46" name="PK_TAG_TBL">
       <ObjectId>21756</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
@@ -920,53 +953,50 @@
       <ColNames>TAGNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="159" parent="46" name="PK_TAG_TBL">
+    <key id="164" parent="46" name="PK_TAG_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
       <ColNames>TAGNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_TAG_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="160" parent="46" name="FK_T_P_T_TO_T_T3">
-      <ModifiedTimestamp>2018-07-18.01:49:08</ModifiedTimestamp>
-      <ColNames>TAGPLACENO</ColNames>
-      <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
-      <RefTableName>TAG_PLACE_TBL</RefTableName>
-      <RefKeyName>PK_TAG_PLACE_TBL</RefKeyName>
-      <OnDelete>restrict</OnDelete>
-    </foreign-key>
-    <column id="161" parent="47" name="USER_GROUPNO">
+    <column id="165" parent="47" name="USER_GROUPNO">
       <Position>1</Position>
       <Comment>회원_모임 번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="162" parent="47" name="USERNO">
+    <column id="166" parent="47" name="USERNO">
       <Position>2</Position>
       <Comment>회원번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="163" parent="47" name="GROUPNO">
+    <column id="167" parent="47" name="GROUPNO">
       <Position>3</Position>
       <Comment>모임번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
     </column>
-    <column id="164" parent="47" name="JOINDATE">
+    <column id="168" parent="47" name="JOINDATE">
       <Position>4</Position>
       <Comment>가입일</Comment>
       <DataType>DATE|0s</DataType>
     </column>
-    <column id="165" parent="47" name="JOINMESSAGE">
+    <column id="169" parent="47" name="JOINMESSAGE">
       <Position>5</Position>
       <Comment>신청메시지</Comment>
       <DataType>VARCHAR2(1000 byte)|0s</DataType>
     </column>
-    <column id="166" parent="47" name="JOINSTATE">
+    <column id="170" parent="47" name="JOINSTATE">
       <Position>6</Position>
       <Comment>회원신청처리상태</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <index id="167" parent="47" name="PK_USER_GROUP_TBL">
+    <column id="171" parent="47" name="USER_GROUP_HIT">
+      <Position>7</Position>
+      <Comment>그룹조회수</Comment>
+      <DataType>NUMBER(10 digit)|0s</DataType>
+    </column>
+    <index id="172" parent="47" name="PK_USER_GROUP_TBL">
       <ObjectId>21754</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
@@ -974,56 +1004,56 @@
       <ColNames>USER_GROUPNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="168" parent="47" name="PK_USER_GROUP_TBL">
+    <key id="173" parent="47" name="PK_USER_GROUP_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
       <ColNames>USER_GROUPNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_USER_GROUP_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="169" parent="47" name="FK_U_T_TO_U_G_T1">
-      <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
+    <foreign-key id="174" parent="47" name="FK_U_T_TO_U_G_T1">
+      <ModifiedTimestamp>2018-08-02.00:28:20</ModifiedTimestamp>
       <ColNames>USERNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
       <RefTableName>USER_TBL</RefTableName>
       <RefKeyName>PK_USER_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <foreign-key id="170" parent="47" name="FK_G_T_TO_U_G_T2">
-      <ModifiedTimestamp>2018-07-06.00:53:40</ModifiedTimestamp>
+    <foreign-key id="175" parent="47" name="FK_G_T_TO_U_G_T2">
+      <ModifiedTimestamp>2018-08-02.00:28:20</ModifiedTimestamp>
       <ColNames>GROUPNO</ColNames>
       <RefSchemaName>ACCOUNTBOOK</RefSchemaName>
       <RefTableName>GROUP_TBL</RefTableName>
       <RefKeyName>PK_GROUP_TBL</RefKeyName>
       <OnDelete>restrict</OnDelete>
     </foreign-key>
-    <column id="171" parent="48" name="USERNO">
+    <column id="176" parent="48" name="USERNO">
       <Position>1</Position>
       <Comment>회원번호</Comment>
       <DataType>NUMBER(10 digit)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="172" parent="48" name="USEREMAIL">
+    <column id="177" parent="48" name="USEREMAIL">
       <Position>2</Position>
       <Comment>회원아이디</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="173" parent="48" name="USERPASSWORD">
+    <column id="178" parent="48" name="USERPASSWORD">
       <Position>3</Position>
       <Comment>회원비밀번호</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="174" parent="48" name="USERNAME">
+    <column id="179" parent="48" name="USERNAME">
       <Position>4</Position>
       <Comment>회원이름</Comment>
       <DataType>VARCHAR2(200 byte)|0s</DataType>
     </column>
-    <column id="175" parent="48" name="USERBIRTHDAY">
+    <column id="180" parent="48" name="USERBIRTHDAY">
       <Position>5</Position>
       <Comment>회원생일</Comment>
       <DataType>DATE|0s</DataType>
     </column>
-    <index id="176" parent="48" name="PK_USER_TBL">
+    <index id="181" parent="48" name="PK_USER_TBL">
       <ObjectId>21749</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
@@ -1031,7 +1061,7 @@
       <ColNames>USERNO</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="177" parent="48" name="UIX_USER_TBL">
+    <index id="182" parent="48" name="UIX_USER_TBL">
       <ObjectId>21750</ObjectId>
       <CreatedTimestamp>2018-07-06.00:53:39</CreatedTimestamp>
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
@@ -1039,14 +1069,14 @@
       <ColNames>USEREMAIL</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="178" parent="48" name="PK_USER_TBL">
+    <key id="183" parent="48" name="PK_USER_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
       <ColNames>USERNO</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>
       <UnderlyingIndexName>PK_USER_TBL</UnderlyingIndexName>
       <Primary>1</Primary>
     </key>
-    <key id="179" parent="48" name="UK_USER_TBL">
+    <key id="184" parent="48" name="UK_USER_TBL">
       <ModifiedTimestamp>2018-07-06.00:53:39</ModifiedTimestamp>
       <ColNames>USEREMAIL</ColNames>
       <InitiallyDeferred>1</InitiallyDeferred>

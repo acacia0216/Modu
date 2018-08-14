@@ -1,5 +1,7 @@
 package com.modu.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,7 +17,7 @@ public class MembershipDao {
 	
 	public int insertMembership(ModuGroupVo groupvo) {
 		
-	 sqlSession.insert("membership.insertMembership",groupvo);
+	 sqlSession.update("membership.insertMembership",groupvo);
 		
 		return groupvo.getGroupNo();
 	}
@@ -28,6 +30,11 @@ public class MembershipDao {
 	public ModuGroupVo selectMembership(int groupNo) {
 		
 		return sqlSession.selectOne("membership.selectMembership",groupNo);
+	}
+	
+	public List<MembershipVo> selectMembershipList(int groupNo){
+		
+		return sqlSession.selectList("membership.selectMembershipList",groupNo);
 	}
 
 }

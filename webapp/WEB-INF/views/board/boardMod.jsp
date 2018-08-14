@@ -75,7 +75,7 @@
 <!----------------- container------------------->
 <div class="container">
 	<div class="text-center">
-		<h4>글 수정</h4> ${authUser.userNo}
+		<h4>글 수정</h4>
 	</div>
 	<form id="form_board" action="${pageContext.request.contextPath}/board/${authUser.groupNo}/modify" method="post" enctype="multipart/form-data"  >
 		<input type="hidden" name="userNo" value="${authUser.userNo}">

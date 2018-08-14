@@ -34,7 +34,7 @@
 </div>
 
 			
-<div class="mb-5 text-center">
+<%-- <div class="mb-5 text-center">
       <a href="${pageContext.request.contextPath }/board/${gvo.groupNo}/goCal" class="btn btn-lg btn-outline-secondary" style="font-weight:bold; border:solid 2px; width:900px; ">
 						달 력 연 습
 		</a>
@@ -45,7 +45,12 @@
 						오토 연 습
 		</a>
 </div>
-	
+<div class="mb-5 text-center">
+      <a href="${pageContext.request.contextPath }/map" class="btn btn-lg btn-outline-secondary" style="font-weight:bold; border:solid 2px; width:900px; ">
+						지도 연 습
+		</a>
+</div>
+	 --%>
 	
 	<div id="postList" >
 		

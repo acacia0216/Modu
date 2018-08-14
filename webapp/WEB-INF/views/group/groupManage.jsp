@@ -302,27 +302,25 @@
 		                  var str="";
 		                  
 		                  
-		                  if(${ List.userNo ne gvo.manager }){
+		                  if(vo.userNo == ${gvo.manager }){
 
-		                	  str +="  <tr>"; 
-		                      str +="     <td>"+ vo.userName +"</td>"; 
-		                      str +="     <td>"; 
-		                      str +="       <button class='btn btn-sm btn-outline-danger mr-2' id='huu' name='${userList.user_groupNo }' data-toggle='modal' data-target='#exampleModal'>추방</button>  "; 
-		                      str +="       <button class='btn btn-sm btn-outline-info' id='${userList.userNo }' value='${userList.groupNo }' data-toggle='modal' data-target='#exampleModal2'>총무위임</button>"; 
-		                      str +="     </td>"; 
-		                      str +="  </tr>"; 
-		                      
-		                	  
-				            	
-				            }else{
-				            	
 				              str +="  <tr>"; 
-				              str +="     <td>"+ vo.userName +"</td>"; 
+				              str +='     <td>'+ vo.userName +'</td>'; 
 				              str +="     <td>"; 
 				              str +="        <input type='button' class='btn btn-sm btn-outline-secondary'  style='width: 134px;' value='총무'>"; 
 				              str +="     </td>"; 
 			                  str +="  </tr>"; 	  
 				            	
+				            	
+				            }else{
+				            	
+		                	  str +="  <tr>"; 
+		                      str +='     <td>'+ vo.userName +'</td>'; 
+		                      str +="     <td>"; 
+		                      str +="       <button class='btn btn-sm btn-outline-danger mr-2' id='huu' name='${userList.user_groupNo }' data-toggle='modal' data-target='#exampleModal'>추방</button>  "; 
+		                      str +="       <button class='btn btn-sm btn-outline-info' id='${userList.userNo }' value='${userList.groupNo }' data-toggle='modal' data-target='#exampleModal2'>총무위임</button>"; 
+		                      str +="     </td>"; 
+		                      str +="  </tr>"; 
 				            }
 		                 
 		                  $("#userList").append(str);

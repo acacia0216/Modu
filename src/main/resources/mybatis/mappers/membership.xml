@@ -3,27 +3,25 @@
 
 <mapper namespace="membership">
 
-<insert id="insertMembership" parameterType="GroupVo">
-	<selectKey keyProperty="groupNo" resultType="int" order="BEFORE">
-           select seq_groupNo.NEXTVAL from dual
-        </selectKey>
+<update id="insertMembership" parameterType="GroupVo">
 		<![CDATA[
-		insert into group_tbl(groupNo,memberFeeAmount,memberFeeDate,groupBank,groupAccount,groupAccountHolder)
-            VALUES(#{groupNo}
-             ,#{memberFeeAmount}
-             ,#{memberFeeDate}
-             ,#{groupBank}
-             ,#{groupAccount}
-             ,#{groupAccountHolder})
+		update group_tbl
+		set memberFeeAmount = #{memberFeeAmount},
+        memberFeeDate = #{memberFeeDate},    
+        memberFeeinterval = #{memberFeeinterval},    
+        groupBank = #{groupBank},    
+        groupAccount = #{groupAccount},    
+        groupAccountHolder = #{groupAccountHolder}    
+        where groupNo =#{groupNo}      
 		]]>
-	</insert>
+	</update>
 	
 	
 <insert id="insertPayment" parameterType="MembershipVo">
 
        <![CDATA[
-		    insert into memberfee_tbl()
-		    VALUES(seq_membershipfeeNo.NEXTVAL
+		    insert into memberfee_tbl(memberfeeNo,user_groupNo,paymentFee,paymentDate)
+		    VALUES(seq_memberfeeNo.NEXTVAL
 		     ,#{user_groupNo}
              ,#{paymentFee}
              ,#{paymentDate})
@@ -31,11 +29,21 @@
 
 </insert>
 
-<select id="selectImg"  parameterType="int"  resultType="GroupVo">
+<select id="selectMembership"  parameterType="int"  resultType="GroupVo">
 	 <![CDATA[
-             Select groupNo,memberFeeAmount,memberFeeDate,groupBank,groupAccount,groupAccountHolder
+             Select groupNo,memberFeeAmount,memberFeeDate,groupBank,groupAccount,groupAccountHolder,memberFeeinterval
                from group_tbl
                where groupNo=#{groupNo}
+             ]]>
+	</select>
+	
+<select id="selectMembershipList"  parameterType="int"  resultType="MembershipVo">
+	 <![CDATA[
+            select memberfeeNo,user_groupNo,paymentFee,paymentDate,userName
+            from USER_GROUP_TBL UG ,USER_TBL U , MEMBERFEE_TBL M
+            where UG.USERNO = U.USERNO 
+            and UG.USER_GROUPNO = M.USER_GROUPNO
+            and UG.GROUPNO=#{groupNo}
              ]]>
 	</select>
 

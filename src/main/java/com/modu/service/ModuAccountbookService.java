@@ -33,7 +33,7 @@ public class ModuAccountbookService {
 		int m = Integer.parseInt(month.substring(7, 9));
 		cal.set(y, m, 1);
 		cal.add(Calendar.DATE, -1);
-		
+		 
 		String startDate = month.replace(" ", "") + "/01";
 		String endDate = month.replace(" ", "") + "/" + cal.get(Calendar.DATE);
 		map.put("startDate", startDate);
@@ -73,7 +73,9 @@ public class ModuAccountbookService {
 		
 		AccountbookVo accountbookVo = new AccountbookVo();
 		if(!usage.equals("사용내역")) {
-			List<AccountbookCategoryVo> cateList = moduAccountbookDao.getRecommendCategory(usage);
+			accountbookVo.setAccountbookUsage(usage);
+			accountbookVo.setGroupNo(Integer.parseInt(groupNo));
+			List<AccountbookCategoryVo> cateList = moduAccountbookDao.getRecommendCategory(accountbookVo);
 			if(!cateList.isEmpty()) {
 				category = String.valueOf(cateList.get(0).getCategoryNo());
 			}

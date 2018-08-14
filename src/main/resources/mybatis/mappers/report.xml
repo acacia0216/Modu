@@ -2,7 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="report">
-
+	<select id="getYearMonth" parameterType="int" resultType="String">
+select to_char(accountbookRegDate,'yyyy/MM')
+from (select Rownum rnum,accountbookRegDate
+from (select accountbookRegDate
+from accountbook_tbl
+where groupNo=#{groupNo}
+order by accountbookRegDate desc))
+where rnum=1
+	</select>
 	<select id="getNonGroupCategoryList" resultType="int">
 		select CATEGORYNO
 		from CATEGORY_TBL

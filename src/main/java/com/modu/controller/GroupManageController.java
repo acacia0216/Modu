@@ -127,7 +127,7 @@ public class GroupManageController {
 			model.addAttribute("gList", gList);
 		}
 
-		List<ModuGroupVo> searchList = groupService.searchGroup(gSearch);
+		List<ModuGroupVo> searchList = groupService.searchGroup(gSearch,uservo.getUserNo());
 		model.addAttribute("searchList",searchList);
 
 		usergroupvo.setUserNo(uservo.getUserNo());

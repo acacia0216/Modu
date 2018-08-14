@@ -46,6 +46,9 @@ public class AccountBookController {
 	@RequestMapping("")
 	public String accountbook(@PathVariable("groupNo") String groupNo,Model model, HttpSession session){
 
+		if(session.getAttribute("authUser") == null) {
+			return "/index";
+		}else {
 		// 모임 카테고리
 	      ModuUserVo uservo =  (ModuUserVo) session.getAttribute("authUser");
 	      List<ModuGroupVo> gList  = groupService.selectGroup(uservo.getUserNo());
@@ -56,6 +59,7 @@ public class AccountBookController {
 	      model.addAttribute("gvo",gvo);
 
 		return "/accountbook/accountbook";
+		}
 	}
 	
 	@RequestMapping("/{urlDate}")
@@ -71,7 +75,7 @@ public class AccountBookController {
 	      model.addAttribute("gvo",gvo);
 	      
 	      String yy = urlDate.substring(0, 4);
-	      String mm = urlDate.substring(6, 8);
+	      String mm = urlDate.substring(5, 7);
 	      
 	      model.addAttribute("urlDate",yy + " / " + mm);
 
@@ -178,27 +182,6 @@ public class AccountBookController {
 	@RequestMapping( "/insertcategory")
 	public int insertCategory(@PathVariable("groupNo") String groupNo,@RequestParam("categoryname") String categoryname){
 		return moduAccountbookService.categoryInsert(groupNo,categoryname);
-	}
-
-	///////////////////////////////////////로그인/////////////////////////////////////////////
-	
-	@RequestMapping( "/login")
-	public String login(HttpSession session,Model model){
-		int userNo = 1;
-		
-		Map<String,Object> map = moduUserService.login(userNo);
-		ModuUserVo authUser = (ModuUserVo) map.get("user"); 
-		ModuGroupVo group = (ModuGroupVo) map.get("group"); 
-
-		if (authUser != null) {
-			session.setAttribute("authUser", authUser);
-			session.setAttribute("group", group);
-			System.out.println("asdf"+group.toString());
-			return "redirect:/accountbook/accountbook";
-		} else {
-			model.addAttribute("result", "fail");
-			return "redirect:/main";
-		}
 	}
 	
 }

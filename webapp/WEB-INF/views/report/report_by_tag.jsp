@@ -23,6 +23,19 @@
     <%--<link rel="stylesheet" type="text/css"	href="${pageContext.request.contextPath }/assets/jquery/jquery.autocomplete.css" />--%>
 
 </head>
+<style>
+
+/* AutoComplete */
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; cursor: pointer; }
+.autocomplete-selected { background: blue; color: white; }
+.autocomplete-suggestions strong { font-weight: bold; color: orange; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
+
+
+
+</style>
 
 <link style="overflow-x:hidden; overflow-y:auto;">
 
@@ -151,7 +164,7 @@
         <table class="table" style="text-align: center; table-layout: fixed;">
             <thead>
             <tr>
-                <th scope="col" colspan="3" style="font-size: 25px;">상세 내역</th>
+                <th scope="col" colspan="3" style="font-size: 25px;">지출 상세 내역</th>
             </tr>
             </thead>
             <tbody>

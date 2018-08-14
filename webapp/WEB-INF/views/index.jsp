@@ -41,7 +41,7 @@
 
                     <h1 class="ml-4">&nbsp;&ensp;&ensp;&ensp; 투명한 재정관리 </h1>
                     <br><br>
-                    <button class="btn btn-primary btn-lg">모두의 가계부 시작하기</button>
+                    <button class="btn btn-primary btn-lg" name="startAccountbook">모두의 가계부 시작하기</button>
                     <br>
                 </div>
 
@@ -55,7 +55,7 @@
                     <h1> 다양한 가계부를 한눈에 </h1>
                     <br>
                     <br>
-                    <button class="btn btn-primary btn-lg">지금 바로 시작하기</button>
+                    <button class="btn btn-primary btn-lg" name="startAccountbook">지금 바로 시작하기</button>
                 </div>
                 <img class="d-block w-100" src="${pageContext.request.contextPath }/assets/images/main02.png"
                      alt="Second slide">
@@ -66,7 +66,7 @@
                     <h1> &ensp; &ensp;회비 관리 서비스</h1>
                     <br>
                     <br>
-                    <button class="btn btn-primary btn-lg">바로 시작하기</button>
+                    <button class="btn btn-primary btn-lg" name="startAccountbook">바로 시작하기</button>
                 </div>
                 <img class="d-block w-100" src="${pageContext.request.contextPath }/assets/images/main03.png"
                      alt="Third slide">
@@ -312,6 +312,16 @@
         return unescape(cookieValue);
     }
     $(document).ready (function () {
+    	   $('.form_day').datetimepicker({
+               language: 'ko',
+               weekStart: 1,
+               todayBtn: 1,
+               autoclose: 1,
+               todayHighlight: 1,
+               startView: 2,
+               minView: 2,
+               forceParse: 0
+           });
 
         //    아이디기억용 쿠키
         //    시작되면 이메일칸에 쿠키정보 가져와서 뿌리기
@@ -340,6 +350,10 @@
         }
     });
 
+    
+    $("[name=startAccountbook]").on("click",function(){
+    	$("#exampleModalCenter").modal();
+    });
 
     $("#joinForm").on("click", function () {
         $("#exampleModalCenter").modal("hide");
@@ -515,7 +529,6 @@
             dataType: "json",
             success: function (result) {
                 if (result > 0) {
-                    alert("로그인 성공");
                     $("#loginEmail").val("");
                     $("#loginPassword").val("");
                     location.href = "${pageContext.request.contextPath }/main";
@@ -570,7 +583,6 @@
 
     }
 
-
     //<![CDATA[
     // 사용할 앱의 JavaScript 키를 설정해 주세요.
     Kakao.init('51711e01a78bd307f3d56512b550d08c');
@@ -621,7 +633,6 @@
         }
     });
     //]]>
-
 </script>
 
 </body>

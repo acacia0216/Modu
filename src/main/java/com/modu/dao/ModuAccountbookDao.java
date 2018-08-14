@@ -31,7 +31,7 @@ public class ModuAccountbookDao {
 		//가계부 카테고리 리스팅
 		return sqlSession.selectList("accountbook.getModalcCtegoryList",groupNo);
 	}
-	
+	 
 	public List<AccountbookVo> searchAccountListByTag(Map map) {
 		//태그 검색
 		return sqlSession.selectList("accountbook.searchAccountListByTag",map);
@@ -136,7 +136,7 @@ public class ModuAccountbookDao {
 		return categoryVo;
 	}
 	
-	public List<AccountbookCategoryVo> getRecommendCategory(String usage) {
-		return sqlSession.selectList("accountbook.getRecommendCategory",usage);
+	public List<AccountbookCategoryVo> getRecommendCategory(AccountbookVo accountbookVo) {
+		return sqlSession.selectList("accountbook.getRecommendCategory",accountbookVo);
 	}
 }

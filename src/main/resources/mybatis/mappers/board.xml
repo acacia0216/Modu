@@ -1,23 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="boardDB">
-	
-	<insert id="insertPost" parameterType="boardVo" >
-		<selectKey keyProperty="boardNo" resultType="string" order="BEFORE">  
-			select seq_boardNo.nextval FROM dual
-		</selectKey>
-	
-		<![CDATA[
+
+    <insert id="insertPost" parameterType="boardVo">
+        <selectKey keyProperty="boardNo" resultType="string" order="BEFORE">
+            select seq_boardNo.nextval FROM dual
+        </selectKey>
+
+        <![CDATA[
 		insert into board_tbl(boardNo,boardTitle,boardContent,boardRegDate,tagNo,groupNo)
 		values(#{boardNo},#{boardTitle},#{boardContent},sysdate,#{tagNo},#{groupNo})	
 	       ]]>
-    
-	
-	</insert>
-	
-	
-	<update id="updatePost">
+
+
+    </insert>
+
+
+    <update id="updatePost">
 		update board_tbl 
 		set boardTitle=#{boardTitle},
 		boardContent=#{boardContent},
@@ -26,29 +26,28 @@
 		where boardNo=#{boardNo}
 	
 	</update>
-	
-	<insert id="insertFile" parameterType="fileVo" >
-		<selectKey keyProperty="boardImgNo" resultType="string" order="BEFORE">  
-			select seq_boardImgNo.nextval FROM dual
-	 	</selectKey>
-	
-		<![CDATA[
+
+    <insert id="insertFile" parameterType="fileVo">
+        <selectKey keyProperty="boardImgNo" resultType="string" order="BEFORE">
+            select seq_boardImgNo.nextval FROM dual
+        </selectKey>
+
+        <![CDATA[
 		insert into board_img_tbl
 		values(#{boardImgNo},#{originalName},#{saveName},#{imgSize},#{boardImgPath},#{boardNo},#{userNo})	
 	       ]]>
-    
-	</insert>
-	
-	
-	<select id="postCheck" parameterType="boardVo" resultType="int">
+
+    </insert>
+
+
+    <select id="postCheck" parameterType="boardVo" resultType="int">
 		select count(*)
 		from board_tbl
 		where groupNo=#{groupNo}
 	</select>
 
-	
-	
-	<select id="getPostList" parameterType="integer" resultType="boardVo" >
+
+    <select id="getPostList" parameterType="integer" resultType="boardVo">
 
 		select boardNo,boardTitle,boardContent,boardRegDate,tagNo
 		from board_tbl
@@ -56,8 +55,8 @@
 		order by boardRegdate desc
 
 	</select>
-	
-	<select id="getPost" parameterType="integer" resultType="boardVo" >
+
+    <select id="getPost" parameterType="integer" resultType="boardVo">
 
 		select boardNo,boardTitle,boardContent,boardRegDate,tagNo
 		from board_tbl
@@ -65,49 +64,48 @@
 		order by boardRegdate desc
 
 	</select>
-	
 
-	
-	<select id="getPostImgs" resultType="fileVo" >
+
+    <select id="getPostImgs" resultType="fileVo">
 
 		select boardImgNo,saveName,userNo,boardNo
 		from board_img_tbl
 		where boardNo=#{boardNo}
 
 	</select>
-	
-	<delete id="deleteImg" parameterType="string">
+
+    <delete id="deleteImg" parameterType="string">
 		delete from board_img_tbl
 		where boardNo = #{boardNo}
 	</delete>
-	
-	<delete id="deletePost" parameterType="string">
+
+    <delete id="deletePost" parameterType="string">
 		delete from board_tbl
 		where boardNo = #{boardNo}
 	</delete>
-	
-	<delete id="deleteCmt" parameterType="string">
+
+    <delete id="deleteCmt" parameterType="string">
 		delete from comment_tbl
 		where commentNo = #{commentNo}
 	</delete>
-	
-	<delete id="deleteCmtAll" parameterType="string">
+
+    <delete id="deleteCmtAll" parameterType="string">
 		delete from comment_tbl
 		where boardNo = #{boardNo}
 	</delete>
-	
-	<delete id="deleteImgAll" parameterType="string">
+
+    <delete id="deleteImgAll" parameterType="string">
 		delete from board_img_tbl
 		where boardNo = #{boardNo}
 	</delete>
-	
-	<delete id="deleteLikeAll" parameterType="string">
+
+    <delete id="deleteLikeAll" parameterType="string">
 		delete from like_tbl
 		where boardNo = #{boardNo}
 	</delete>
-	
 
-	<select id="getLikeState" parameterType="map" resultType="string">
+
+    <select id="getLikeState" parameterType="map" resultType="string">
 		select likeState 
 		from like_tbl
 		where boardNo = #{boardNo} 
@@ -115,14 +113,13 @@
 	</select>
 
 
-		
-	<insert id="insertLike" parameterType="boardVo">
+    <insert id="insertLike" parameterType="boardVo">
 		insert into like_tbl
 		values(seq_likeno.nextval,#{likeState},#{boardNo},#{userNo})
 	</insert>
-	
-	
-	<update id="updateLike" parameterType="boardVo"> 
+
+
+    <update id="updateLike" parameterType="boardVo">
 		update like_tbl 
 		set likeState=#{likeState}
 		where boardNo=#{boardNo}
@@ -130,37 +127,37 @@
 	</update>
 
 
-	<select id="likeCheck" parameterType="boardVo" resultType="int">
+    <select id="likeCheck" parameterType="boardVo" resultType="int">
 		select count(*)
 		from like_tbl
 		where boardNo=#{boardNo}
 		and userNo=#{userNo}
 		
 	</select>
-	
-	
-	<select id="likeCount" parameterType="String" resultType="int">
+
+
+    <select id="likeCount" parameterType="String" resultType="int">
 		select count(*)
 		from like_tbl
 		where boardNo=#{boardNo}
 		and likeState=1
 	</select>
-	
-	
-	<select id="likeState" parameterType="String" resultType="String">
+
+
+    <select id="likeState" parameterType="String" resultType="String">
 		select likeState
 		from like_tbl
 		where boardNo=#{boardNo}
 		and userNo=#{userNo}
 	</select>
-	
-	<insert id="insertCmt" parameterType="boardVo">
+
+    <insert id="insertCmt" parameterType="boardVo">
 		insert into comment_tbl
 		values(seq_commentno.nextval,#{commentContent},#{userNo},#{boardNo},sysdate)
 		
 	</insert>
-	
-	<select id="getCmtList"  resultType="boardVo">
+
+    <select id="getCmtList" resultType="boardVo">
 		select userName,commentNo,commentContent,u.userNo,boardNo,commentRegDate
 		from user_tbl u,comment_tbl c
 		where u.userNo = c.userNo
@@ -168,53 +165,94 @@
 		order by commentRegDate desc
 		
 	</select>
-	
-	
-	<select id="cmtCount" parameterType="String" resultType="int">
+
+
+    <select id="cmtCount" parameterType="String" resultType="int">
 		select count(*)
 		from comment_tbl
 		where boardNo=#{boardNo}
 	</select>
-	
-	
-	<!--  태그  -->
-	<select id="getTagList" parameterType="integer" resultType="boardVo">
+
+
+    <!--  태그  -->
+    <select id="getTagList" parameterType="integer" resultType="boardVo">
 		select tagNo, tagName
 		from(select tagNo
 		from(select tagNo
       	from accountbook_tbl join accountbook_tag_tbl using (accountbookNo)
       	where groupNo = #{groupNo}) join tag_tbl using (tagNo) group by tagNo order by tagNo desc) join tag_tbl using (tagNo)
+      	order by tagDate
      </select>
-     
-     <select id="getAccountList" parameterType="String" resultType="boardVo">
+
+    <select id="getAccountList" parameterType="String" resultType="boardVo">
 		select tagNo,tagName, accountbookNo, accountbookUsage, to_char(accountbookRegDate,'yyyy-MM-dd') accountbookRegDate, accountbookSpend,accountbookPlace,accountbookPersonnel
         from(select *
         from accountbook_tbl join accountbook_tag_tbl using (accountbookNo)) join tag_tbl using (tagNo)
         where tagNo=#{tagNo}
         order by accountbookRegDate desc
      </select>
-     
-     <select id="getAccountListByDate" parameterType="boardVo" resultType="boardVo">
-		select tagNo,tagName, accountbookNo, accountbookUsage, to_char(accountbookRegDate,'yyyy-MM-dd') accountbookRegDate, accountbookSpend,accountbookPlace,accountbookPersonnel
-        from(select *
-        from accountbook_tbl join accountbook_tag_tbl using (accountbookNo)) join tag_tbl using (tagNo)
+
+    <select id="getAccountListByDate" parameterType="boardVo" resultType="boardVo">
+		select accountbookNo,to_char(accountbookRegDate,'yyyy-MM-dd') accountbookRegDate, accountbookusage, accountbookspend
+        from accountbook_tbl 
         where groupNo=#{groupNo}
-        and accountbookRegDate between  to_date(#{startDate},'yyyy-MM-dd') and to_date(#{endDate},'yyyy-MM-dd')
+        and accountbookRegDate between  #{startDate} and #{endDate}
         order by accountbookRegDate desc
      </select>
-     
-	
-	<update id="updatePlace" parameterType="boardVo"> 
+
+
+    <update id="updatePlace" parameterType="boardVo">
 		update accountbook_tbl 
 		set accountbookPlace=#{accountbookPlace},
 		accountbookPersonnel=#{accountbookPersonnel}
 		where accountbookNo=#{accountbookNo}
 	</update>
-	
-	<select id="getTagName" parameterType="String" resultType="string">
+
+    <select id="getTagName" parameterType="String" resultType="string">
 		select tagName
 		from board_tbl join tag_tbl using (tagNo)
 		where boardNo=#{boardNo}
 	</select>
+
+
+    <insert id="insertTag" parameterType="boardVo">
+        <selectKey keyProperty="tagNo" resultType="String" order="BEFORE">
+            select seq_tagno.nextval from dual
+        </selectKey>
+        <![CDATA[
+			insert into tag_tbl(tagNo,tagName,tagdate) 
+			values(#{tagNo}
+			,#{tagName},sysdate)
+		]]>
+    </insert>
+
+    <select id="checkTag" parameterType="boardVo" resultType="boardVo">
+		<![CDATA[
+
+			select tagNo
+			from tag_tbl
+			where tagName = #{tagName}
+
+        ]]>
+	</select>
+
+
+    <insert id="connectTagGroup" parameterType="BoardVo">
 	
+		INSERT INTO accountbook_tag_tbl (accountbooktagno,accountbookno,tagno)
+		values(seq_accountbooktagno.nextval, #{accountbookNo},#{tagNo})
+		
+	</insert>
+
+  <!--   <select id="getAccountbookList" parameterType="hashmap" resultType="boardVo">
+        <![CDATA[
+			select accountbookNo,accountbookRegDate,accountbookUsage,accountbookSpend,accountbookPersonnel,accountbookPlace
+			from accountbook_tbl
+			where accountbookno in
+		]]>
+        <foreach item="item" collection="Acclist" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select> -->
+
 </mapper>

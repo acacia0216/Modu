@@ -8,18 +8,20 @@ public class MembershipVo {
 	private String paymentDate; // 납부해야할 날짜
 	private int paymentamont; // 납부액 
 	private String paymentDay; // 납부일 
+	private String userName; //조인
 	
 	
 	public MembershipVo() {
 	}
 	public MembershipVo(int membershipfeeNo, int user_groupNo, int paymentFee, String paymentDate, int paymentamont,
-			String paymentDay) {
+			String paymentDay ,String userName) {
 		this.membershipfeeNo = membershipfeeNo;
 		this.user_groupNo = user_groupNo;
 		this.paymentFee = paymentFee;
 		this.paymentDate = paymentDate;
 		this.paymentamont = paymentamont;
 		this.paymentDay = paymentDay;
+		this.userName = userName;
 	}
 	@Override
 	public String toString() {
@@ -62,6 +64,12 @@ public class MembershipVo {
 	}
 	public void setPaymentDay(String paymentDay) {
 		this.paymentDay = paymentDay;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	

@@ -23,16 +23,16 @@
 				<table class="table table-sm table-light border text-center">
 					<tr>
 						<td class="bg-info" style="color:white" >모임 계좌</td>
-						<td class="bg-light" style="color:gray">농협  1234-56-78901</td>
+						<td class="bg-light" style="color:gray">${gMembershipfee.groupBank} ${gMembershipfee.groupAccount}</td>
 						<td class="bg-info" style="color:white">계좌 주인</td>
-						<td class="bg-light" style="color:gray">진미채</td>
+						<td class="bg-light" style="color:gray">${gMembershipfee.groupAccountHolder}</td>
 					</tr>
 				</table>
 			</div>
 
 			<div class="pt-3">
-				<button class="interval float-left btn btn" type="text" value="" style="color: black" disabled="disabled">납부일: X개월 마다 10일</button>
-				<button type="button" class="btn btn-secondary float-right mr-3" onclick="location.href='/Modu/membershipfee/${gvo.groupNo}/membershipsetting'">회비 설정하기</button>
+				<button class="interval float-left btn btn" type="text" value="" style="color: black" disabled="disabled">납부일: ${gMembershipfee.memberFeeinterval} 개월마다  ${gMembershipfee.memberFeeDate }일 </button>
+				<button type="button" class="btn btn-secondary float-right mr-3" onclick="location.href='/Modu/membershipfee/${authUser.groupNo}/membershipsetting'">회비 설정하기</button>
 				<div style="clear:both;"></div>
 			</div>
 
@@ -65,7 +65,7 @@
 					</thead>
 					<tbody>
 					<c:forEach items="${selectUserList }" var="sel">
-					
+
 
 						<tr>
 							<td scope="row">${sel.userName}</td>

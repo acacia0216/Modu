@@ -22,7 +22,7 @@ import com.modu.vo.ModuGroupVo;
 import com.modu.vo.ModuUserVo;
 
 @Controller
-@RequestMapping(value="/groupmain/{groupNo}")
+@RequestMapping(value="/groupmain")
 public class GroupMainController {
 
 	@Autowired
@@ -30,7 +30,7 @@ public class GroupMainController {
     @Autowired
     private GroupMainService groupMainService;
 
-    @RequestMapping("")
+    @RequestMapping("/{groupNo}")
     public String GroupMain(Model model, HttpSession session,@PathVariable int groupNo){
         System.out.println("모임메인");
 
@@ -60,7 +60,7 @@ public class GroupMainController {
 			model.addAttribute("gList",gList);
 		}
 
-		List<ModuGroupVo> searchList = groupService.searchGroup(gSearch);
+		List<ModuGroupVo> searchList = groupService.searchGroup(gSearch,uservo.getUserNo());
 		model.addAttribute("searchList",searchList);
 
 		return"/group/groupSearch";

@@ -42,7 +42,7 @@
          <form action="${pageContext.request.contextPath }/membershipfee/${authUser.groupNo}/setting" name="form" >
         <c:forEach items="${selectUserList }" var="checkList" varStatus="status">
           <div class="text-left custom-control custom-checkbox">
-            <input type="checkbox" class="custom-control-input" id="${status.count}" name="userName" value="${checkList.userNo}">
+            <input type="checkbox" class="custom-control-input" id="${status.count}" name="userName" value="${checkList.user_groupNo}">
             <label class="custom-control-label" for="${status.count}">&ensp;${checkList.userName}</label>
           </div>
         </c:forEach>
@@ -226,7 +226,7 @@ $(document).ready(function(){
 /* 세자리마다 콤마, 숫자입력만 가능 */
 
 //3자리 단위마다 콤마 생성
-function addCommas(x) {
+/* function addCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
  
@@ -241,7 +241,7 @@ $("input:text[numberOnly]").on("keyup", function() {
     $(this).val(addCommas($(this).val().replace(/[^0-9]/g,"")));
 });
 
-
+*/
 <!-- 버튼 클릭시 값 증가  --> //멘붕.. 동시에 안..
 
  function change(num){
@@ -250,7 +250,7 @@ $("input:text[numberOnly]").on("keyup", function() {
 	 if(y < 1) y = 1;
 	   x.memberFeeAmount.value = y;
  }
- 
+  
  
  /*  특수문자 - 과 숫자만 입력가능 
  function nCheck(){

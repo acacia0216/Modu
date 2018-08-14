@@ -81,4 +81,15 @@ public class ReportDao {
         return sqlSession.selectOne("report.getTagListForPaging",tagNo);
     }
 
+    public String getYearMonth(int groupNo) {
+        String str = "";
+        try {
+            str = sqlSession.selectOne("report.getYearMonth", groupNo);
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            System.out.println("str");
+            return str;
+        }
+    }
 }

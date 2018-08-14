@@ -4,8 +4,10 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.modu.dao.BoardDao;
+import com.modu.dao.ModuAccountbookDao;
+import com.modu.vo.AccountbookTagVo;
 import com.modu.vo.BoardVo;
 import com.modu.vo.FileVo;
 
@@ -25,35 +29,62 @@ public class BoardService {
 	private BoardDao dao;
 	
 	
+	
 	@Transactional
 	public void addPost(BoardVo boardVo, HashMap<String, Object> map) {
 		
 		System.out.println("서비스 까지 왓수다");
 		//글 내용
-		String boardNo = dao.addPost(boardVo);
-		
+			
+				
+				
 		// 가계부 첨부
 		// 넣어야 하는것 1. 보드 tbl에 태그no -- board에 이미 들어갔음
-		System.out.println("!@#!$!#%!$$----"+boardVo.getTagNo());
-		if(boardVo.getTagNo()==null||("").equals(boardVo.getTagNo())) {
-			//날짜로 불러오기
-			// accountNo 마다 tagNo ( acc_tag_tbl ) 넣어주기
-			// tagNo는 seq.nextval
-			
-			
-		} else {
-			//태그로 불러오기
-			
-			List<BoardVo> accountList =  boardVo.getAccountList();
-			for (BoardVo vo : accountList) {
-				
-				System.out.println("&&& 업데이트 장소 직전");
-				dao.updatePlace(vo);
-			
-			}
-		
-			
-		}
+		if(boardVo.getTagName()==null||("").equals(boardVo.getTagName())) {
+	         
+	         
+	      } else {
+	         
+
+	         if(boardVo.getTagNo()==null||("").equals(boardVo.getTagNo())) {
+	            //날짜로 불러오기
+	            // accountNo 마다 tagNo ( acc_tag_tbl ) 넣어주기
+	            // tagNo는 seq.nextval
+	            System.out.println("찌거바"+ boardVo);
+	             BoardVo tempTag;
+	            tempTag = dao.checkTag(boardVo);
+	            if(tempTag == null) {
+	               tempTag = dao.insertTag(boardVo);
+	               String tagNo=tempTag.getTagNo();
+	               boardVo.setTagNo(tagNo);
+	               List<BoardVo> accountList  = boardVo.getAccountList();
+	               for(BoardVo vo : accountList){
+	                  vo.setTagNo(tagNo);
+	                  dao.connectTagGroup(vo);   
+	               }
+	               
+	            } else {
+	               
+	               
+	            }
+	            
+	         } else {
+	            //태그로 불러오기
+	         }
+	         
+	         List<BoardVo> accountList =  boardVo.getAccountList();
+	         for (BoardVo vo : accountList) {
+	            
+	            System.out.println("&&& 업데이트 장소 직전");
+	            dao.updatePlace(vo);
+	         
+	         }
+	         
+	         
+	      }
+	      
+	
+		String boardNo = dao.addPost(boardVo);
 		
 		
 		//파일
@@ -460,6 +491,22 @@ public class BoardService {
 		List<BoardVo> accountList = dao.getAccountBookByDate(boardVo);
 		return accountList;
 	}
-	
+
+//	public List<BoardVo> getAccountbookList(String AccountbookList){
+//
+//		AccountbookList = AccountbookList.substring(1);
+//		String[] array = AccountbookList.split(",");
+//
+//		ArrayList<String> Acclist = new ArrayList<>();
+//
+//		for(String item : array) {
+//			Acclist.add(item);
+//		}
+//
+//		Map map = new HashMap();
+//		map.put("Acclist", Acclist);
+//
+//		return dao.getAccountbookList(map);
+//	}
 }
 	

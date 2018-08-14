@@ -28,7 +28,8 @@
 	<div class="text-left mt-5 searchlist">	
 
 		<ul class=" mt-5 p-0">
-		<c:forEach items="${searchList }" var="Sea">
+		<!-- 생각해보기 !!! -->
+		<c:forEach items="${searchList}" var="Sea">
 
 			<li class="dom">
 				<div class="card searchClub text-white bg-primary mb-3 text-center w-30 mx-4 p-2"  style="background-color: white; ">
@@ -36,13 +37,21 @@
 				  <div class="card-body">
 				    <h6 class="card-title text-center" style="width: 400px">${Sea.groupExplain}</h6>
 				  </div>
-				  
-				  <a class="card-text text-center">
-						<button type="button" id="${Sea.groupNo}" name="join" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter2">모임 신청하기</button>
-				    </a>
-				    
+				  <c:choose>
+				  <c:when test="${empty Sea.isJoin}">
+				      <a class="card-text text-center">
+						 <button type="button" id="${Sea.groupNo}" name="join" class="btn btn-success btn-sm" data-toggle="modal" data-target="#exampleModalCenter2">모임 신청하기</button>
+				      </a>
+				  </c:when>
+				  <c:otherwise>
+				      <a class="card-text text-center">
+				      <button type="button" class="btn btn-info btn-sm">이미가입한 모임입니다</button>
+				      </a>
+				  </c:otherwise>   
+				  </c:choose> 
 				  </div>
 			</li>
+		
 			</c:forEach>
 						
 		</ul>
@@ -83,11 +92,12 @@
 
 <script type="text/javascript">
  $('.dom').on("click","button",function(){
-	 
-	console.log("연결");
+
+	 console.log("연결");
 	var groupNo = $(this).attr("id");
 	console.log(groupNo);
 	 $("#giveNo").val(groupNo); 
+	
 	
 });
  

@@ -21,6 +21,17 @@ public class ReportController {
     @Autowired
     ModuGroupService groupService;
 
+    @RequestMapping(value = "/reportDataCheck/{groupNo}", method = RequestMethod.GET)
+    public String reportDataCheck(@PathVariable int groupNo) {
+        System.out.println("데이터체크 in");
+        Map<String,Object> map = reportService.reportDataCheck(groupNo);
+        System.out.println("fromYear은 0인가 : "+map.get("fromYear"));
+        if (map.get("fromYear").equals("0")){
+            return "redirect:/reportError/" + groupNo;
+        }else {
+            return "redirect:/reportbyperiod/" + groupNo + "/" + map.get("fromYear") + "/" + map.get("fromMonth") + "/" + map.get("toYear") + "/" + map.get("toMonth");
+        }
+    }
 
     @RequestMapping(value = "/reportbyperiod/{groupNo}/{fromYear}/{fromMonth}/{toYear}/{toMonth}", method = RequestMethod.GET)
     public String reportByPeriod(@PathVariable String fromYear, @PathVariable String fromMonth, @PathVariable String toYear, @PathVariable String toMonth, @PathVariable int groupNo, Model model, HttpSession session) {
@@ -67,7 +78,7 @@ public class ReportController {
     }
 
     @RequestMapping(value = "/reportbytag/{crtPage}/{tagNo}", method = RequestMethod.GET)
-    public String reportByTag(@PathVariable int crtPage,@PathVariable int tagNo, HttpSession session, Model model) {
+    public String reportByTag(@PathVariable int crtPage, @PathVariable int tagNo, HttpSession session, Model model) {
         //모임 카테고리
         ModuUserVo userVo = (ModuUserVo) session.getAttribute("authUser");
         List<ModuGroupVo> gList = groupService.selectGroup(userVo.getUserNo());
@@ -87,11 +98,11 @@ public class ReportController {
         model.addAttribute("tagNo", tagNo);
         model.addAttribute("crtPage", crtPage);
         model.addAttribute("groupNo", userVo.getGroupNo());
-        model.addAttribute("pagingList",map.get("pagingList"));
-        model.addAttribute("prev",map.get("prev"));
-        model.addAttribute("next",map.get("next"));
-        model.addAttribute("endPageBtnNo",map.get("endPageBtnNo"));
-        model.addAttribute("startPageBtnNo",map.get("startPageBtnNo"));
+        model.addAttribute("pagingList", map.get("pagingList"));
+        model.addAttribute("prev", map.get("prev"));
+        model.addAttribute("next", map.get("next"));
+        model.addAttribute("endPageBtnNo", map.get("endPageBtnNo"));
+        model.addAttribute("startPageBtnNo", map.get("startPageBtnNo"));
         System.out.println("태그 리스트 나온값 : " + map.get("tagList").toString());
         System.out.println("accountbookList 나온값 : " + map.get("accountbookListByTag").toString());
         return "/report/report_by_tag";
@@ -100,9 +111,9 @@ public class ReportController {
 
     @RequestMapping(value = "/report/getTagListForPaging", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> getTagListForPaging(@ModelAttribute ReportVo reportVo) {
+    public Map<String, Object> getTagListForPaging(@ModelAttribute ReportVo reportVo) {
         System.out.println("ajax페이징 컨트롤러 in");
-        Map<String,Object> map = reportService.getTagListForPaging(reportVo);
+        Map<String, Object> map = reportService.getTagListForPaging(reportVo);
         System.out.println(map.get("pagingList").toString());
         return map;
     }

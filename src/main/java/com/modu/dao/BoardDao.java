@@ -1,6 +1,7 @@
 package com.modu.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -223,6 +224,24 @@ public class BoardDao {
 		
 		 List<BoardVo> accountList =  sqlsession.selectList("boardDB.getAccountListByDate",boardVo);
 		return accountList;
+	}
+
+//	public List<BoardVo> getAccountbookList(Map map){
+//		return sqlsession.selectList("boardDB.getAccountbookList",map);
+//	}
+	public BoardVo checkTag(BoardVo boardVo) {
+		//태그 존재 여부 확인
+		return sqlsession.selectOne("boardDB.checkTag",boardVo);
+	}
+
+	public BoardVo insertTag(BoardVo boardVo) {
+		//태그 삽입
+		sqlsession.insert("boardDB.insertTag",boardVo);
+		return boardVo;
+	}
+
+	public void connectTagGroup(BoardVo boardVo) {
+		sqlsession.insert("boardDB.connectTagGroup",boardVo);
 	}
 }
 

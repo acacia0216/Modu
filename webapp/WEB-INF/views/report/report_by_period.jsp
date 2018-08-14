@@ -90,24 +90,51 @@
                 <table class="table" style="text-align: center; table-layout: fixed;"
                        id="firstHalfTable">
                 </c:if>
-                        <thead>
-                        <tr>
-                            <th scope="col" style="width: 127px;"></th>
-                            <c:if test="${fromYear eq toYear}">
-                                <c:forEach var="month" begin="${fromMonth}" end="${toMonth}">
-                                    <th scope="col">${month}월</th>
-                                </c:forEach>
-                            </c:if>
-                            <c:if test="${fromYear ne toYear}">
-                                <c:forEach var="month" begin="${fromMonth}" end='12'>
-                                    <th scope="col">${month}월</th>
-                                </c:forEach>
-                                <c:forEach var="month" begin="1" end="${toMonth}" varStatus="mont">
-                                    <th scope="col">${mont.count}월</th>
-                                </c:forEach>
-                            </c:if>
-                        </tr>
-                        </thead>
+                   <thead>
+<tr>
+    <th scope="col" style="width: 127px;"></th>
+    <c:if test="${fromYear eq toYear}">
+        <c:forEach var="month" begin="${fromMonth}" end="${toMonth}">
+            <c:if test="${month < 10}">
+                <th scope="col"><a
+                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년0${month}월">${month}월</a>
+                </th>
+            </c:if>
+            <c:if test="${month > 9}">
+                <th scope="col"><a
+                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년${month}월">${month}월</a>
+                </th>
+            </c:if>
+        </c:forEach>
+    </c:if>
+    <c:if test="${fromYear ne toYear}">
+        <c:forEach var="month" begin="${fromMonth}" end='12'>
+            <c:if test="${month < 10}">
+                <th scope="col"><a
+                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년0${month}월">${month}월</a>
+                </th>
+            </c:if>
+            <c:if test="${month > 9}">
+                <th scope="col"><a
+                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년${month}월">${month}월</a>
+                </th>
+            </c:if>
+        </c:forEach>
+        <c:forEach var="month" begin="1" end="${toMonth}" varStatus="mont">
+            <c:if test="${month < 10}">
+                <th scope="col"><a
+                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${toYear}년0${month}월">${mont.count}월</a>
+                </th>
+            </c:if>
+            <c:if test="${month > 9}">
+                <th scope="col"><a
+                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${toYear}년${month}월">${mont.count}월</a>
+                </th>
+            </c:if>
+        </c:forEach>
+    </c:if>
+</tr>
+</thead>
                         <tbody>
                         <c:forEach var="item" items="${reportListByCategory}" varStatus="index">
                             <tr>

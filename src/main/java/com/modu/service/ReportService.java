@@ -15,13 +15,33 @@ public class ReportService {
     ReportDao reportDao;
 
 
+    public Map<String, Object> reportDataCheck(int groupNo) {
+        System.out.println("데이터체크 service in 그룹번호 : " + groupNo);
+        Map<String, Object> outputMap = new HashMap<>();
+        String yearMonth = reportDao.getYearMonth(groupNo);
+        System.out.println("yearMonth는 비었는가 : "+yearMonth);
+        if (yearMonth == null) {
+            outputMap.put("fromYear","0");
+            return outputMap;
+        } else {
+            String[] tmp = yearMonth.split("/");
+            System.out.println(tmp[0] + "년" + tmp[1] + "월");
+
+            outputMap.put("fromYear", tmp[0]);
+            outputMap.put("fromMonth", tmp[1]);
+            outputMap.put("toYear", tmp[0]);
+            outputMap.put("toMonth", tmp[1]);
+            return outputMap;
+        }
+    }
+
     public Map<String, Object> reportByPeriod(int groupNo, String fromYear, String fromMonth, String toYear, String toMonth) {
 //        카테고리 리스트 가져오기
-    	List<Integer> categoryList = reportDao.getNonGroupCategoryList(groupNo);
+        List<Integer> categoryList = reportDao.getNonGroupCategoryList(groupNo);
         List<Integer> categoryList2 = reportDao.getCategory(groupNo);
         categoryList.addAll(categoryList2);
-        
-        System.out.println("카테고리 리스트 확인 : "+categoryList.toString());
+
+        System.out.println("카테고리 리스트 확인 : " + categoryList.toString());
         List<Object> reportListByCategory = new ArrayList<>();
         List<String> monthlySpend = new ArrayList<>();
         List<String> monthlyIncome = new ArrayList<>();
@@ -30,10 +50,10 @@ public class ReportService {
         int ty = Integer.parseInt(toYear);
         int fm = Integer.parseInt(fromMonth);
         int tm = Integer.parseInt(toMonth);
-        System.out.println("기간이 안나오나? "+fy+"/"+fm+"/"+ty+"/"+tm);
+        System.out.println("기간이 안나오나? " + fy + "/" + fm + "/" + ty + "/" + tm);
         if (fy == ty) {//년도가 같으면
             for (int categoryNo : categoryList) {//카테고리별로
-            	System.out.println("여기 들어오나 확인...1 카테고리번호 : "+categoryNo);
+                System.out.println("여기 들어오나 확인...1 카테고리번호 : " + categoryNo);
                 List<ReportVo> list = new ArrayList<>();
                 for (int i = fm; i <= tm; i++) {//시작월~끝월까지 데이터를 가져오고
                     Map<String, Object> inputMap = new HashMap<>();
@@ -43,22 +63,22 @@ public class ReportService {
                     inputMap.put("startDay", startDay);
                     inputMap.put("lastDay", lastDay);
                     inputMap.put("categoryNo", categoryNo);
-                    System.out.println("여기 들어오나 확인...2 인풋맵"+inputMap.toString());
+                    System.out.println("여기 들어오나 확인...2 인풋맵" + inputMap.toString());
                     ReportVo reportVo = reportDao.getReportByPeriod(inputMap);
                     if (reportVo == null) {//가져온값이 null 이면
                         reportVo = new ReportVo();//새로운객체를 생성하고
-                        System.out.println("여기 들어오나 확인...3 if문 들어옴 vo확인"+reportVo.toString());
+                        System.out.println("여기 들어오나 확인...3 if문 들어옴 vo확인" + reportVo.toString());
                         reportVo.setCategoryName(reportDao.getCategoryName(categoryNo));//카테고리이름만 넣어서
                         list.add(reportVo);//리스트에 추가해라
                     } else {//가져온 값이 null이 아니면
                         list.add(reportVo);//리스트에 바로 추가해라
                     }
-                    System.out.println("여기 들어오나 확인...4 리스트 확인"+list.toString());
+                    System.out.println("여기 들어오나 확인...4 리스트 확인" + list.toString());
                 }
                 if (tmpIsNull(list)) {//리스트가 비어있지 않으면
                     reportListByCategory.add(list);//list를 추가해라
                 }
-                System.out.println("여기 들어오나 확인...5 리스트 바이 카테고리 확인"+reportListByCategory.toString());
+                System.out.println("여기 들어오나 확인...5 리스트 바이 카테고리 확인" + reportListByCategory.toString());
             }
 
             for (int i = fm; i <= tm; i++) {//시작월~끝월까지
@@ -74,10 +94,11 @@ public class ReportService {
                 monthlyIncome.add(income);
                 String total = reportDao.getMonthlyTotal(inputMap);//월별 총합계를 가져와라
                 monthlyTotal.add(total);
-                System.out.println("여기 들어오나 확인...ms"+monthlySpend.toString());
-                System.out.println("여기 들어오나 확인...mi"+monthlyIncome.toString());
-                System.out.println("여기 들어오나 확인...mt"+monthlyTotal.toString());
+                System.out.println("여기 들어오나 확인...ms" + monthlySpend.toString());
+                System.out.println("여기 들어오나 확인...mi" + monthlyIncome.toString());
+                System.out.println("여기 들어오나 확인...mt" + monthlyTotal.toString());
             }
+
         } else {//fromYear 과 toYear 년도가 같지 않으면
             for (int categoryNo : categoryList) {//카테고리별로
                 System.out.println("들어오냐 체크포인트 1번");
@@ -173,7 +194,7 @@ public class ReportService {
             prev = true;
         }
         boolean next = false;
-        System.out.println(endPageBtnNo+"*"+reportVo.getListCnt()+" = "+totalCount);
+        System.out.println(endPageBtnNo + "*" + reportVo.getListCnt() + " = " + totalCount);
         if (endPageBtnNo * reportVo.getListCnt() < totalCount) {
             next = true;
         }
@@ -192,7 +213,7 @@ public class ReportService {
         outputMap.put("tagList", reportDao.getTagList(userVo.getGroupNo()));
         outputMap.put("accountbookListByTag", accountbookListByTag);
         outputMap.put("pagingList", pagingList);
-        outputMap.put("crtPage",reportVo.getCrtPage());
+        outputMap.put("crtPage", reportVo.getCrtPage());
         outputMap.put("prev", prev);
         outputMap.put("next", next);
         outputMap.put("endPageBtnNo", endPageBtnNo);
@@ -212,7 +233,7 @@ public class ReportService {
             prev = true;
         }
         boolean next = false;
-        System.out.println(endPageBtnNo+"*"+reportVo.getListCnt()+" = "+totalCount);
+        System.out.println(endPageBtnNo + "*" + reportVo.getListCnt() + " = " + totalCount);
         if (endPageBtnNo * reportVo.getListCnt() < totalCount) {
             next = true;
         }
@@ -229,14 +250,14 @@ public class ReportService {
         }
         Map<String, Object> outputMap = new HashMap<>();
         outputMap.put("pagingList", pagingList);
-        outputMap.put("crtPage",reportVo.getCrtPage());
+        outputMap.put("crtPage", reportVo.getCrtPage());
         outputMap.put("prev", prev);
         outputMap.put("next", next);
         outputMap.put("endPageBtnNo", endPageBtnNo);
         outputMap.put("startPageBtnNo", startPageBtnNo);
         return outputMap;
     }
-    
+
 
     public boolean tmpIsNull(List<ReportVo> tmp) {
         int count = 0;
@@ -264,5 +285,5 @@ public class ReportService {
         String lastDate = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(lastDay);
         return lastDate;
     }
-    
+
 }

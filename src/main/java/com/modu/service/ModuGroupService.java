@@ -91,8 +91,57 @@ public class ModuGroupService {
 		return groupDao.selectGroupImg(groupNo);
 	}
 
-	public List<ModuGroupVo> searchGroup(String gSearch) {
-		return groupDao.searchGroup(gSearch);
+	public List<ModuGroupVo> searchGroup(String gSearch,int userNo) {
+		
+		
+		//검색한 그룹중 내가 가입한 그룹이 있을때 신청 못하도록 걸러주기 
+		List<ModuGroupVo> SList = groupDao.searchGroup(gSearch);
+		List<ModuGroupVo> GList = groupDao.selectGroup(userNo);
+		
+	    // 1. 검색한 것중 그룹 넘버 찾기 
+		/*int i =1;
+		int []sNo = new int[100000];
+		for(ModuGroupVo svo : SList) {
+			System.out.println(svo.getGroupNo());
+			sNo[i] = svo.getGroupNo();
+			System.out.println(sNo[i]);
+			i++;
+		}
+		
+		// 2. 내가 가지고 있는 그룹 넘버 찾기 
+		int j =1;
+		int []gNo = new int[100000];
+		for(ModuGroupVo gvo : GList) {
+			System.out.println(gvo.getGroupNo());
+			gNo[j] = gvo.getGroupNo();
+			System.out.println(gNo[j]);
+			j++;
+		}*/
+		//int[]m = new  int [10000];
+		
+	 	// 비교하기 
+//		for (int s =0; s<sNo.length;s++ ) {
+//			for(int g=0; g<gNo.length;g++) {
+//				
+//				if(sNo.equals(gNo)) {
+//					m[i] = 
+//				}
+//			}
+//			
+//		} 
+		for (ModuGroupVo svo : SList ) {
+			for(ModuGroupVo gvo : GList) {
+				
+				if(svo.getGroupNo() == gvo.getGroupNo()) {
+					svo.setIsJoin("yes");
+				}
+			}
+		}
+	 
+		
+		
+		
+		return  SList;            
 	}
 
 	public ModuGroupVo insertJoin(UserGroupVo usergroupvo) {

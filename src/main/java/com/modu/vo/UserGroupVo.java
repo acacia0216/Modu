@@ -8,7 +8,7 @@ public class UserGroupVo {
 	private String joinDate; //신청하고 총무수락시 날짜
 	private String joinMessage; //신청할때 자기소개
 	private String joinState; //신청상태 
-	private String userName; //조인
+	private String userName; //조인 
 
 	
 	
@@ -24,16 +24,16 @@ public class UserGroupVo {
 		this.joinState = joinState;
 		this.userName = userName;
 	}
-
+	
 	public String getUserName() {
 		return userName;
 	}
-
+	
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-
-
+	
+	
 	public int getUser_groupNo() {
 		return user_groupNo;
 	}
