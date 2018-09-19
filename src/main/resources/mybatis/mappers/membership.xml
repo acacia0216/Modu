@@ -3,50 +3,144 @@
 
 <mapper namespace="membership">
 
-<update id="insertMembership" parameterType="GroupVo">
-		<![CDATA[
-		update group_tbl
-		set memberFeeAmount = #{memberFeeAmount},
-        memberFeeDate = #{memberFeeDate},    
-        memberFeeinterval = #{memberFeeinterval},    
-        groupBank = #{groupBank},    
-        groupAccount = #{groupAccount},    
-        groupAccountHolder = #{groupAccountHolder}    
-        where groupNo =#{groupNo}      
+	<update id="updateAccount" parameterType="GroupVo">
+	      <![CDATA[
+		      update group_tbl
+		      set groupBank = #{groupBank},    
+		      groupAccount = #{groupAccount},    
+		      groupAccountHolder = #{groupAccountHolder}    
+		      where groupNo =#{groupNo}      
+	      ]]>
+	</update>
+	
+	<select id="selectMembership"  parameterType="int"  resultType="GroupVo">
+	    <![CDATA[
+            Select groupNo,groupBank,groupAccount,groupAccountHolder
+            from group_tbl
+            where groupNo=#{groupNo}
+	     ]]>
+	</select>
+
+
+	<select id="getMemberfeeList"  parameterType="MembershipVo"  resultType="MembershipVo">
+		<![CDATA[        
+			select * 
+			from memberfee_tbl join user_group_tbl using (user_groupno) join user_tbl using(userno)
+			where feegroupname like #{feeGroupName} and groupno=#{groupNo}
+	    ]]>
+	</select>
+	
+	<select id="getMemberfeeCardList"  parameterType="int"  resultType="MembershipVo">
+		<![CDATA[        
+			select memberfeeNo,feeGroupName
+			from (  select memberfeeNo,feeGroupName
+			        from memberfee_tbl join user_group_tbl using (user_groupno)
+			        where groupno=#{groupNo} and feeGroupName is not null)	        
+			where rowid IN (SELECT MAX(rowid) 
+			                from (  	select memberfeeNo,feeGroupName
+			                            from memberfee_tbl join user_group_tbl using (user_groupno)
+			                            where groupno=#{groupNo} and feeGroupName is not null)
+			                group by feeGroupName)
+			order by memberfeeNo desc
+	    ]]>
+	</select>
+	
+	<select id="getMemberfeeCardInfo"  parameterType="int"  resultType="MembershipVo">
+		<![CDATA[        
+			select feegroupname, sum(nvl(paymentfee,0)) paymentfee, sum(nvl(paymentamount,0)) paymentamount, to_char(max(paymentdate),'yyyy"년" mm"월" dd"일"') paymentday
+			from memberfee_tbl join user_group_tbl using (user_groupno)
+			where groupno=#{groupNo} and feegroupname is not null
+			group by feegroupname
+	    ]]>
+	</select>
+	
+	<select id="getInsertMemberfeeList"  parameterType="Map"  resultType="MembershipVo">
+		<![CDATA[        
+			select *
+		]]>	
+			<if test="mode == 'byRank'">
+		    	from rank_tbl
+			</if>
+			<if test="mode == 'byName'">
+		    	from user_group_tbl join user_tbl using(userno)
+			</if>		
+		<![CDATA[ 
+			where groupno=#{groupNo}
+	    ]]>
+	</select>
+	
+	<select id="checkFeeGroupName"  parameterType="MembershipVo"  resultType="MembershipVo">
+		<![CDATA[        
+			select *
+			from memberfee_tbl join user_group_tbl using (user_groupno)
+			where feegroupname=#{feeGroupName} and groupno=#{groupNo}
+	    ]]>
+	</select>
+	
+	<insert id="insertMemberfeeByRank" parameterType="Map">	
+		<![CDATA[ 
+			insert into memberfee_tbl
+			select seq_memberfeeno.nextval,#{rankPaymentFee},#{paymentDate},null,null,#{feeGroupName},user_groupno
+			from user_group_tbl
+			where groupno=#{groupNo} and rankno=#{rankNo}
+		]]>
+	</insert>
+	
+	<insert id="insertMemberfeeByName" parameterType="Map">	
+		<![CDATA[ 
+			insert into memberfee_tbl values(	seq_memberfeeno.nextval,												
+												#{paymentFee},
+												#{paymentDate},
+												null,
+												null,
+												#{feeGroupName},
+												#{user_groupNo})
+		]]>
+	</insert>
+	
+	<delete id="deleteMemberfee" parameterType="MembershipVo">
+		<![CDATA[ 
+			delete from memberfee_tbl
+			where memberfeeno in (  select memberfeeno
+			                        from memberfee_tbl join user_group_tbl using(user_groupno)
+			                        where groupno=#{groupNo}) 
+			      and feeGroupName like #{feeGroupName}
+		]]>
+	</delete>
+	
+	<delete id="delMember" parameterType="int">
+		<![CDATA[ 
+			delete from memberfee_tbl
+			where user_groupno = #{user_groupno}
+		]]>
+	</delete>
+	
+	<update id="rcvMemberfee" parameterType="MembershipVo">
+		<![CDATA[ 
+			update memberfee_tbl
+			set paymentAmount = #{paymentFee},   
+				paymentDay = sysdate  
+			where memberfeeNo=#{memberfeeNo}
 		]]>
 	</update>
 	
+	<insert id="insertToAccountbook" parameterType="MembershipVo">
+		<![CDATA[
+			insert into accountbook_tbl
+			select seq_accountbookno.nextval,sysdate,concat('회비 - ',username),null,#{paymentFee},null,null,null,11,#{groupNo}
+			from memberfee_tbl join user_group_tbl using (user_groupno) join user_tbl using(userno)
+			where memberfeeNo=#{memberfeeNo}
+	   	]]>
+	</insert>
 	
-<insert id="insertPayment" parameterType="MembershipVo">
-
-       <![CDATA[
-		    insert into memberfee_tbl(memberfeeNo,user_groupNo,paymentFee,paymentDate)
-		    VALUES(seq_memberfeeNo.NEXTVAL
-		     ,#{user_groupNo}
-             ,#{paymentFee}
-             ,#{paymentDate})
-        ]]>
-
-</insert>
-
-<select id="selectMembership"  parameterType="int"  resultType="GroupVo">
-	 <![CDATA[
-             Select groupNo,memberFeeAmount,memberFeeDate,groupBank,groupAccount,groupAccountHolder,memberFeeinterval
-               from group_tbl
-               where groupNo=#{groupNo}
-             ]]>
-	</select>
-	
-<select id="selectMembershipList"  parameterType="int"  resultType="MembershipVo">
-	 <![CDATA[
-            select memberfeeNo,user_groupNo,paymentFee,paymentDate,userName
-            from USER_GROUP_TBL UG ,USER_TBL U , MEMBERFEE_TBL M
-            where UG.USERNO = U.USERNO 
-            and UG.USER_GROUPNO = M.USER_GROUPNO
-            and UG.GROUPNO=#{groupNo}
-             ]]>
-	</select>
-
-	
+	<insert id="insertNews" parameterType="com.modu.vo.NewsVo">
+		<![CDATA[
+			insert into news_tbl
+			values(seq_newsno.nextval,
+					#{news},
+					sysdate,
+					#{groupNo})
+		]]>
+	</insert>
 	
 </mapper>

@@ -9,9 +9,10 @@
 	 <typeAlias alias="UserGroupVo" type="com.modu.vo.UserGroupVo" />
 	 <typeAlias alias="reportVo" type="com.modu.vo.ReportVo" />
 	  <typeAlias alias="MembershipVo" type="com.modu.vo.MembershipVo" />
+	   <typeAlias alias="addressVo" type="com.modu.vo.AccountbookAddressVo" />
+	   <typeAlias alias="RankVo" type="com.modu.vo.RankVo" />
   </typeAliases>
 
-    	
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
 		<mapper resource="mybatis/mappers/accountbook.xml" />
@@ -20,6 +21,7 @@
 		<mapper resource="mybatis/mappers/report.xml" />
 		<mapper resource="mybatis/mappers/groupMain.xml" />
 		<mapper resource="mybatis/mappers/membership.xml" />
+		<mapper resource="mybatis/mappers/placeRecommend.xml" />
 	</mappers>
 	
 </configuration>

@@ -17,7 +17,7 @@
     <title>모두의 가계부</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/bootstrap.css">
     <!-- stylesheet 외부의 css 가져오겟다 -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/Modu_sh.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/Modu.css">
     <!-- stylesheet 외부의 css 가져오겟다 -->
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
 
@@ -31,8 +31,7 @@
 <div class="container">
 
 
-    <div align="center" style="margin-top: 50px">
-
+    <div align="center" style="margin-top: 40px;margin-bottom: 10px;">
         <input type="button" value="◀" id="fromYearPrev" style="border: none; background-color: white;">
         <input type="text" id="fromYearMonthOutput" readonly="readonly" class="form_month" data-date=""
                data-date-format="yyyy년 MM" data-link-field="dtp_input3" data-link-format="yyyy MM"
@@ -43,18 +42,131 @@
                data-date-format="yyyy년 MM" data-link-field="dtp_input3" data-link-format="yyyy MM"
                style="text-align: center;border: none;">
         <input type="button" value="▶" id="toYearNext" style="border: none; background-color: white;">
-        <button type="button" id="searchPeriod">검색</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" style="" id="searchPeriod">검색</button>
     </div>
-    <br>
+    
     <div class="mb-3">
         <div>
-            <br>
-            <div align="center"><span style="font-size: 30px"
-                                      id="periodTitle"><strong>${fromYear}년 ${fromMonth}월 ~ ${toYear}년 ${toMonth}월 보고서</strong></span>
-            </div>
-            <br>
-            <br>
-            <c:if test="${!empty monthlySpend}">
+            <div class="mx-auto mb-2" id="graph1" style="width: 100%; height: 400px;"></div>
+           <br>
+            <div style="width: 1240px;">
+                <c:if test="${!empty reportListByCategory}">
+	                <c:if test="${reportListByCategory.get(0).size() > 9}">
+	                	<table class="table table-striped table-sm smContent" style="text-align: center; table-layout: fixed; font-size: 13px;"id="firstHalfTable">
+	                </c:if>
+                
+                <c:if test="${reportListByCategory.get(0).size() < 10}">
+                	<table class="table table-striped table-sm smContent" style="text-align: center; table-layout: fixed;" id="firstHalfTable">
+                </c:if>
+                
+                <thead>
+				<tr>
+				    <th scope="col" style="width: 127px;"></th>
+				    <c:if test="${fromYear eq toYear}">
+				        <c:forEach var="month" begin="${fromMonth}" end="${toMonth}">
+				            <c:if test="${month < 10}">
+				                <th scope="col">
+				                <a href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년0${month}월" style="color:black">${month}월</a>
+				                </th>
+				            </c:if>
+				            <c:if test="${month > 9}">
+				                <th scope="col"><a
+				                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년${month}월" style="color:black">${month}월</a>
+				                </th>
+				            </c:if>
+				        </c:forEach>
+				    </c:if>
+				    <c:if test="${fromYear ne toYear}">
+				        <c:forEach var="month" begin="${fromMonth}" end='12'>
+				            <c:if test="${month < 10}">
+				                <th scope="col"><a
+				                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년0${month}월">${month}월</a>
+				                </th>
+				            </c:if>
+				            <c:if test="${month > 9}">
+				                <th scope="col"><a
+				                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년${month}월">${month}월</a>
+				                </th>
+				            </c:if>
+				        </c:forEach>
+				        <c:forEach var="month" begin="1" end="${toMonth}" varStatus="mont">
+				            <c:if test="${month < 10}">
+				                <th scope="col"><a
+				                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${toYear}년0${month}월">${mont.count}월</a>
+				                </th>
+				            </c:if>
+				            <c:if test="${month > 9}">
+				                <th scope="col"><a
+				                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${toYear}년${month}월">${mont.count}월</a>
+				                </th>
+				            </c:if>
+				        </c:forEach>
+				    </c:if>
+				</tr>
+</thead>
+                        <tbody>
+                        <c:forEach var="item" items="${reportListByCategory}" varStatus="index">
+                            <tr>
+                                <td class="smContent">${item.get(0).categoryName}</td>
+                                <c:forEach var="list" items="${item}" varStatus="index2">
+                                    <c:if test="${list.totalSpend eq 0 and list.monthNo ne 0}">
+                                        <td class="smContent" id="data${index.index}${index2.index}">+${list.totalIncome}</td>
+                                    </c:if>
+                                    <c:if test="${list.totalIncome eq 0 and list.monthNo ne 0}">
+                                        <td class="smContent" id="data${index.index}${index2.index}">-${list.totalSpend}</td>
+                                    </c:if>
+                                    <c:if test="${list.totalIncome eq 0 and list.totalSpend eq 0}">
+                                        <td class="smContent">0</td>
+                                    </c:if>
+                                </c:forEach>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                   <!--      <tfoot> -->
+                        <tr style="border-top: 2px black solid;">
+                            <th><font color="blue">수입</font></th>
+                                <%--for문--%>
+                            <c:forEach var="income" items="${monthlyIncome}" varStatus="index">
+                                <c:if test="${income gt 0}">
+                                    <td class="smContent" style="color:blue;" id="totalIncome${index.index}">+${income}</td>
+                                </c:if>
+                                <c:if test="${income eq 0}">
+                                    <td class="smContent">${income}</td>
+                                </c:if>
+                            </c:forEach>
+                        </tr>
+                        <tr>
+                            <th><font color="red">지출</font></th>
+                                <%--for문--%>
+                            <c:forEach var="spend" items="${monthlySpend}" varStatus="index">
+                                <c:if test="${spend gt 0}">
+                                    <td class="smContent" style="color:red;" id="totalSpend${index.index}">-${spend}</td>
+                                </c:if>
+                                <c:if test="${spend eq 0}">
+                                    <td class="smContent">${spend}</td>
+                                </c:if>
+                            </c:forEach>
+                        </tr>
+                        <tr>
+                            <th><font color="black">합계</font></th>
+                                <%--for문--%>
+                            <c:forEach var="total" items="${monthlyTotal}" varStatus="index">
+                                <c:if test="${total eq 0}">
+                                    <td class="smContent">${total}</td>
+                                </c:if>
+                                <c:if test="${total gt 0}">
+                                    <td class="smContent" style="color: blue;" id="totalSum${index.index}">+${total}</td>
+                                </c:if>
+                                <c:if test="${total lt 0}">
+                                    <td class="smContent" style="color:red;" id="totalSum${index.index}">${total}</td>
+                                </c:if>
+                            </c:forEach>
+                            </c:if>
+                        </tr>
+                       <!--  </tfoot> -->
+                    </table>
+                    
+                    <c:if test="${!empty monthlySpend}">
                 <c:set var="periodTotalSpend" value="0"/>
                 <c:set var="periodTotalIncome" value="0"/>
                 <c:forEach var="i" items="${monthlySpend}">
@@ -64,144 +176,26 @@
                     <c:set var="periodTotalIncome" value="${periodTotalIncome+i}"/>
                 </c:forEach>
             </c:if>
-            <table align="right" style="font-size: 25px;margin-right: 70px;">
+            <table align="right" class=" smTitle">
                 <tr>
                     <td>총 수입 :</td>
                     <td style="color:blue;" align="center" id="periodTotalIncome"></td>
                     <td>원</td>
-                </tr>
-                <tr>
+         		</tr>
+         		<tr>
                     <td>총 지출 :</td>
                     <td style="color:red;" align="center" id="periodTotalSpend"></td>
                     <td>원</td>
                 </tr>
             </table>
             <div style="clear: both"></div>
-            <br>
-            <br>
-            <div class="mx-auto" id="graph1" style="width: 90%; height: 500px;"></div>
-            <div style="width: 1173px;">
-                <c:if test="${!empty reportListByCategory}">
-                <c:if test="${reportListByCategory.get(0).size() > 9}">
-                <table class="table" style="text-align: center; table-layout: fixed; font-size: 13px;"
-                       id="firstHalfTable">
-                </c:if>
-                <c:if test="${reportListByCategory.get(0).size() < 10}">
-                <table class="table" style="text-align: center; table-layout: fixed;"
-                       id="firstHalfTable">
-                </c:if>
-                   <thead>
-<tr>
-    <th scope="col" style="width: 127px;"></th>
-    <c:if test="${fromYear eq toYear}">
-        <c:forEach var="month" begin="${fromMonth}" end="${toMonth}">
-            <c:if test="${month < 10}">
-                <th scope="col"><a
-                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년0${month}월">${month}월</a>
-                </th>
-            </c:if>
-            <c:if test="${month > 9}">
-                <th scope="col"><a
-                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년${month}월">${month}월</a>
-                </th>
-            </c:if>
-        </c:forEach>
-    </c:if>
-    <c:if test="${fromYear ne toYear}">
-        <c:forEach var="month" begin="${fromMonth}" end='12'>
-            <c:if test="${month < 10}">
-                <th scope="col"><a
-                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년0${month}월">${month}월</a>
-                </th>
-            </c:if>
-            <c:if test="${month > 9}">
-                <th scope="col"><a
-                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${fromYear}년${month}월">${month}월</a>
-                </th>
-            </c:if>
-        </c:forEach>
-        <c:forEach var="month" begin="1" end="${toMonth}" varStatus="mont">
-            <c:if test="${month < 10}">
-                <th scope="col"><a
-                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${toYear}년0${month}월">${mont.count}월</a>
-                </th>
-            </c:if>
-            <c:if test="${month > 9}">
-                <th scope="col"><a
-                        href="${pageContext.request.contextPath }/accountbook/${groupNo}/${toYear}년${month}월">${mont.count}월</a>
-                </th>
-            </c:if>
-        </c:forEach>
-    </c:if>
-</tr>
-</thead>
-                        <tbody>
-                        <c:forEach var="item" items="${reportListByCategory}" varStatus="index">
-                            <tr>
-                                <td>${item.get(0).categoryName}</td>
-                                <c:forEach var="list" items="${item}" varStatus="index2">
-                                    <c:if test="${list.totalSpend eq 0 and list.monthNo ne 0}">
-                                        <td id="data${index.index}${index2.index}">+${list.totalIncome}</td>
-                                    </c:if>
-                                    <c:if test="${list.totalIncome eq 0 and list.monthNo ne 0}">
-                                        <td id="data${index.index}${index2.index}">-${list.totalSpend}</td>
-                                    </c:if>
-                                    <c:if test="${list.totalIncome eq 0 and list.totalSpend eq 0}">
-                                        <td>0</td>
-                                    </c:if>
-                                </c:forEach>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                        <tfoot>
-                        <tr style="border-top: 2px black solid;">
-                            <th>수입</th>
-                                <%--for문--%>
-                            <c:forEach var="income" items="${monthlyIncome}" varStatus="index">
-                                <c:if test="${income gt 0}">
-                                    <td style="color:blue;" id="totalIncome${index.index}">+${income}</td>
-                                </c:if>
-                                <c:if test="${income eq 0}">
-                                    <td>${income}</td>
-                                </c:if>
-                            </c:forEach>
-                        </tr>
-                        <tr>
-                            <th>지출</th>
-                                <%--for문--%>
-                            <c:forEach var="spend" items="${monthlySpend}" varStatus="index">
-                                <c:if test="${spend gt 0}">
-                                    <td style="color:red;" id="totalSpend${index.index}">-${spend}</td>
-                                </c:if>
-                                <c:if test="${spend eq 0}">
-                                    <td>${spend}</td>
-                                </c:if>
-                            </c:forEach>
-                        </tr>
-                        <tr>
-                            <th>합계</th>
-                                <%--for문--%>
-                            <c:forEach var="total" items="${monthlyTotal}" varStatus="index">
-                                <c:if test="${total eq 0}">
-                                    <td>${total}</td>
-                                </c:if>
-                                <c:if test="${total gt 0}">
-                                    <td style="color: blue;" id="totalSum${index.index}">+${total}</td>
-                                </c:if>
-                                <c:if test="${total lt 0}">
-                                    <td style="color:red;" id="totalSum${index.index}">${total}</td>
-                                </c:if>
-                            </c:forEach>
-                            </c:if>
-                        </tr>
-                        </tfoot>
-                    </table>
+            
             </div>
         </div>
         <br>
     </div>
-    <div align="Right" style="margin-right: 80px;margin-top: 30px;">
-        <input type="button" name="" value="보고서 출력" onClick="fnPrint()">
+    <div align="Right" style="margin-top: 10px;">
+        <input type="button" class="btn btn-outline-primary btn-sm" name="" value="보고서 출력" onClick="fnPrint()">
     </div>
     <br>
     <input type="hidden" name="" id="fromYear" value="${fromYear}">
@@ -421,12 +415,20 @@
             title: '',
             animate: true,
             // seriesColors:['#ff0000','#0000ff'],
+            seriesColors:['#99CAFF','#EE7C7C'],
+            grid: {
+            	background: '#FFFFFF',
+            	gridLineColor: '#DDDDDD',
+            	borderColor: '#CCCCCC',
+            	shadow: false
+            },
             legend: {
                 renderer: $.jqplot.EnhancedLegendRenderer,//범례 설정
                 show: true,//출력유무
                 placement: 'inside',//출력위치 설정
                 location: 'ne',
-                marginTop: '15px'
+                marginTop: '10px',
+                marginBottom: '10px'
             },
             series: [{//첫번째 그래프 설정
                 renderer: $.jqplot.BarRenderer//막대그래프로 출력
@@ -473,11 +475,19 @@
 
             axes: {//축 설정
                 xaxis: {
-                    renderer: $.jqplot.CategoryAxisRenderer
-                    , ticks: tickMonth
+                    renderer: $.jqplot.CategoryAxisRenderer,
+                    ticks: tickMonth,
+                    tickOptions: {
+                    	fontFamily: 'Nanum Gothic, Serif',
+                        fontSize: '0.9em'                    
+                    }
                 },
                 yaxis: {
-                    tickOptions: {formatString: "%'d"}
+                    tickOptions: {
+                    	formatString: "%'d",
+                    	fontFamily: 'Nanum Gothic, Serif',
+                        fontSize: '0.9em'
+                    }
                 }
             }
         });

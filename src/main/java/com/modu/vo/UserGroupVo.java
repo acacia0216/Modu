@@ -9,13 +9,14 @@ public class UserGroupVo {
 	private String joinMessage; //신청할때 자기소개
 	private String joinState; //신청상태 
 	private String userName; //조인 
-
+	private int rankNo; //조인 
+	private String rankName; //조인 
 	
 	
 	public UserGroupVo() {
 	}
-	public UserGroupVo(int user_groupNo, int userNo, int groupNo, String joinDate, String joinMessage,
-			String joinState,String userName) {
+	public UserGroupVo(int user_groupNo, int userNo, int groupNo, String joinDate, String joinMessage, String joinState,
+			String userName, int rankNo, String rankName) {
 		this.user_groupNo = user_groupNo;
 		this.userNo = userNo;
 		this.groupNo = groupNo;
@@ -23,21 +24,12 @@ public class UserGroupVo {
 		this.joinMessage = joinMessage;
 		this.joinState = joinState;
 		this.userName = userName;
+		this.rankNo = rankNo;
+		this.rankName = rankName;
 	}
-	
-	public String getUserName() {
-		return userName;
-	}
-	
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	
-	
 	public int getUser_groupNo() {
 		return user_groupNo;
 	}
-	
 	public void setUser_groupNo(int user_groupNo) {
 		this.user_groupNo = user_groupNo;
 	}
@@ -71,12 +63,31 @@ public class UserGroupVo {
 	public void setJoinState(String joinState) {
 		this.joinState = joinState;
 	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public int getRankNo() {
+		return rankNo;
+	}
+	public void setRankNo(int rankNo) {
+		this.rankNo = rankNo;
+	}
+	public String getRankName() {
+		return rankName;
+	}
+	public void setRankName(String rankName) {
+		this.rankName = rankName;
+	}
 	@Override
 	public String toString() {
 		return "UserGroupVo [user_groupNo=" + user_groupNo + ", userNo=" + userNo + ", groupNo=" + groupNo
 				+ ", joinDate=" + joinDate + ", joinMessage=" + joinMessage + ", joinState=" + joinState + ", userName="
-				+ userName + "]";
+				+ userName + ", rankNo=" + rankNo + ", rankName=" + rankName + "]";
 	}
+	
 	
 	
 

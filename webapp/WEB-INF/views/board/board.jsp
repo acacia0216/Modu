@@ -11,7 +11,9 @@
 	<title>모두의 가계부</title>
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/bootstrap.css"> <!-- stylesheet 외부의 css 가져오겟다 -->
 	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
-	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/Modu.css"> <!-- stylesheet 외부의 css 가져오겟다 --> 
+	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/Modu.css"> <!-- stylesheet 외부의 css 가져오겟다 -->
+	<script type="text/javascript"
+        src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=slvC1SL1B78rI5IoCUhs&submodules=geocoder"></script> 
 </head>
 <body style="overflow-x:hidden; overflow-y:auto;">
 
@@ -27,14 +29,14 @@
 
 <div class="container" >
 			
-<div class="mb-5 text-center">
+<%-- <div class="mb-5 text-center">
       <a href="${pageContext.request.contextPath }/board/${gvo.groupNo}/write" class="btn btn-lg btn-outline-primary" style="font-weight:bold; border:solid 2px; width:900px; ">
 						총무만 할 수 있는 '새 글쓰기'		
 		</a>
-</div>
+</div> --%>
 
 			
-<%-- <div class="mb-5 text-center">
+<%--  <div class="mb-5 text-center">
       <a href="${pageContext.request.contextPath }/board/${gvo.groupNo}/goCal" class="btn btn-lg btn-outline-secondary" style="font-weight:bold; border:solid 2px; width:900px; ">
 						달 력 연 습
 		</a>
@@ -44,14 +46,13 @@
       <a href="${pageContext.request.contextPath }/board/${gvo.groupNo}/goAuto" class="btn btn-lg btn-outline-secondary" style="font-weight:bold; border:solid 2px; width:900px; ">
 						오토 연 습
 		</a>
-</div>
-<div class="mb-5 text-center">
+</div> --%>
+<%-- <div class="mb-5 text-center">
       <a href="${pageContext.request.contextPath }/map" class="btn btn-lg btn-outline-secondary" style="font-weight:bold; border:solid 2px; width:900px; ">
 						지도 연 습
 		</a>
 </div>
 	 --%>
-	
 	<div id="postList" >
 		
 			
@@ -95,6 +96,33 @@
 				</div>
 			</div>
 			
+			
+			<!--지도 모달 -->
+					<div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+	
+									<h4 class="modal-title mt-2" id="exampleModalCenterTitle">&nbsp;지도</h4>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<span>&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+	
+	
+									<div class="form-group p-2" style="position: relative;">
+										<%-- <img id="map"  src="${pageContext.request.contextPath }/assets/images/map.png" class="w-100 mx-auto mt-3"> --%>
+										<div id="map" class="mt-2" style="width:450px;height:450px;"></div>
+									</div>
+	
+	
+								</div>
+	
+							</div>
+						</div>
+					</div>
+				
 			
 
 			<!-- Img Upload Modal -->
@@ -189,13 +217,22 @@
 
 		$(document).ready(function(){
 			
+			/*  콤마 찍기    */
+			   
+			
 			$('.menuTab').removeClass("active");
 			$("#btn_board").addClass("active");
 			
 			fetchBoard();
-
 		});
+		
+		
 	
+		
+		function comma(str) {
+		       str = String(str);
+		       return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,') + "원";
+		}
 		
 		
 		
@@ -222,6 +259,7 @@
 							if(val.likeState==1){
 								src ='${pageContext.request.contextPath}/assets/images/like_on.png';
 							} 
+							
 							render(val,"down",src);
 							fetchComment(val.boardNo);
 							fetchAccount(val.boardNo,val.tagNo);
@@ -250,19 +288,22 @@
 			  str= " ";
 			  str+= " <div id='board' data-del='board_"+vo.boardNo+"'  data-no='"+vo.boardNo +"'  class='card text-center w-75 mx-auto my-2'>";
 			  str+= "	<div class='card-header'>";
-			  str+= "		<h4 class='card-title mt-3'>" +vo.boardTitle +"</h4>";
+			  str+= "		<h4 class='card-title mt-3 lgTitle'>" +vo.boardTitle +"</h4>";
 			  str+= "		<div class='text-left ml-5'>" +vo.boardRegDate +"</div>";
 			  str+= "		<div class='text-right mr-5'>";
-			  str+= "			<a href='${pageContext.request.contextPath }/board/${authUser.groupNo}/modifyForm/"+vo.boardNo+"' class='btn btn-sm btn-secondary'>";
-			  str+= "			     수정	</a>	";
-			  str+= "			<button type='button' class='btn btn-sm btn-secondary' data-toggle='modal' data-target='#deleteModal'>";
-			  str+= "			     삭제	</button>";
+			  if(${authUser.userNo == gvo.manager}){
+				  str+= "			<a href='${pageContext.request.contextPath }/board/${authUser.groupNo}/modifyForm/"+vo.boardNo+"' class='btn btn-sm btn-secondary smContent'>";
+				  str+= "			     수정	</a>	";
+				  str+= "			<button type='button' class='btn btn-sm btn-secondary smContent' data-toggle='modal' data-target='#deleteModal'>";
+				  str+= "			     삭제	</button>";
+			  }
 			  str+= "		</div>";
 			  str+= "	    <div id='carouselExampleIndicators_"+vo.boardNo+"' class='carousel slide' data-ride='carousel'>";
-			  str+= "			<ol class='carousel-indicators'>";
-			  str+= "				<li data-target='#carouselExampleIndicators' data-slide-to='0' class='active' style='color: #00b0f0'></li>";	  
-			  str+= "				<li data-target='#carouselExampleIndicators' data-slide-to='1'></li>";
-			  str+= "				<li data-target='#carouselExampleIndicators' data-slide-to='2'></li>";
+			  str+= "			<ol id='indicator_"+vo.boardNo+"' class='carousel-indicators'>";
+			  str+= "				<li data-target='#carouselExampleIndicators' data-slide-to='0' class='active' style='color: #00b0f0'></li>";
+			  for(i=1; i < vo.imgList.length; i++){
+			  	str+= "				<li data-target='#carouselExampleIndicators' data-slide-to="+i+" ></li>";
+			  }
 			  str+= "			</ol>";
 			  
 			  
@@ -272,14 +313,14 @@
 			  //if(vo.imgList[0].saveName!=null){
 			  if(typeof(vo.imgList[0]) != 'undefined'){
 			  str+= "					<div class='carousel-item active'>";
-			  str+= "		   	 			<img class='d-block' src='${pageContext.request.contextPath }/upload/"+ vo.imgList[0].saveName+"' alt='First slide'>"; 
+			  str+= "		   	 			<img class='d-block' src='${pageContext.request.contextPath }/upload/"+ vo.imgList[0].saveName+"' alt='First slide' style='width:100%'>"; 
 			  str+= "					</div>";
 			  
 				  for(i=1; i < vo.imgList.length; i++){
 					  
 					  
 					  str+= "			<div class='carousel-item' >";
-					  str+= "				<img class='d-block' src='${pageContext.request.contextPath }/upload/"+ vo.imgList[i].saveName+"' alt='Second slide'>"; 
+					  str+= "				<img class='d-block' src='${pageContext.request.contextPath }/upload/"+ vo.imgList[i].saveName+"' alt='Second slide' style='width:100%'>"; 
 					  str+= "			</div>";
 					  
 					  
@@ -289,12 +330,13 @@
 			  } else {					
 				  
 				  str+= "					<div class='carousel-item active' data-imgboardno='"+vo.boardNo+"' id='btn_upload'  data-toggle='modal' data-target='#boardUploadModal' style='cursor:pointer;'>";
-				  str+= "		   	 			<img class='d-block'  src='${pageContext.request.contextPath }/assets/images/plus01.png' alt='First slide' style='width:100px; height:auto; margin-top:100px; margin-bottom:50px;'>";
+				  str+= "		   	 			<img class='d-block' src='${pageContext.request.contextPath }/assets/images/noneBoard.png' alt='First slide' style='width:100px; height:auto; margin-top:100px; margin-bottom:50px;'>";
 				  str+= "                        <div>";
-				  str+= "                         	<h3 style='color:#50c8ef; font-weight:bold;'> 멤버들과의 추억이 담긴 사진을 올려주세요</h3>";
+				  str+= "                         	<h3 class='smTitle'  style=' font-weight:bold;'> 사진이 없습니다.</h3>";
+				  str+= "                         	<h5 class='lgContent'  style='color:gray; font-weight:bold;'>멤버들과의 추억이 담긴 사진을 올려주세요</h3>";
 				  str+= "                         	<br><br><br>";
 				  str+= "                         </div>";
-				  str+= "					</div>";
+				  str+= "					</div> ";
 				  				
 				
 			  }
@@ -315,32 +357,32 @@
 			  
 			  
 			  str+= "	    <div class='text-right mr-5'>";
-			  str+= "	  		 <button type='button' id='btn_upload' data-imgboardno='"+vo.boardNo+"' class='btn btn-primary' data-toggle='modal' data-target='#boardUploadModal'>";
+			  str+= "	  		 <button type='button' id='btn_upload' data-imgboardno='"+vo.boardNo+"' class='btn btn-primary smContent' data-toggle='modal' data-target='#boardUploadModal'>";
 			  str+= "				   사진 추가하기 	";
 			  str+= "	 		 </button>";
-			  str+= "	    </div>";
+			  str+= "	    </div>"; 
 			  
 			  
 				
-			  str+= "	    <div class='card-body'>";
-			  str+= "	   		<div class='text-left p-5 mb-4' style='border:dashed black 1px ; width: 50%'>";
-			  str+= "	    	<pre class='card-text' id='boardContent' >"+ vo.boardContent + "</pre>";
+			  str+= "	    <div class='card-body p-5'>";
+			  str+= "	   		<div class='text-left p-2 mb-4' >";
+			  str+= "	    	<pre  style='white-space: pre-wrap;' class='card-text lgContent' id='boardContent' >"+ vo.boardContent + "</pre>";
 			  str+= "	    </div>";
 			  str+= "	    <div class='text-left my-3'>";
 			  if(vo.tagNo!=null){
-				  str+= "	       <span class='p-2' style='border:#54c9ad 2px solid; border-radius: 15px; '>";
+				  str+= "	       <span class='p-2 navText' style='border:#54c9ad 2px solid; border-radius: 15px; '>";
 				  str+= "	          #"+ vo.tagName+ "";
 				  str+= "	       </span>";
 			  }
 			  str+= "	    </div>";
 			  str+= "	    <div>";
-			  str+= "	      <table class='table table-sm text-center'>";
-			  str+= "	         <thead class='thead-light'>";
+			  str+= "	      <table class='table table-sm text-center smContent'>";
+			  str+= "	         <thead class='thead-light '>";
 			  str+= "	  	       <tr>";
 			  str+= "	   		     <th scope='col'>날짜</th>";
 			  str+= "	   		     <th scope='col'>사용내역</th>";
-			  str+= "	    	     <th scope='col' style='font-size:14pt;'>금액(원)</th>";
-			  str+= "	     	     <th scope='col' style='font-size:14pt;'>인원(명)</th>";
+			  str+= "	    	     <th scope='col' >금액</th>";
+			  str+= "	     	     <th scope='col' >인원(명)</th>";
 			  str+= "	   		     <th scope='col'>장소</th>";
 			  str+= "	     	     <th scope='col'>지도</th>";
 			  str+= "	  	       </tr>";
@@ -355,12 +397,12 @@
 			  
 			  
 			  
-			  str+= "	    <div class='card-footer p-1'> ";
+			  str+= "	    <div class='card-footer  p-1' style='background:transparent;'> ";
 			  str+= "	    	<div class='text-left my-2'>";
 			  str+= "	   			<span>";
 			  str+= "	 				  <button class='t-button p-1 ml-2'> <img id='like_"+vo.boardNo+"' data-likeno='"+vo.boardNo+"' width=50px src='"+src+"' data-state='"+(vo.likeState==null?0:vo.likeState)+"'> </button>";
 			  str+= "	  			</span>";
-			  str+= "	    		<span id='likeCount_"+vo.boardNo+"' class='ml-2'>";
+			  str+= "	    		<span id='likeCount_"+vo.boardNo+"' class='smContent ml-2'>";
 			  str+= "	  				"+vo.likeCount+"명의 회원이 좋아합니다.";
 			  str+= "	  			</span>";
 			  str+= "	        </div>";
@@ -369,15 +411,15 @@
 			  str+= "		<div>";
 			  str+= "	   		  <div class='input-group my-3'>";
 			  str+= "	 		 		<div class='input-group-prepend'>";
-			  str+= "	 				<span class='input-group-text' > ${authUser.userName} </span>";
+			  str+= "	 				<span class='input-group-text smContent' > ${authUser.userName} </span>";
 			  str+= "	  		  </div>";
-			  str+= "	 		  <textarea class='form-control' placeholder='댓글을 입력하세요' id='commentContent_"+vo.boardNo+"' aria-label='Recipient's username' aria-describedby='basic-addon2' />";
+			  str+= "	 		  <textarea class='form-control smContent' placeholder='댓글을 입력하세요' id='commentContent_"+vo.boardNo+"' aria-label='Recipient's username' aria-describedby='basic-addon2' />";
 			  str+= "	   		  <div class='input-group-append'>";
 			  str+= "	   				<button class='btn btn-outline-secondary' type='button' data-writeno="+vo.boardNo+"><img src='${pageContext.request.contextPath }/assets/images/write01.png'></button>";
 			  str+= "	   		  </div>";
 			  str+= "		</div>";
-			  str+= "		<div class='text-left my-3'><span>";
-			  str+= "			                       <span id='cmtCount_"+vo.boardNo+"' class='ml-3' style='color:gray;'>  댓글 "+vo.cmtCount+"개</span></div>";
+			  str+= "		<div class='text-left smContent my-3'><span>";
+			  str+= "			                       <span id='cmtCount_"+vo.boardNo+"' class='smContent ml-3' style='color:gray;'>  댓글 "+vo.cmtCount+"개</span></div>";
  			  str+= "	    	 <div id='cmtList_"+vo.boardNo+"' style=' overflow-x:hidden; overflow-y:auto;  max-height:720px;'>";
 			  
 			  str+= "	    	 </div>";
@@ -526,12 +568,26 @@
 				  
 				  
 		  }
+			
 			  
 		  $("#boardImg_"+boardNo).empty();
 		  $("#boardImg_"+boardNo).append(str);
+		  
+		  
+		  strstr=""; 
+		  strstr+= "				<li data-target='#carouselExampleIndicators' data-slide-to='0' class='active' style='color: #00b0f0'></li>";
+		  for(i=1; i < list.length; i++){
+			  strstr+= "				<li data-target='#carouselExampleIndicators' data-slide-to="+i+" ></li>";
+		  }
+	
+		  
+		  $("#indicator_"+boardNo).empty();
+		  $("#indicator_"+boardNo).append(strstr);
 			  
 	}
-		/* 가계부 ajax */ 
+	
+
+	/* 가계부 ajax */ 
 		
 		function fetchAccount(boardNo,tagNo){
 			
@@ -551,8 +607,8 @@
 				      
 				    	  $.each(list, function(idx, val) {
 				    		 
-				    	  		
-								renderAccount(val,"down",boardNo);
+				    		    val.accountbookSpend = comma(val.accountbookSpend);
+								renderAccount(val,"down",boardNo,idx);
 						   });
 				      }					  
 				  
@@ -569,7 +625,7 @@
 		
 		/* 가계부 그리기 */ 
 		
-		function renderAccount(vo,updown,boardNo){
+		function renderAccount(vo,updown,boardNo,i){
 			  str= " ";
 			
 			  str+= "	    	 <tr id='delAcc_"+vo.accountbookNo+"'>";
@@ -579,7 +635,7 @@
 			  str+= "						<td>"+vo.accountbookSpend+"</td>";
 			  str+= "						<td style='width:80px;'>"+((vo.accountbookPersonnel!=null)?vo.accountbookPersonnel:'')+"</td>"; 
 			  str+= "						<td>"+((vo.accountbookPlace!=null)?vo.accountbookPlace:'')+"</td>";
-			  str+= "						<td><button type='button' class='btn t-button p-0' data-toggle='modal' data-target='#mapModal'><img src='${pageContext.request.contextPath }/assets/images/mapIcon.png'></button></td>";
+			  str+= "						<td><button onclick='searchAddressToCoordinate(\"" + vo.roadAddress + "\")' type='button' class='btn t-button p-0' data-toggle='modal' data-target='#mapModal'><img src='${pageContext.request.contextPath }/assets/images/mapIcon.png'></button></td>";
 			
 			  str+= "			</tr>";
 			  
@@ -597,6 +653,51 @@
 			
 			
 		}
+		  
+		/* 지도 불러오기  */
+		   
+		 var map = new naver.maps.Map("map", {
+		        center: new naver.maps.LatLng(37.3595316, 127.1052133),
+		        zoom: 10,
+		        mapTypeControl: true
+		 });
+
+		 var marker = new naver.maps.Marker({
+		          position: new naver.maps.LatLng(37.3595704, 127.105399),
+		          map: map
+		 });
+		    
+		 map.setCursor('pointer');
+
+		    
+		 var infoWindow = new naver.maps.InfoWindow({
+		        disableAnchor:true
+		    });
+		 
+		/*  주소 지도 표시 */
+		 // result by latlng coordinate
+	    //주소를 좌표로 바꿔주고 지도에 찍기
+	    function searchAddressToCoordinate(address) {
+	        console.log(address);
+	        naver.maps.Service.geocode({
+	            address: address
+	        }, function (status, response) {
+	            if (status === naver.maps.Service.Status.ERROR) {
+	                /* return alert('Something Wrong!'); */
+	            }
+
+	            var item = response.result.items[0],
+	                addrType = item.isRoadAddress ? '[도로명 주소]' : '[지번 주소]',
+	                point = new naver.maps.Point(item.point.x, item.point.y);
+	                pointWin = new naver.maps.Point(item.point.x+0.001, item.point.y+0.001);
+	      
+
+	            map.setCenter(point);
+	            marker.setPosition(point);
+
+
+	        });
+	    }
 			  
 		/* 댓글 등록 이벤트 */
 		$("div").on('click','button[data-writeno]',function(){
@@ -692,10 +793,10 @@
 				  str+= "	    	 <div id='cmt_"+vo.commentNo+"'>";
 				  str+= "	      		<div class='my-2 text-left' id='multiCollapseExample1' >";
 				  str+= "	   				 <div class='card' id='top_"+vo.boardNo+"'>";
-				  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
+				  str+= "						  <h5 class='card-header smContent'><span class='mr-3  mb-1'><img style='width:30px;' src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
 				  str+= "						  <span style='color:gray;margin-left:10px;'>"+vo.commentRegDate+"</span><span class='ml-3 float-right mt-2 pt-1 delCmt' data-delcmtno='"+vo.commentNo+"' data-cmtresetno='"+vo.boardNo+"' style='cursor:pointer' >&times</span></h5>";
 				  str+= "	   					  <div class='card-body comment'>";
-				  str+= "	  					        <pre class='comment'>"+vo.commentContent+"</pre>";
+				  str+= "	  					        <pre class='comment smContent'>"+vo.commentContent+"</pre>";
 				  str+= "	   					  </div>";
 				  str+= "	  				 </div>";
 				  str+= "	   		 	</div>";
@@ -705,10 +806,10 @@
 				  str+= "	    	 <div id='cmt_"+vo.commentNo+"'>";
 				  str+= "	      		<div class='collapse multi-collapse"+vo.boardNo+" my-2 text-left' id='multiCollapseExample1'>";
 				  str+= "	   				 <div class='card'>";
-				  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
+				  str+= "						  <h5 class='card-header smContent'><span class='mr-3  mb-1'><img style='width:30px;' src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
 				  str+= "						  <span style='color:gray;margin-left:10px;'>"+vo.commentRegDate+"</span><span class='ml-3 float-right mt-2 pt-1 delCmt' data-delcmtno='"+vo.commentNo+"' data-cmtresetno='"+vo.boardNo+"' style='cursor:pointer' >&times</span></h5>";
 				  str+= "	   					  <div class='card-body comment'>";
-				  str+= "	  					        <pre class='comment'>"+vo.commentContent+"</pre>";
+				  str+= "	  					        <pre class='comment smContent'>"+vo.commentContent+"</pre>";
 				  str+= "	   					  </div>";
 				  str+= "	  				 </div>";
 				  str+= "	   		 	</div>";
@@ -723,10 +824,10 @@
 				  str+= "	    	 <div id='cmt_"+vo.commentNo+"'>";
 				  str+= "	      		<div class='collapse multi-collapse"+vo.boardNo+" my-2 text-left' id='multiCollapseExample1'>";
 				  str+= "	   				 <div class='card'>";
-				  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
+				  str+= "						  <h5 class='card-header smContent'><span class='mr-3  mb-1'><img style='width:30px;' src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
 				  str+= "						  <span style='color:gray;margin-left:10px;'>"+vo.commentRegDate+"</span><span class='ml-3 float-right mt-2 pt-1 delCmt' data-delcmtno='"+vo.commentNo+"' data-cmtresetno='"+vo.boardNo+"' style='cursor:pointer' >&times</span></h5>";
 				  str+= "	   					  <div class='card-body comment'>";
-				  str+= "	  					        <pre class='comment'>"+vo.commentContent+"</pre>";
+				  str+= "	  					        <pre class='comment smContent'>"+vo.commentContent+"</pre>";
 				  str+= "	   					  </div>";
 				  str+= "	  				 </div>";
 				  str+= "	   		 	</div>";
@@ -738,10 +839,10 @@
 				  str+= "	    	 <div id='cmt_"+vo.commentNo+"'>";
 				  str+= "	      		<div class='collapse multi-collapse"+vo.boardNo+" my-2 text-left' id='multiCollapseExample1"+vo.boardNo+"'>";
 				  str+= "	   				 <div class='card'>";
-				  str+= "						  <h5 class='card-header'><span class='mr-3  mb-1'><img src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
+				  str+= "						  <h5 class='card-header smContent'><span class='mr-3  mb-1'><img style='width:30px;' src='${pageContext.request.contextPath }/assets/images/club02.png'></span><span id='userName'>"+vo.userName+"</span>";
 				  str+= "						  <span style='color:gray;margin-left:10px;'>"+vo.commentRegDate+"</span><span class='ml-3 float-right mt-2 pt-1 delCmt' data-delcmtno='"+vo.commentNo+"' data-cmtresetno='"+vo.boardNo+"' style='cursor:pointer' >&times</span></h5>";
 				  str+= "	   					  <div class='card-body comment'>";
-				  str+= "	  					        <pre class='comment'>"+vo.commentContent+"</pre>";
+				  str+= "	  					        <pre class='comment smContent'>"+vo.commentContent+"</pre>";
 				  str+= "	   					  </div>";
 				  str+= "	  				 </div>";
 				  str+= "	   		 	</div>";

@@ -15,7 +15,6 @@
    <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/daterangepicker.min.css">
 
 <style>
-
 /* AutoComplete */
 .autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
 .autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; cursor: pointer; }
@@ -73,27 +72,32 @@
 <c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
    
 
-<div class="container"> 
-   <div class="text-center">
-      <h4>글쓰기</h4>
-   </div>
+<div class="container" > 
+
+	<%-- <div class="text-right mb-5 mx-auto w-75"  >
+        <input type="button" style="border:none;" class="btn btn-outline-secondary btn-lg smContent" onclick="location.href='${pageContext.request.contextPath }/board/${authUser.groupNo}'" value="취소">
+        <input style="border:none;" class="btn btn-outline-primary btn-lg smContent " type="submit" value="공유" >      
+    </div> --%>
+    <div class="text-center">
+    	<h4 class="lgTitle my-4">글쓰기</h4>
+    </div>
             
    <form id="form_board" action="${pageContext.request.contextPath}/board/${authUser.groupNo}/add" onkeydown="return captureReturnKey(event)" method="post" enctype="multipart/form-data"  >
       <input type="hidden" name="userNo" value="${authUser.userNo}"><span>&nbsp;</span>
       <input type="hidden" name="tagNo" id="tagNo" value=""><span>&nbsp;</span>
       <div>
-      <input class="form-control mx-auto col-9 my-3" name="boardTitle" placeholder="제목을 입력하세요">
-      <textarea class="form-control col-9 mx-auto my-3" name="boardContent" id="exampleFormControlTextarea1" rows="10" placeholder="내용을 입력하세요"></textarea>
+      <input class="form-control mx-auto col-9 my-3 smContent" id="boardTitle" name="boardTitle" placeholder="제목을 입력하세요" >
+      <textarea class="form-control col-9 mx-auto my-3 smContent" name="boardContent" id="boardContent" rows="10" placeholder="내용을 입력하세요">${placePlan}</textarea>
       </div>
       <div class="card col-9 mx-auto my-3">
-         <div class="card-header">
-            <h5 class="mt-3" style="font-size: 1.2em;">가계부 첨부</h5>
+         <div class="card-header" style="background:transparent;">
+            <h5 class="navText mt-3" style="font-size: 1.2em;">가계부 첨부</h5>
          </div>
          <div class="card-body">
    
             <!-- Button trigger modal -->
             <div class="float-left mr-2">
-               <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#dateModal">
+               <button type="button" class="btn btn-primary smContent" data-toggle="modal" data-target="#dateModal">
                   날짜로 불러오기          
                </button>
             </div>
@@ -102,7 +106,7 @@
    
             <!-- Button trigger modal -->
             <div class="float-left mb-3">
-               <button type="button" id="btn_tag" class="btn btn-info " data-toggle="modal" data-target="#tagModal">
+               <button type="button" id="btn_tag" class="btn btn-info smContent" data-toggle="modal" data-target="#tagModal">
                   태그로 불러오기          
                </button>
             </div>
@@ -122,30 +126,32 @@
             
 
             <div>
-               <table class="table table-sm text-center">
+               <table class="table table-sm text-center smContent">
                   <thead class="thead-light">
-                     <tr>
+                     <tr id='acc_tr'>
                         <th scope="col"></th>
                         <th scope="col">날짜</th>
                         <th scope="col">내역</th>
-                        <th scope="col" style="font-size:14pt;">금액(원)</th>
-                        <th scope="col" style="font-size:14pt;">인원(명)</th>
+                        <th scope="col" >금액</th>
+                        <th scope="col" >인원(명)</th>
                         <th scope="col">장소</th>
-                        <th scope="col">지도</th>
-                        <th id='delCol' scope="col">삭제</th>
+                        <!-- <th scope="col">지도</th> -->
+                        <th id="delCol" scope="col">삭제</th>
+                        <th class='hidden' style='display:none;'>히든</th>
                      </tr>
                   </thead>
                   <tbody id="accountList">
-                     
-                     
-                     <tr>
-                        
-                          <td colspan="8" style="color:gray;">가계부를 첨부해 주세요.</td>
-                        
-                     </tr>
-                     
-                      
-                                 
+
+                     	<c:if test="${!empty fromAccountbookList}">
+							<input id="fromAccFlag" name=${fromAccountbookList} type="hidden" value="0">
+						</c:if>
+						<c:if test="${empty fromAccountbookList}">
+							<tr>                       
+                          		<td colspan="8" style="color:gray;">가계부를 첨부해 주세요.</td>                
+                     		</tr>
+							<input id="fromAccFlag" type="hidden" value="1">
+                    	</c:if>
+            
                   </tbody>
                </table>
    
@@ -171,9 +177,9 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
  -->
 <script type="text/javascript"
-        src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=slvC1SL1B78rI5IoCUhs&submodules=geocoder"></script>
+        src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=YX8YchtPnKuE7FGKGyW6&submodules=geocoder"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery.daterangepicker.min.js"></script>
+<%-- <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery.daterangepicker.min.js"></script> --%>
 
 
 
@@ -182,7 +188,7 @@
 
          <div class="form-group p-2 col-9 mx-auto my-3" style="position: relative;">
             <input type="file" class="custom-file-input" id="boardUpload"  name="files" multiple="multiple" onchange="loadFile(event);">
-            <label class="custom-file-label up-label text-center pr-5" for="inputGroupFile04">이미지 업로드 &emsp;</label>
+            <label class="custom-file-label up-label text-center pr-5 smContent" for="inputGroupFile04">이미지 업로드 &emsp;</label>
             <div id="imgPreview">
                <div class="rounded col-2" style="float : left"><img id="addImg0"  src=""   class="w-100 mx-auto mt-3"></div>
                <div class="rounded col-2" style="float : left"><img id="addImg1"   src="" class="w-100 mx-auto mt-3"></div>
@@ -207,10 +213,10 @@
                <div style="clear:both;"> </div>
             </div>
          </div>
-         <div class="text-right mb-5 mx-auto w-75"  >
-            <input type="button"  class="btn btn-secondary btn-lg mr-2" onclick="location.href='${pageContext.request.contextPath }/board/${authUser.groupNo}'" value="취 소">
-            <input class="btn btn-primary btn-lg " type="submit" value="저  장" >      
-          </div>
+          <div class="text-right mb-5 mx-auto w-75"  >
+            <input type="button"  class="btn btn-secondary btn-lg mr-2 smContent" onclick="location.href='${pageContext.request.contextPath }/board/${authUser.groupNo}'" value="취소">
+            <input class="btn btn-primary btn-lg smContent " type="submit" value="공유" >      
+          </div> <!--다른 싸이트들은 보통공유하는걸 상단 우측에 놔두더라구요..  -->
     </form>      
          
 
@@ -274,7 +280,7 @@
    
                         <form class="form-inline my-3" >
                            <input class="searchForm form-control ml-4 mb-1" id="searchTag" style= "border-bottom-width:2px; border-color: #0070c0; width: 400px;" type="search" placeholder="태그명을 검색하세요" aria-label="search">
-                           <a class="t-button mt-2" > <img src="${pageContext.request.contextPath }/assets/images/search02.png"> </a>
+                           <a class="t-button mt-2 ml-1"  > <img src="${pageContext.request.contextPath }/assets/images/search02.png" style="width:24px; height:24px;"> </a>
                         </form>
                         <div class="mt-4">
                            <div class="ml-4">
@@ -303,24 +309,30 @@
             
                <!--지도 모달 -->
                <div class="modal fade" id="mapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-dialog modal-dialog-centered modal-lg"  role="document">
                      <div class="modal-content">
-                        <div class="modal-header">
-   
-                           <h4 class="modal-title mt-2" id="exampleModalCenterTitle">&nbsp;지도</h4>
+                        <div class="modal-header" id='tempNo'>
+   							
+                           <h4 class="modal-title mt-2" id="exampleModalCenterTitle">&nbsp;장소 찾기</h4>
                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span>&times;</span>
                            </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" >
    
    
                      <!--       <div class="form-group p-2" style="position: relative;">
                               
                            </div> -->
-   
-                           <div id="map" style="width:450px;height:250px;"></div>
-                        </div>
+                            <div class='mb-3'>
+    							  <input id="storeSearch" type="text" class="form-control" placeholder="상호명을 입력하세요.">
+    						</div>
+   							<div class='mb-3' id="tableDiv" style="max-height:300px;">
+						
+							</div>
+						
+							<div id="map" class="mt-2" style="width:760px;height:250px;"></div>
+                         </div>
    
                      </div>
                   </div>
@@ -350,7 +362,6 @@
                </div>
             </div>
          </div>
-         <table id="resultTable">
 </div>
 
 
@@ -363,12 +374,44 @@
 <script type="text/javascript">
 
 
-   
    $(document).ready(function(){
          
+	  if($("#fromAccFlag").val() == "0"){
+		  $.ajax({
+	           
+	           url : "${pageContext.request.contextPath}/board/${authUser.groupNo}/getAccountListFromAccountbook",
+	           type : "POST",
+	           data : {AccountbookList : $("#fromAccFlag").attr("name")},
+	           dataType : "json",   
+	         
+	           success : function(list){
+	              
+	              console.log(list);
+	              $("#accountList").empty(); 
+	              $("#tagName").empty(); 
+	              $("#tagName").append("<input id='tagNameVal' name='tagName' class='form-control float-left;' type='text' style='font-weight:bold; border:#54c9ad 2px solid; border-radius: 15px; width:200px;' placeholder='태그명을 입력하세요.' >"); 
+	              $("#btn_selectDel").remove();
+	              $("#tagDiv").append("<span id='btn_selectDel'  class='mb-2 mr-1 p-2 btn btn-sm btn-outline-danger float-right'  >선택 삭제 </span>");
+	              $.each(list, function(idx,val){
+
+	            	  val.accountbookSpend = comma(val.accountbookSpend);
+	                  renderAccount(val,"down",idx);
+	                  
+	              })
+	              $('#dateModal').modal('hide');
+	            /*   $("#likeCount_"+boardNo).text(resultVo.likeCount+"명의 회원이 좋아합니다.");
+	              $("[data-likeno="+boardNo+"]").data("state",resultVo.likeState);    */               
+	           },
+	           
+	           error : function(XHR, status, error){
+	             console.error(XHR+status+error);
+	           }
+	           
+	        });
+	  }
+	   
       $('.menuTab').removeClass("active");
       $("#btn_board").addClass("active");
-      
       var up_files = new Array();
       
       
@@ -379,15 +422,42 @@
    $(document).on('click','[type=submit]', function(){
          
       var tagName = $('#tagNameVal').val();
-      if(tagName!=null&&tagName!=""&&tagName!=undefined ){
-         
-         
-         
+      var accountIdx = $('[data-idx]').data('idx');
+      var boardTitle = $('#boardTitle').val(); 
+      var boardContent = $('#boardContent').val(); 
+      if(accountIdx!=null){
+    	  if(tagName!=null&&tagName!=""&&tagName!=undefined){
+    	         
+    	         
+    	         
+          }else{
+             alert('태그이름을 입력하세요.');
+             return false;
+             
+          }
+    	  
+      }
+      
+      if(boardTitle!=null&&boardTitle!=""&&boardTitle!=undefined){
+	         
+	         
+	         
       }else{
-         alert('태그이름을 입력하세요.');
+         alert('제목을 입력하세요.');
          return false;
          
       }
+      
+      if(boardContent!=null&&boardContent!=""&&boardContent!=undefined){
+	         
+	         
+	         
+      }else{
+         alert('내용을 입력하세요.');
+         return false;
+         
+      }
+      
    });
    
    /* 엔터 방지 */
@@ -478,16 +548,45 @@
             address: address
         }, function (status, response) {
             if (status === naver.maps.Service.Status.ERROR) {
-                return alert('Something Wrong!');
+                /* return alert('Something Wrong!'); */
             }
 
             var item = response.result.items[0],
                 addrType = item.isRoadAddress ? '[도로명 주소]' : '[지번 주소]',
                 point = new naver.maps.Point(item.point.x, item.point.y);
-                pointWin = new naver.maps.Point(item.point.x+0.001, item.point.y+0.001);
-                alert(point)
       
+			console.log(point);
+			console.log(item.point.x+" : "+ item.point.y);
+            map.setCenter(point);
+            marker.setPosition(point);
+            
+             
+        });
+    }
+    // result by latlng coordinate
+    //주소를 좌표로 바꿔주고 지도에 찍기
+    function putPoint(address) {
+        console.log("searchAddressToCoordinate");
+        naver.maps.Service.geocode({
+            address: address
+        }, function (status, response) {
+            if (status === naver.maps.Service.Status.ERROR) {
+                /* return alert('Something Wrong!'); */
+            }
 
+            var item = response.result.items[0],
+                addrType = item.isRoadAddress ? '[도로명 주소]' : '[지번 주소]',
+                point = new naver.maps.Point(item.point.x, item.point.y);
+      
+			console.log(point);
+			console.log(item.point.x+" : "+ item.point.y);
+			var pointX = item.point.x + "",
+				pointY = item.point.y + "";
+			console.log(pointX+" : "+ pointY);
+			var accountNo=$("#tempNo").val();
+			$("#pointX"+accountNo).val(pointX);
+			$("#pointY"+accountNo).val(pointY);
+			console.log("!!!@!@!@!@!@!@" + $("#pointX"+accountNo).val());
             map.setCenter(point);
             marker.setPosition(point);
             
@@ -510,8 +609,9 @@
             }
         });
 
-        $(document).on('keyup','div [data-auto]', function (e) {
+        $(document).on('keyup','div #storeSearch', function (e) {
             /* console.log("When button is on clicked"); */
+            $("#guideMsg").remove();
             e.preventDefault();
 
             var localName = $(this).val();
@@ -521,13 +621,31 @@
                 data: {localName: localName},
                 dataType: "json",
                 success: function (result) {
-                    $("#resultTable").empty();
+                    $("#tableDiv").empty();
                     var itemmm = JSON.parse(result).items;
                     console.log(itemmm);
+                    $("#tableDiv").attr("style","min-height:300px");
+                    $("#tableDiv").append("<table class='mt-1' id='resultTable' style='vertical-align:top;' min-height:300px>");
                     for (var i = 0; i < itemmm.length; i++) {
-                        $("#resultTable").append("<tr><td><button onclick='searchAddressToCoordinate(\"" + itemmm[i].roadAddress + "\")'>장소 : " + itemmm[i].title + "</button></td><td>주소 : " + itemmm[i].roadAddress + "</td><td>전화번호 : " + itemmm[i].telephone + "</td>" +
-                            "<td><img src='" + itemmm[i].thumbnail + "'</img></td><td><button onclick='DataBaseInputTest(\"" + itemmm[i].roadAddress + "\")'>선택</button></td></tr>")
+                    	
+						
+						var str= "";
+						str += "<tr ><td>&nbsp;&nbsp;<a href='javascript:;' onclick='DataProcess(\"" + itemmm[i].title+"!"+ itemmm[i].category+"!"+ itemmm[i].roadAddress+"!"+ itemmm[i].telephone+ "\")' >" + itemmm[i].title + "</a> </td>";
+						str += "<td><button onclick='searchAddressToCoordinate(\"" + itemmm[i].roadAddress + "\")' type='button' class='btn t-button p-0 pb-1'><img style='width:20px;' src='${pageContext.request.contextPath }/assets/images/mapIcon.png'></button></td>";
+						str += "<td>&emsp;" + itemmm[i].roadAddress + "</td></tr> <br>";
+                        $("#tableDiv").append(str);
+                            
                     }
+                    
+                    for(var j=0; j< 10-itemmm.length; j++){
+                    	
+                    	$("#tableDiv").append("<tr></tr><br>");
+                    	
+                    }
+                    
+                    $("#tableDiv").append("</table>");
+                    
+                    /* <td><button class='btn-outline-secondary m-1' onclick='DataBaseInputTest(\"" + itemmm[i].roadAddress + "\")'>선택</button></td> */
                 }, error: function () {
                     alert("통신 실패");
                 }
@@ -538,16 +656,40 @@
 
         // searchAddressToCoordinate('정자동 178-1');
     }
-
-    function DataBaseInputTest(selectedShop) {
-        console.log("searchAddressToCoordinate");
+    
+    
+    /* 장소 데이터 처리해서 보내기 */
+    function DataProcess(items){
+    	item = items.split("!");
+    	var title = item[0];
+    	item[0] = item[0].replace("<b>","");
+    	item[0] = item[0].replace("</b>","");
+    	var category = item[1];
+    	var adddress = item[2];
+    	var telephone = item[3];
+        
+    	
+    	addrDetail(item);
+        
+        
+ 		/* DataBaseInput(item) */
+    	
+    	/* DataBaseInput(selectedShop); */
+    } 
+    
+    function addrDetail(items) {
+        console.log(items);
+        console.log(items[0]);
+        var title = items[0];
+        var category = items[1];
+    	var roadAddress = items[2];
+    	var telephone = items[3];
         naver.maps.Service.geocode({
-            address: selectedShop
+            address: roadAddress
         }, function (status, response) {
             if (status === naver.maps.Service.Status.ERROR) {
                 return alert('Something Wrong!');
             }
-
             var item = response.result.items[0],
                 addrType = item.isRoadAddress ? '[도로명 주소]' : '[지번 주소]';
             var country = item.addrdetail.country;
@@ -556,8 +698,36 @@
             var dongmyun = item.addrdetail.dongmyun;
             var ri = item.addrdetail.ri;
             var rest = item.addrdetail.rest;
-
-            $.ajax({
+            
+            putPoint(roadAddress);
+            
+            items.push(country);
+            items.push(sido);
+            items.push(sigugun);
+            items.push(dongmyun);
+            items.push(ri);
+            items.push(rest);
+			console.log("@@"+items);
+			console.log(item.addrdetail);
+			
+			
+			var accountNo=$("#tempNo").val();
+			
+			/* $("#addrNo"+accountNo).val(addrNo); */
+			$("#country"+accountNo).val(country);
+			$("#sido"+accountNo).val(sido);
+			$("#sigugun"+accountNo).val(sigugun);
+			$("#dongmyun"+accountNo).val(dongmyun);
+			$("#ri"+accountNo).val(ri);
+			$("#rest"+accountNo).val(rest);
+			$("#telephone"+accountNo).val(telephone);
+			$("#category"+accountNo).val(category);
+			$("#title"+accountNo).val(title);
+			$("#roadAddress"+accountNo).val(roadAddress);
+			
+			$("#place_"+accountNo).val(title);
+			$("#mapModal").modal('hide');
+           /*  $.ajax({
                 url: "${pageContext.request.contextPath }/board/${authUser.groupNo}/whenShopIsSelected",
                 type: "post",
                 data: {country:country,sido:sido,sigugun:sigugun,dongmyun:dongmyun,ri:ri,rest:rest},
@@ -568,13 +738,24 @@
                 }, error: function () {
                     alert("통신 실패");
                 }
-            });
+            }); */
+            
         });
     }
 
     naver.maps.onJSContentLoaded = initGeocoder;
    
 
+
+	/* 장소 넣기  */
+	function inputPlace(place){
+		
+		alert(place);
+		$("#mapModal").modal('hide');
+		
+		
+	}
+	
    /* 가계부 삭제  */
    
    $(document).on('click','tr .delAccount', function(){
@@ -608,7 +789,7 @@
    
          $(document).on('click',"div #btn_selectDel",function() {
             var accountbookList = [];
-               $('input:checkbox[id=delCheck]').each(function() {
+               $('input:checkbox[name=chk]').each(function() {
                     if($(this).is(':checked')){
                        accountbookList.push($(this).data('seldelno'));   
                        
@@ -653,7 +834,8 @@
               $("#btn_selectDel").remove();
               $("#tagDiv").append("<span id='btn_selectDel'  class='mb-2 mr-1 p-2 btn btn-sm btn-outline-danger float-right'  >선택 삭제 </span>");
               $.each(list, function(idx,val){
-                 
+
+            	  val.accountbookSpend = comma(val.accountbookSpend);
                   renderAccount(val,"down",idx);
                   
               })
@@ -693,14 +875,16 @@
               console.log(list);
               $("#btn_selectDel").remove();
               $("#tagName").empty();
-              $("#tagName").append("<span  class='p-2 float-left mb-0' style='border:#54c9ad 2px solid;  border-radius: 15px;'>#"+list[0].tagName+"</span>");
+              $("#tagName").append("<span  class='p-2 float-left mb-0 navText' style='border:#54c9ad 2px solid;  border-radius: 15px;'>#"+list[0].tagName+"</span>");
               $("#tagName").append("<input id='tagNameVal' name='tagName'  type='hidden' value='"+list[0].tagName+"'>");
             /*   $("#tagName").attr("style","border:#54c9ad 2px solid;  border-radius: 15px;"); 
               $("#tagName").text("#"+list[0].tagName) */
               $("#accountList").empty(); 
               
+            	  
+              
               $.each(list, function(idx,val){
-                 
+            	  val.accountbookSpend = comma(val.accountbookSpend);
                  renderAccount(val,"down",idx);
                  
               })
@@ -718,30 +902,56 @@
         return false;
    });    
    
+   
+   /*  콤마 찍기    */
+   
+   function comma(str) {
+       str = String(str);
+       return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,') + "원";
+   }
+
    /* 가계부 그리기 */ 
    
    function renderAccount(vo,updown,i){
         str= "  ";
-        str+= "           <tr id='delAcc_"+vo.accountbookNo+"'>";
+        
+        str+= "           <tr id='delAcc_"+vo.accountbookNo+"' data-idx='"+i+"'>";
         str+= "               <th scope='row'>";
-        str+= "                  <div>";
-        str+= "                     <input class='yj-checkbox' id='delCheck' data-seldelno='"+vo.accountbookNo+"' type='checkbox' aria-label='Checkbox for following text input'>";
-        str+= "               </div>";
+        str+= "                  <div class='custom-control custom-checkbox'>";
+        str+= "						<input type='checkbox' class='custom-control-input data" + i + "' id='delCheck" + i + "' name='chk' data-seldelno='"+vo.accountbookNo+"' aria-label='Checkbox for following text input'>";
+		str+= "						<label class='custom-control-label'  for='delCheck" + i + "' style='margin-top: 7px'>&nbsp;</label>";
+//        str+= "                     <input class='yj-checkbox' id='delCheck' data-seldelno='"+vo.accountbookNo+"' type='checkbox' aria-label='Checkbox for following text input'>";
+        str+= "               	</div>";
         str+= "            </th>";
         str+= "                  <td>"+vo.accountbookRegDate+"</td>";
         str+= "                  <td id='accUsage_"+vo.accountbookNo+"'>"+vo.accountbookUsage+"</td>";
         str+= "                  <td>"+vo.accountbookSpend+"</td>";
-        str+= "                  <td style='width:80px;'><input class='form-control' name='accountList["+i+"].accountbookPersonnel' type='text' placeholder='인원' value='"+((vo.accountbookPersonnel!=null)?vo.accountbookPersonnel:'')+"' style='width:70px;' ></td>";
-        str+= "                  <td><input data-addressno='"+vo.accountbookNo+"' class='form-control' id='autocomplete_"+vo.accountbookNo+"' data-auto='"+vo.accountbookNo+"' type='text'  name='accountList["+i+"].accountbookPlace' placeholder='장소를 검색하세요' value='"+((vo.accountbookPlace!=null)?vo.accountbookPlace:'')+"'></td>";
-        str+= "                  <td><button type='button' class='btn t-button p-0' data-toggle='modal' data-target='#mapModal'><img src='${pageContext.request.contextPath }/assets/images/mapIcon.png'></button></td>";
+        str+= "                  <td style='width:80px;'><input class='form-control smContent' name='accountList["+i+"].accountbookPersonnel' type='text' placeholder='인원' value='"+((vo.accountbookPersonnel!=null)?vo.accountbookPersonnel:'')+"' style='width:70px;' ></td>";
+        str+= "                  <td><button data-btnmap='"+vo.accountbookNo+"' type='button' class='btn t-button p-0 w-100' data-toggle='modal' data-target='#mapModal' ><input readonly='readonly' data-addressno='"+vo.accountbookNo+"' class='form-control smContent' id='place_"+vo.accountbookNo+"' data-auto='"+vo.accountbookNo+"' type='text'  name='accountList["+i+"].accountbookPlace' placeholder='장소를 검색하세요.' value='"+((vo.accountbookPlace!=null)?vo.accountbookPlace:'')+"'></button></td>";
+        
+        /* str+= "                  <td><img src='${pageContext.request.contextPath }/assets/images/mapIcon.png'></td>"; */
         if(vo.tagNo==null){
-          
+           
+           $('#delCol').remove();
+           $('#acc_tr').append("<th id='delCol' scope='col'>삭제</th>");
            str+= "                  <td class='delAccount' data-accno='"+vo.accountbookNo+"' style='cursor:pointer;'>&times;</td>";  
         } else{
-           
-           $('#delCol').remove;
+           $('#delCol').remove();
         }
-        
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].accountbookAddressNo' id='addrNo"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].country' id='country"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].sido' id='sido"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].sigugun' id='sigugun"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].dongmyun' id='dongmyun"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].ri' id='ri"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].rest' id='rest"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].telephone' id='telephone"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].category' id='category"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].title' id='title"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].roadAddress' id='roadAddress"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].accountbookNo' value='"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].pointX' id='pointX"+vo.accountbookNo+"' type='hidden'></td>";
+        str+= "                  <td style='display:none;'> <input name='addressList["+i+"].pointY' id='pointY"+vo.accountbookNo+"' type='hidden'></td>";
         str+= "         </tr>";
         
         str+= "          <input type='hidden' name='accountList["+i+"].accountbookNo' value='"+vo.accountbookNo+"' >";
@@ -755,8 +965,25 @@
            $("#accountList").append(str);
         }
       
-      
    }
+   
+   
+   /* 지도 모달 버튼 클릭시	 */
+   
+   $(document).on('click',"div [data-btnmap]",function(){
+	   var accountNo = $(this).data('btnmap');
+	   $('#tempNo').val(accountNo);
+	   $("#storeSearch").val('');
+	   $("#tableDiv").empty();
+	   $("#tableDiv").append("<div id='guideMsg' class='text-center'> <span style='color:blue;'> 검색 후 상호명을 클릭하면 자동 입력됩니다.</span></div>"); 
+	   
+	   /* data-btnmap */
+	   
+   });
+   
+   
+   
+
    
    /*   댓글 펼치기,감추기   */
    $("#btn-comment").on("click",function(){

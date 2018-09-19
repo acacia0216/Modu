@@ -5,17 +5,24 @@ public class AccountbookTagVo {
 	private int accountbookno;
 	private int tagno;
 	private String tagname;
-
+	private int groupNo;
+	
 	public AccountbookTagVo() {
-
 	}
-
+	
 	public AccountbookTagVo(int accountbooktagno, int accountbookno, int tagno, String tagname) {
-		super();
 		this.accountbooktagno = accountbooktagno;
 		this.accountbookno = accountbookno;
 		this.tagno = tagno;
 		this.tagname = tagname;
+	}
+	
+	public AccountbookTagVo(int accountbooktagno, int accountbookno, int tagno, String tagname, int groupNo) {
+		this.accountbooktagno = accountbooktagno;
+		this.accountbookno = accountbookno;
+		this.tagno = tagno;
+		this.tagname = tagname;
+		this.groupNo = groupNo;
 	}
 
 	public int getAccountbooktagno() {
@@ -50,10 +57,18 @@ public class AccountbookTagVo {
 		this.tagname = tagname;
 	}
 
+	public int getGroupNo() {
+		return groupNo;
+	}
+
+	public void setGroupNo(int groupNo) {
+		this.groupNo = groupNo;
+	}
+
 	@Override
 	public String toString() {
 		return "AccountbookTagVo [accountbooktagno=" + accountbooktagno + ", accountbookno=" + accountbookno
-				+ ", tagno=" + tagno + ", tagname=" + tagname + "]";
+				+ ", tagno=" + tagno + ", tagname=" + tagname + ", groupNo=" + groupNo + "]";
 	}
 
 	

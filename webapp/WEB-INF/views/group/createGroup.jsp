@@ -30,6 +30,7 @@
 		    <img class="d-block w-100" src="${pageContext.request.contextPath }/assets/images/main04.png" alt="create-group">
 		</div>
 	</div>
+	<br>
 </div>
 	
 

@@ -19,21 +19,10 @@
 		padding: 0;
 
 	}
-	nav{
-		font-family:"Nanum Gothic" , sans-serif; 
-		font-weight: 900;
-	}
+	
 	.carousel-caption{ 	
 		text-shadow: black 0.2em 0.2em 0.2em; 
 
-	}
-	h1{
-		font-family: 'NanumGothicExtraBold', sans-serif;  font-weight: 800; 
-		font-size: 3em;
-	}
-	h4{
-		font-family: 'NanumGothicExtraBold', sans-serif;  font-weight: bold; 
-		font-size: 1.5em;
 	}
 
 	.ment{

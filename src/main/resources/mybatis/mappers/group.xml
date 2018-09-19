@@ -20,13 +20,14 @@
 
 	<insert id="insertJoin" parameterType="UserGroupVo">
 		<![CDATA[
-		insert into user_group_tbl(user_groupNo,userNo,groupNo,joinMessage,joinState,joinDate)
+		insert into user_group_tbl(user_groupNo,userNo,groupNo,joinMessage,joinState,joinDate,rankNo)
             VALUES(seq_user_groupNo.NEXTVAL
              ,#{userNo}
              ,#{groupNo}
              ,#{joinMessage}
              ,#{joinState}
-             ,to_date(#{joinDate},'yyyy-MM-dd'))
+             ,#{joinDate}
+             ,#{rankNo})
 		]]>
 	</insert>
 	
@@ -39,14 +40,20 @@
              ]]>
 	</select>
 	
-	<select id="selectUserList" parameterType="int" resultType="UserGroupVo">
-	 <![CDATA[
-             Select user_groupNo,userNo,groupNo,joinMessage,joinState,userName
+            <!--  Select user_groupNo,userNo,groupNo,joinMessage,joinState,userName,rankNo
              from user_group_tbl join user_tbl using (userNo)
              where groupNo=#{groupNo}
-              and joinState='완료'
+              and joinState='완료' -->
+	<select id="selectUserList" parameterType="int" resultType="UserGroupVo">
+    <![CDATA[
+           Select G.user_groupNo,G.userNo,G.groupNo,G.joinMessage,G.joinState,U.userName,G.rankNo,R.rankName
+             from user_group_tbl G, user_tbl U, rank_tbl R
+             where G.rankNo = R.rankNo and G.userNo = U.userNo
+             and G.groupNo= #{groupNo}
+             and G.joinState='완료'
+             order by U.userName asc
              ]]>
-	</select>
+   </select>
 	
 	<select id="selectGroupList"  parameterType="int"  resultType="GroupVo">
 	 <![CDATA[
@@ -58,6 +65,15 @@
             
              ]]>
 	</select>
+	
+	<select id="selectJoinState" parameterType="int" resultType="UserGroupVo">
+    <![CDATA[
+             Select user_groupNo,userNo,groupNo,joinMessage,joinState,userName
+             from user_group_tbl join user_tbl using (userNo)
+             where userNo=#{userNo}
+              and joinState='대기'
+             ]]>
+   </select>
 
 	<select id="searchList"  parameterType="String"  resultType="GroupVo">
 	 <![CDATA[
@@ -76,12 +92,14 @@
 	</select>
 	
 	<update id="updateJoinState" parameterType="UserGroupVo">
-	 <![CDATA[
-	     update user_group_tbl
-	     set joinState =#{joinState}
-	     where user_groupNo = #{user_groupNo}
-	  ]]>
-	</update>
+    <![CDATA[
+        update user_group_tbl
+        set joinState =#{joinState},
+        joinDate =#{joinDate},
+        rankNo =#{rankNo}
+        where user_groupNo = #{user_groupNo}
+     ]]>
+   </update>
 	
 	<delete id="deleteJoinState" parameterType="int">
 	 <![CDATA[
@@ -108,6 +126,80 @@
 	  ]]>
 	</update>
 	
+	<insert id="createRank" parameterType="com.modu.vo.MembershipVo">
+   <selectKey keyProperty="rankNo" resultType="int" order="BEFORE">
+           select seq_rankNo.NEXTVAL from dual
+        </selectKey>
+      <![CDATA[
+         insert into rank_tbl (rankNo,rankname,groupno)
+         values (#{rankNo},
+               #{rankName},
+               #{groupNo})   
+      ]]>
+   </insert>
 	
+	<select id="selectRankNo" parameterType="int" resultType="RankVo">
+	  <![CDATA[
+             Select rankNo,rankName,groupNo,rankExplain
+               from rank_tbl
+               where groupNo=#{groupNo} 
+               and rankName='Bronze' 
+         ]]>
+	</select>
+	
+	<insert id="insertNews" parameterType="com.modu.vo.NewsVo">
+		<![CDATA[
+			insert into news_tbl
+			values(seq_newsno.nextval,
+					#{news},
+					sysdate,
+					#{groupNo})
+		]]>
+	</insert>
+	
+	<insert id="insertRank" parameterType="RankVo">
+   <![CDATA[
+      insert into rank_tbl(rankNo,rankName,groupNo,rankExplain)
+            VALUES(seq_rankNo.NEXTVAL
+             ,#{rankName}
+             ,#{groupNo}
+             ,#{rankExplain})
+      ]]>
+   
+   </insert>
+   
+   <select id="selectRank" parameterType="int" resultType="RankVo">
+    <![CDATA[
+             Select rankNo,rankName,groupNo,rankExplain
+             from rank_tbl
+             where groupNo =#{groupNo}
+              order by rankNo asc
+         ]]>
+   
+   </select>
+   
+   <delete id="delRank" parameterType="int">
+    <![CDATA[
+       delete from rank_tbl
+       where rankNo = #{rankNo}
+        ]]>
+   </delete>
+   
+   <update id="fixRank" parameterType="RankVo">
+    <![CDATA[
+        update user_group_tbl
+        set rankNo =#{rankNo}
+        where user_groupNo =#{user_groupNo}
+     ]]>
+   </update>
+   
+   <update id="updateRank" parameterType="RankVo">
+    <![CDATA[
+        update rank_tbl
+        set rankName =#{rankName},
+        rankExplain =#{rankExplain}
+        where rankNo =#{rankNo}
+     ]]>
+   </update>
 	
 </mapper>

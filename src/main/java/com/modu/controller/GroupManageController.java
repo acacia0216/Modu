@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.modu.service.ModuGroupService;
 import com.modu.vo.ModuGroupVo;
 import com.modu.vo.ModuUserVo;
+import com.modu.vo.RankVo;
 import com.modu.vo.UserGroupVo;
 
 @Controller
@@ -54,7 +55,7 @@ public class GroupManageController {
 	@ResponseBody
 	@RequestMapping("/check")
 		public List<UserGroupVo> check(UserGroupVo usergroupvo ,HttpSession session) {
-		
+
 		ModuUserVo uservo =  (ModuUserVo)session.getAttribute("authUser");
 		usergroupvo.setGroupNo(uservo.getGroupNo());
 		
@@ -103,6 +104,15 @@ public class GroupManageController {
 		  // 클릭한 모임 모임관리 보여주기
 		  ModuGroupVo gvo = groupService.selectGroupImg(groupvo.getGroupNo());
 		  model.addAttribute("gvo", gvo);
+		  
+		  // 가입신청자 리스트 보여주기 
+		  List<UserGroupVo> joinList = groupService.selectJoinList(uservo.getGroupNo()); 
+		  model.addAttribute("joinList",joinList);
+		  
+		  // 회원명단 보여주기 
+		  List<UserGroupVo> selectUserList = groupService.selectUserList(uservo.getGroupNo());
+		  model.addAttribute("selectUserList",selectUserList);
+		  
 		  return"/group/groupManage";
 	}
 
@@ -118,23 +128,83 @@ public class GroupManageController {
 		return "/group/firstGroupPage";
 	}
 
-	@RequestMapping(value = "/joinGroup", method = RequestMethod.POST)
-	public String joinGroup(@RequestParam("gSearch")String gSearch,UserGroupVo usergroupvo, Model model, HttpSession session) {
-		ModuUserVo uservo = (ModuUserVo) session.getAttribute("authUser");
+	@ResponseBody
+	   @RequestMapping(value = "/joinGroup", method = RequestMethod.POST)
+	   public int joinGroup(@RequestParam("gSearch")String gSearch,UserGroupVo usergroupvo, Model model, HttpSession session) {
+	      ModuUserVo uservo = (ModuUserVo) session.getAttribute("authUser");
 
-		if (uservo != null) {
-			List<ModuGroupVo> gList = groupService.selectGroup(uservo.getUserNo());
-			model.addAttribute("gList", gList);
-		}
+	      if (uservo != null) {
+	         List<ModuGroupVo> gList = groupService.selectGroup(uservo.getUserNo());
+	         model.addAttribute("gList", gList);
+	      }
 
-		List<ModuGroupVo> searchList = groupService.searchGroup(gSearch,uservo.getUserNo());
-		model.addAttribute("searchList",searchList);
+	      List<ModuGroupVo> searchList = groupService.searchGroup(gSearch,uservo.getUserNo());
+	      model.addAttribute("searchList",searchList);
 
-		usergroupvo.setUserNo(uservo.getUserNo());
-		ModuGroupVo groupName = groupService.insertJoin(usergroupvo);
-		model.addAttribute("gName", groupName);
+	      usergroupvo.setUserNo(uservo.getUserNo());
+	      int no = groupService.insertJoin(usergroupvo);
 
-		return "/group/groupSearch";
-	}
-
+	      return no;
+	   }
+	
+	@ResponseBody
+	   @RequestMapping(value = "/plusRank", method = RequestMethod.POST)
+	   public List<RankVo> plusRank(RankVo rankvo,HttpSession session){
+	      
+	      ModuUserVo uservo = (ModuUserVo) session.getAttribute("authUser");
+	      
+	      rankvo.setGroupNo(uservo.getGroupNo());
+	      List<RankVo> plusRankList = groupService.plusRank(rankvo);
+	      
+	      return plusRankList;
+	   }
+	   
+	   @ResponseBody
+	   @RequestMapping(value = "/seleckRank", method = RequestMethod.POST)
+	   public List<RankVo> selectRank(@RequestParam("groupNo")int groupNo){
+	      
+	      List<RankVo> RankList = groupService.selectRank(groupNo);
+	      return RankList;
+	   }
+	   
+	   @ResponseBody
+	   @RequestMapping(value = "/deleteRank", method = RequestMethod.POST)
+	   public List<RankVo> deleteRank(RankVo rankvo,HttpSession session){
+	      ModuUserVo uservo = (ModuUserVo) session.getAttribute("authUser");
+	      
+	      rankvo.setGroupNo(uservo.getGroupNo());
+	      List<RankVo> delRankList = groupService.deleteRank(rankvo);
+	      return delRankList;
+	   }
+	   
+	   @ResponseBody
+	      @RequestMapping(value = "/fixRank", method = RequestMethod.POST)
+	         public List<UserGroupVo> fixRank(RankVo rankvo,HttpSession session) {
+	            int rvo = groupService.fixRank(rankvo);
+	            System.out.println("등급 바꾸기 성공"+rvo);
+	            
+	            ModuUserVo uservo =  (ModuUserVo)session.getAttribute("authUser");
+	            UserGroupVo uvo = new UserGroupVo();
+	            uvo.setGroupNo(uservo.getGroupNo());
+	            uvo.setRankNo(rankvo.getRankNo());
+	            uvo.setUser_groupNo(rankvo.getUser_groupNo());
+	            
+	            List<UserGroupVo> List = groupService.joinCheck(uvo);
+	            System.out.println(List.toString());
+	            return List;
+	         }
+	      
+	      @ResponseBody
+	      @RequestMapping(value = "/updateRank", method = RequestMethod.POST)
+	      public int updateRank(RankVo rankvo) {
+	         return groupService.updateRank(rankvo);
+	      }
+	      
+	      @RequestMapping(value = "/getGroupListForAndroid",method = RequestMethod.POST)
+	       @ResponseBody
+	       public List<ModuGroupVo> getGroupListForAndroid(@RequestParam String userNo){
+	         userNo = userNo.replaceAll("\"", "");
+	          System.out.println("userNo 가져왔니 : "+userNo);
+	          return groupService.selectGroup(Integer.parseInt(userNo));
+	       }
 }

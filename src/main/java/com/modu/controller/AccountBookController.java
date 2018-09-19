@@ -86,7 +86,6 @@ public class AccountBookController {
 	@RequestMapping( "/getaccountlist")
 	public Map<String,Object> getAccountList(@RequestParam("month") String month,
 			                                 @RequestParam("spendFlag") String spendFlag,@PathVariable("groupNo") String groupNo){
-
 		Map<String,Object> map = moduAccountbookService.getAccountList(groupNo,month,spendFlag);
 		return map;
 	}
@@ -100,6 +99,12 @@ public class AccountBookController {
 			@PathVariable("groupNo") String groupNo,
 			@RequestParam("date") String date,
 			@RequestParam("spendFlag") String spendFlag){
+		System.out.println("사용내역"+usage);
+		System.out.println("지출액"+spend);
+		System.out.println("카테고리"+category);
+		System.out.println("그룹번호"+groupNo);
+		System.out.println("날짜"+date);
+		System.out.println("sf"+spendFlag);
 		return moduAccountbookService.saveAccountbook(usage,spend,category,groupNo,date,spendFlag);
 	}
 	
@@ -117,8 +122,8 @@ public class AccountBookController {
 	
 	@ResponseBody
 	@RequestMapping( "/taggroup")
-	public void taggroup(@RequestParam("AccountbookList") String AccountbookList,@RequestParam("tagName") String tagName){
-		moduAccountbookService.taggroup(AccountbookList,tagName);
+	public void taggroup(@PathVariable("groupNo") int groupNo, @RequestParam("AccountbookList") String AccountbookList,@RequestParam("tagName") String tagName){
+		moduAccountbookService.taggroup(groupNo,AccountbookList,tagName);
 	}
 
 	
@@ -138,14 +143,14 @@ public class AccountBookController {
 	
 	@ResponseBody
 	@RequestMapping( "/inserttag")
-	public AccountbookTagVo insertTag(@RequestParam("accountbookNo") String accountbookNo, @RequestParam("tagname") String tagname){	
-		return moduAccountbookService.insertTag(accountbookNo,tagname);
+	public AccountbookTagVo insertTag(@PathVariable("groupNo") int groupNo, @RequestParam("accountbookNo") String accountbookNo, @RequestParam("tagname") String tagname){	
+		return moduAccountbookService.insertTag(groupNo,accountbookNo,tagname);
 	}
 	
 	@ResponseBody
 	@RequestMapping( "/updateTag")
-	public void updateTag(@RequestParam("accountbookNo") String accountbookNo, @RequestParam("accountbooktagno") String accountbooktagno, @RequestParam("tagno") String tagno, @RequestParam("tagname") String tagname){	
-		moduAccountbookService.updateTag(accountbookNo,accountbooktagno,tagno,tagname);
+	public void updateTag(@PathVariable("groupNo") int groupNo, @RequestParam("accountbookNo") String accountbookNo, @RequestParam("accountbooktagno") String accountbooktagno, @RequestParam("tagno") String tagno, @RequestParam("tagname") String tagname){	
+		moduAccountbookService.updateTag(groupNo,accountbookNo,accountbooktagno,tagno,tagname);
 	}
 	
 	@ResponseBody
@@ -182,6 +187,24 @@ public class AccountBookController {
 	@RequestMapping( "/insertcategory")
 	public int insertCategory(@PathVariable("groupNo") String groupNo,@RequestParam("categoryname") String categoryname){
 		return moduAccountbookService.categoryInsert(groupNo,categoryname);
+	}
+	
+	@ResponseBody
+	@RequestMapping( "/saveAccountbookForAndroid")
+	public AccountbookVo saveAccountbookForAndroid(
+			@RequestParam( value="usage", required=false, defaultValue="사용내역") String usage,
+			@RequestParam( value="spend", required=false, defaultValue="0") String spend,
+			@RequestParam( value="category", required=false, defaultValue="0") String category,
+			@PathVariable("groupNo") String groupNo,
+			@RequestParam("date") String date,
+			@RequestParam("spendFlag") String spendFlag){
+		System.out.println("사용내역"+usage);
+		System.out.println("지출액"+spend);
+		System.out.println("카테고리"+category);
+		System.out.println("그룹번호"+groupNo);
+		System.out.println("날짜"+date);
+		System.out.println("sf"+spendFlag);
+		return moduAccountbookService.saveAccountbookForAndroid(usage,spend,category,groupNo,date,spendFlag);
 	}
 	
 }

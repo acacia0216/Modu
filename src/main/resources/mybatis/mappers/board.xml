@@ -181,11 +181,11 @@
 		from(select tagNo
       	from accountbook_tbl join accountbook_tag_tbl using (accountbookNo)
       	where groupNo = #{groupNo}) join tag_tbl using (tagNo) group by tagNo order by tagNo desc) join tag_tbl using (tagNo)
-      	order by tagDate
+      	order by tagDate desc
      </select>
 
     <select id="getAccountList" parameterType="String" resultType="boardVo">
-		select tagNo,tagName, accountbookNo, accountbookUsage, to_char(accountbookRegDate,'yyyy-MM-dd') accountbookRegDate, accountbookSpend,accountbookPlace,accountbookPersonnel
+		select tagNo,tagName, accountbookNo, accountbookUsage, to_char(accountbookRegDate,'yyyy-MM-dd') accountbookRegDate, accountbookSpend,accountbookPlace,accountbookPersonnel,accountbookAddressNo
         from(select *
         from accountbook_tbl join accountbook_tag_tbl using (accountbookNo)) join tag_tbl using (tagNo)
         where tagNo=#{tagNo}
@@ -244,7 +244,7 @@
 		
 	</insert>
 
-  <!--   <select id="getAccountbookList" parameterType="hashmap" resultType="boardVo">
+	<select id="getAccountbookList" parameterType="hashmap" resultType="boardVo">
         <![CDATA[
 			select accountbookNo,accountbookRegDate,accountbookUsage,accountbookSpend,accountbookPersonnel,accountbookPlace
 			from accountbook_tbl
@@ -253,6 +253,60 @@
         <foreach item="item" collection="Acclist" index="index" open="(" separator="," close=")">
             #{item}
         </foreach>
-    </select> -->
+    </select> 
+    
+  <insert id="insertAddr" parameterType="addressVo">
+        <selectKey keyProperty="accountbookAddressNo" resultType="string" order="BEFORE">
+            select seq_accountbookAddressNo.nextval FROM dual
+        </selectKey>
 
+        <![CDATA[
+		insert into accountbookAddress_tbl
+		values(#{accountbookAddressNo},#{country},#{sido},#{sigugun},#{dongmyun},#{ri},#{rest},#{telephone},#{category},#{title},#{roadAddress},#{pointX},#{pointY})	
+	       ]]>
+
+  </insert>
+  
+  
+    <select id="checkAddr" parameterType="addressVo" resultType="String">
+
+			select accountbookAddressNo
+			from accountbookAddress_tbl
+			where rest = #{rest}
+			<if test="title != null">
+				and title = #{title}
+			</if>
+			<if test="telephone != null">
+				and telephone = #{telephone}
+		    </if>
+
+	</select>
+  
+    <select id="getAddrList" parameterType="String" resultType="addressVo">
+		<![CDATA[
+
+			select *
+			from accountbookAddress_tbl
+			where accountbookAddressNo = #{accountbookAddressNo}
+
+        ]]>
+        
+	</select>
+	
+	<update id="updateAddrNo" parameterType="map" >
+			update accountbook_tbl 
+			set accountbookAddressNo=#{accountbookAddressNo}
+			where accountbookNo = #{accountbookNo}
+	</update>
+	
+	<insert id="insertNews" parameterType="com.modu.vo.NewsVo">
+		<![CDATA[
+			insert into news_tbl
+			values(seq_newsno.nextval,
+					#{news},
+					sysdate,
+					#{groupNo})
+		]]>
+	</insert>
+	
 </mapper>

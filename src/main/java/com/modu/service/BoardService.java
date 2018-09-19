@@ -16,10 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.modu.dao.BoardDao;
-import com.modu.dao.ModuAccountbookDao;
-import com.modu.vo.AccountbookTagVo;
+import com.modu.vo.AccountbookAddressVo;
 import com.modu.vo.BoardVo;
 import com.modu.vo.FileVo;
+import com.modu.vo.NewsVo;
 
 @Service
 public class BoardService {
@@ -34,9 +34,60 @@ public class BoardService {
 	public void addPost(BoardVo boardVo, HashMap<String, Object> map) {
 		
 		System.out.println("서비스 까지 왓수다");
-		//글 내용
-			
+		
+		
+		//주소 등 가게  정보  insert
+		List<AccountbookAddressVo> addrList= boardVo.getAddressList();
+		if(addrList!=null) {
+			for(AccountbookAddressVo addrVo : addrList) {
 				
+				String title = addrVo.getTitle();
+				System.out.println("타이틀"+title);
+				if(title!=null&&!("").equals(title)) {
+					System.out.println("addrvo투스트링"+addrVo.toString());
+					String checkAddrNo =dao.checkAddr(addrVo);
+					System.out.println("체크어드레스no--"+checkAddrNo);
+					String addrNo = "";
+					
+					if(checkAddrNo!=null&&!("").equals(checkAddrNo)) {
+						//중복이 있을 경우 db에 넣진 말고 board에 연결은 해라
+						System.out.println("DB에 같은 점포 중복 있음");
+						addrNo = checkAddrNo;
+					} else {
+						//중복 없으면 db에 넣어라
+						System.out.println("DB에 같은 점포 없음");
+						AccountbookAddressVo resultAddrVo = dao.insertAddr(addrVo);
+						addrNo = resultAddrVo.getAccountbookAddressNo();
+						/*dao.updateAddrNo(boardVo);*/
+						
+					}
+					
+				String accountNo = addrVo.getAccountbookNo();
+				System.out.println("가계부번호 "+accountNo + " 에다가 주소록 번호 "+addrNo +"를 업데이트한다");
+				Map<String, Object> addrMap = new HashMap<>();
+				addrMap.put("accountbookNo", accountNo);
+				addrMap.put("accountbookAddressNo",addrNo);
+				dao.updateAddrNo(addrMap);
+				/*	List<BoardVo> accList = boardVo.getAccountList();
+					
+					for(BoardVo vo  : accList) {
+						List<AccountbookAddressVo> addrList = vo.getAddressList();
+						
+						String accountNo = vo.getAccountbookNo();
+						
+				
+						
+						
+					}*/
+					
+				}
+				
+				
+				
+			}
+		}
+			
+		
 				
 		// 가계부 첨부
 		// 넣어야 하는것 1. 보드 tbl에 태그no -- board에 이미 들어갔음
@@ -58,6 +109,9 @@ public class BoardService {
 	               String tagNo=tempTag.getTagNo();
 	               boardVo.setTagNo(tagNo);
 	               List<BoardVo> accountList  = boardVo.getAccountList();
+	               
+	               NewsVo newsVo = new NewsVo(boardVo.getGroupNo(),"[ "+boardVo.getTagName()+" ] 보고서가 작성되었습니다.");
+	       		   dao.insertNews(newsVo);
 	               for(BoardVo vo : accountList){
 	                  vo.setTagNo(tagNo);
 	                  dao.connectTagGroup(vo);   
@@ -82,9 +136,10 @@ public class BoardService {
 	         
 	         
 	      }
-	      
-	
+		
+		//글 내용
 		String boardNo = dao.addPost(boardVo);
+		
 		
 		
 		//파일
@@ -149,7 +204,8 @@ public class BoardService {
 		    }
 		}
 		
-				
+		NewsVo newsVo = new NewsVo(boardVo.getGroupNo(),"[ "+boardVo.getBoardTitle()+" ] 이 작성되었습니다.");
+		dao.insertNews(newsVo);
 	}
 	
 	
@@ -408,7 +464,7 @@ public class BoardService {
 		int flagCmt =dao.deleteCmtAll(boardNo);
 		int flagLike = dao.deleteLikeAll(boardNo);
 		int flagPost = dao.deletePost(boardNo);
-		System.out.println("이미지 삭제:"+flagImg+"글 삭제:"+flagPost+"댓글 삭제:"+flagCmt);
+		System.out.println("이미지 삭제:"+flagImg+"글 삭제:"+flagPost+"댓글 삭제:"+flagCmt+flagLike);
 		int flag=0;
 		flag= flagImg+flagPost;
 		return flag;
@@ -420,7 +476,7 @@ public class BoardService {
 
 		String likeState = boardVo.getLikeState();
 		System.out.println("서비스 스테이트 " +likeState);
-		BoardVo resultVo= new BoardVo();
+		/*BoardVo resultVo= new BoardVo();*/
 		
 		if("0".equals(likeState)) {
 			int likeCheck=dao.likeCheck(boardVo);
@@ -476,6 +532,23 @@ public class BoardService {
 	public List<BoardVo> getAccountList(BoardVo boardVo){
 		
 		List<BoardVo> accountList = dao.getAccountList(boardVo.getTagNo());
+		for( BoardVo vo :  accountList ) {
+			
+			String accountbookAddressNo = vo.getAccountbookAddressNo();
+//			System.out.println("가계부 불러올때 addrNo가 있는가? ------"+accountbookAddressNo);
+			if(accountbookAddressNo!=null&&!("").equals(accountbookAddressNo)) {
+				// addrNo가 있다면 addrList 불러와서 셋팅 하렴  
+				List<AccountbookAddressVo> addrList= dao.getAddrList(accountbookAddressNo);
+				if(addrList!=null&&!addrList.isEmpty()) {
+					String roadAddress = addrList.get(0).getRoadAddress();
+					System.out.println(addrList.get(0));
+	//				System.out.println("뿌릴 주소 확인--> "+roadAddress);	
+					vo.setRoadAddress(roadAddress);
+					vo.setAddressList(addrList);
+				}
+			}
+		}
+		
 		return accountList;
 	}
 	
@@ -492,21 +565,25 @@ public class BoardService {
 		return accountList;
 	}
 
-//	public List<BoardVo> getAccountbookList(String AccountbookList){
-//
-//		AccountbookList = AccountbookList.substring(1);
-//		String[] array = AccountbookList.split(",");
-//
-//		ArrayList<String> Acclist = new ArrayList<>();
-//
-//		for(String item : array) {
-//			Acclist.add(item);
-//		}
-//
-//		Map map = new HashMap();
-//		map.put("Acclist", Acclist);
-//
-//		return dao.getAccountbookList(map);
-//	}
+	public List<BoardVo> getAccountbookList(String AccountbookList){
+
+		if(AccountbookList.equals("")) {
+			return null;
+		}
+		AccountbookList = AccountbookList.substring(1);
+		String[] array = AccountbookList.split(",");
+		
+		ArrayList<String> Acclist = new ArrayList<>();
+		for(String item : array) {
+			Acclist.add(item);
+		}
+
+		Map map = new HashMap();
+		map.put("Acclist", Acclist);
+
+		return dao.getAccountbookList(map);
+	}
+	
+	
 }
 	

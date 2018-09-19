@@ -12,10 +12,10 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/bootstrap.css"> <!-- stylesheet 외부의 css 가져오겟다 -->
 	<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/Modu.css"> <!-- stylesheet 외부의 css 가져오겟다 --> 
+
 </head>
+
 <body style="overflow-x:hidden; overflow-y:auto;">
-
-
 
 
 <!-- 수정 확인 -->
@@ -28,13 +28,21 @@
 
 <div class="container text-center" >
  
-	<div class="carousel-item active">
+	<div class="carousel-item active" style="height:500px;">
 			<div class="carousel-caption d-none d-md-block mb-5  text-center">	
 				<div style="margin-bottom:110px;">
-					<h4 class="mx-auto" style="color: black;text-shadow:none;" >사진과 가계부를</h4>
-					<h4 class="mx-auto" style="color: black;text-shadow:none;"> 멤버들과 <span style="color:#00b0f0; text-shadow:none;"> 공유 </span>하세요</h4>
-	        
-	        	<a class="btn btn-primary  mt-4 mx-auto" style="text-shadow:none; " href="${pageContext.request.contextPath }/board/${authUser.groupNo}/write">첫 글 올리기</a>       
+				  <c:if test="${authUser.userNo eq gvo.manager }">
+					<h4 class="mx-auto lgclick" style="color: black;text-shadow:none;" >사진과 가계부를</h4>
+					<h4 class="mx-auto lgclick" style="color: black;text-shadow:none;"> 멤버들과 <span style="color:#00b0f0; text-shadow:none;"> 공유 </span>하세요</h4>
+	           
+	        	    <a class="btn btn-primary  mt-4 mx-auto" style="text-shadow:none; " href="${pageContext.request.contextPath }/board/${authUser.groupNo}/write">첫 글 올리기</a>
+	        	  </c:if>     
+	        	  <c:if test="${authUser.userNo ne gvo.manager }">
+					<h4 class="mx-auto lgclick" style="color: black;text-shadow:none;" >사진과 가계부를</h4>
+					<h4 class="mx-auto lgclick" style="color: black;text-shadow:none;"> 멤버들과 <span style="color:#00b0f0; text-shadow:none;"> 공유 </span>하는 공간입니다.</h4>
+					<br>
+	                <h4 class="mx-auto lgclick" style="color: black;text-shadow:none;"  ><span style="color:#00b0f0; text-shadow:none;">아직 게시된 글이 없습니다. </span></h4>
+	        	  </c:if>     
 	            </div>
 			
 				<br>

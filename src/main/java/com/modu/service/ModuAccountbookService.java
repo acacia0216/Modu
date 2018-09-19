@@ -14,6 +14,7 @@ import com.modu.dao.ModuAccountbookDao;
 import com.modu.vo.AccountbookCategoryVo;
 import com.modu.vo.AccountbookTagVo;
 import com.modu.vo.AccountbookVo;
+import com.modu.vo.NewsVo;
 
 @Service
 public class ModuAccountbookService {
@@ -78,6 +79,11 @@ public class ModuAccountbookService {
 			List<AccountbookCategoryVo> cateList = moduAccountbookDao.getRecommendCategory(accountbookVo);
 			if(!cateList.isEmpty()) {
 				category = String.valueOf(cateList.get(0).getCategoryNo());
+			}else {
+				cateList = moduAccountbookDao.getRecommendCategoryFromAll(accountbookVo);
+				if(!cateList.isEmpty()) {
+					category = String.valueOf(cateList.get(0).getCategoryNo());
+				}
 			}
 		}
 		
@@ -119,7 +125,7 @@ public class ModuAccountbookService {
 	}
 	
 	@Transactional
-	public void taggroup(String AccountbookList, String tagName) {		
+	public void taggroup(int groupNo, String AccountbookList, String tagName) {		
 		AccountbookList = AccountbookList.substring(1);
 		String[] array = AccountbookList.split(",");
 		
@@ -140,6 +146,8 @@ public class ModuAccountbookService {
 		tempTag = moduAccountbookDao.checkTag(accountbookTagVo);	
 		if(tempTag == null) {
 			tempTag = moduAccountbookDao.insertTag(accountbookTagVo);
+			NewsVo newsVo = new NewsVo(groupNo,"[ "+tagName+" ] 보고서가 작성되었습니다.");
+			moduAccountbookDao.insertNews(newsVo);
 		}
 		tempTag.setTagname(tagName);
 		map.put("tagno", tempTag.getTagno());
@@ -257,7 +265,7 @@ public class ModuAccountbookService {
 	}
 	
 	@Transactional
-	public AccountbookTagVo insertTag(String accountbookNo,String tagname) {
+	public AccountbookTagVo insertTag(int groupNo, String accountbookNo,String tagname) {
 		AccountbookTagVo accountbookTagVo = new AccountbookTagVo();
 		
 		accountbookTagVo.setAccountbookno(Integer.parseInt(accountbookNo));
@@ -270,6 +278,8 @@ public class ModuAccountbookService {
 		
 		if(tempTag == null) {
 			tempTag = moduAccountbookDao.insertTag(accountbookTagVo);
+			NewsVo newsVo = new NewsVo(groupNo,"[ "+tagname+" ] 보고서가 작성되었습니다.");
+			moduAccountbookDao.insertNews(newsVo);
 		}
 		tempTag.setAccountbookno(accountbookno);	
 		
@@ -279,7 +289,7 @@ public class ModuAccountbookService {
 	}
 	
 	@Transactional
-	public void updateTag(String accountbookno,String accountbooktagno,String tagno,String tagname) {
+	public void updateTag(int groupNo, String accountbookno,String accountbooktagno,String tagno,String tagname) {
 		AccountbookTagVo accountbookTagVo = new AccountbookTagVo(Integer.parseInt(accountbooktagno),Integer.parseInt(accountbooktagno),
 				Integer.parseInt(tagno),tagname);
 
@@ -288,6 +298,8 @@ public class ModuAccountbookService {
 		
 		if(tempTag == null) {
 			tempTag = moduAccountbookDao.insertTag(accountbookTagVo);
+			NewsVo newsVo = new NewsVo(groupNo,"[ "+tagname+" ] 보고서가 작성되었습니다.");
+			moduAccountbookDao.insertNews(newsVo);
 		}
 
 		tempTag.setAccountbooktagno(Integer.parseInt(accountbooktagno));
@@ -339,4 +351,44 @@ public class ModuAccountbookService {
 		return moduAccountbookDao.getModalcCtegoryList(groupno);
 	}
 	
+	@Transactional
+	public AccountbookVo saveAccountbookForAndroid(String usage,String spend,String category,String groupNo,String date,String spendFlag) {
+		
+		AccountbookVo accountbookVo = new AccountbookVo();
+		if(!usage.equals("사용내역")) {
+			accountbookVo.setAccountbookUsage(usage);
+			accountbookVo.setGroupNo(Integer.parseInt(groupNo));
+			List<AccountbookCategoryVo> cateList = moduAccountbookDao.getRecommendCategory(accountbookVo);
+			if(!cateList.isEmpty()) {
+				category = String.valueOf(cateList.get(0).getCategoryNo());
+			}else {
+				cateList = moduAccountbookDao.getRecommendCategoryFromAll(accountbookVo);
+				if(!cateList.isEmpty()) {
+					category = String.valueOf(cateList.get(0).getCategoryNo());
+				}
+			}
+		}
+		
+		accountbookVo.setAccountbookUsage(usage);
+		accountbookVo.setAccountbookSpend(Integer.parseInt(spend));
+		accountbookVo.setCategoryNo(Integer.parseInt(category));
+		accountbookVo.setGroupNo(Integer.parseInt(groupNo));
+		date = date.replace("년 ", "/");
+		date = date.replace("월 ", "/");
+		date = date.replace("일", "");
+		String tempDate[] = date.split("/");
+		System.out.println(date);
+		String y = tempDate[0];
+		String m = tempDate[1];
+		String d = tempDate[2];
+		accountbookVo.setAccountbookRegDate(y+"/"+m+"/"+d);
+
+		if(spendFlag.equals("spend")) {
+			moduAccountbookDao.saveAccountbookSpend(accountbookVo);
+		}else {
+			moduAccountbookDao.saveAccountbookIncome(accountbookVo);
+		}
+		
+		return accountbookVo;
+	}
 }

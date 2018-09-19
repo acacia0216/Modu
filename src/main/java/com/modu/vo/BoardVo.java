@@ -29,11 +29,34 @@ public class BoardVo {
 	String accountbookSpend;
 	String accountbookPlace;
 	String accountbookPersonnel;
+	String accountbookAddressNo;
+	String roadAddress;
+	List<AccountbookAddressVo> addressList;
+	
 	List<BoardVo> accountList ;
 	
 	
 	
 	
+	
+	public String getRoadAddress() {
+		return roadAddress;
+	}
+	public void setRoadAddress(String roadAddress) {
+		this.roadAddress = roadAddress;
+	}
+	public String getAccountbookAddressNo() {
+		return accountbookAddressNo;
+	}
+	public void setAccountbookAddressNo(String accountbookAddressNo) {
+		this.accountbookAddressNo = accountbookAddressNo;
+	}
+	public List<AccountbookAddressVo> getAddressList() {
+		return addressList;
+	}
+	public void setAddressList(List<AccountbookAddressVo> addressList) {
+		this.addressList = addressList;
+	}
 	public String getStartDate() {
 		return startDate;
 	}
@@ -210,8 +233,10 @@ public class BoardVo {
 				+ ", commentRegDate=" + commentRegDate + ", userName=" + userName + ", tagName=" + tagName
 				+ ", likeCount=" + likeCount + ", cmtCount=" + cmtCount + ", imgList=" + imgList + ", accountbookNo="
 				+ accountbookNo + ", accountbookUsage=" + accountbookUsage + ", accountbookRegDate="
-				+ accountbookRegDate + ", accountbookSpend=" + accountbookSpend + ", accountbookPlace="
-				+ accountbookPlace + ", accountbookPersonnel=" + accountbookPersonnel + "]";
+				+ accountbookRegDate + ", startDate=" + startDate + ", endDate=" + endDate + ", accountbookSpend="
+				+ accountbookSpend + ", accountbookPlace=" + accountbookPlace + ", accountbookPersonnel="
+				+ accountbookPersonnel + ", accountbookAddressNo=" + accountbookAddressNo + ", addressList="
+				+ addressList + ", accountList=" + accountList + "]";
 	}
 
 	

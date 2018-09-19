@@ -21,7 +21,9 @@
 		<center>
                <img style="height: 80%; width: 80%;"  src="${pageContext.request.contextPath }/assets/images/groupImg04.png" alt="groupImg05">
         </center>
+        
 		</div>
+		
 	</div>
   
   

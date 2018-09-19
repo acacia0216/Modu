@@ -1,12 +1,13 @@
 package com.modu.dao;
 
-import com.modu.vo.GroupMainVo;
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
+import com.modu.vo.AccountbookAddressVo;
+import com.modu.vo.NewsVo;
 
 @Repository
 public class GroupMainDao {
@@ -14,7 +15,11 @@ public class GroupMainDao {
     @Autowired
     private SqlSession sqlSession;
 
-    public List<GroupMainVo> getNews(Map<String,Object> map) {
-        return sqlSession.selectList("groupMain.getNews",map);
+    public List<NewsVo> getNewsList(int groupNo) {
+        return sqlSession.selectList("groupMain.getNewsList",groupNo);
+    }
+    
+    public AccountbookAddressVo searchInfo(int groupNo) {
+        return sqlSession.selectOne("groupMain.searchInfo",groupNo);
     }
 }

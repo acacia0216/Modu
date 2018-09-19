@@ -11,7 +11,7 @@
 		</div>
 		<hr>
 		<span style="border-top: #c3c3c3 solid 1px; padding: 20px ; text-align: center; ">
-			주소: 서울특별시 서초구 서초대로74길33 비트빌 3층   전화: 02-111-1111   Team: SangHwa Lee / Young-Joo the God Kwak / Gyung-seop Kim/ NaYeon Roh
+			주소: 서울특별시 서초구 서초대로74길33 비트빌 3층   전화: 02-111-1111   Team: SangHwa Lee / Young-Joo Kwak / Gyung-seop Kim/ NaYeon Roh
 		</span>
 		<br><br>
 		<span style="font-weight: bold;">

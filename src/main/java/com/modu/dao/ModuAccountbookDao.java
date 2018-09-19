@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.modu.vo.AccountbookCategoryVo;
 import com.modu.vo.AccountbookTagVo;
 import com.modu.vo.AccountbookVo;
+import com.modu.vo.NewsVo;
 
 @Repository
 public class ModuAccountbookDao {
@@ -138,5 +139,13 @@ public class ModuAccountbookDao {
 	
 	public List<AccountbookCategoryVo> getRecommendCategory(AccountbookVo accountbookVo) {
 		return sqlSession.selectList("accountbook.getRecommendCategory",accountbookVo);
+	}
+	
+	public List<AccountbookCategoryVo> getRecommendCategoryFromAll(AccountbookVo accountbookVo) {
+		return sqlSession.selectList("accountbook.getRecommendCategoryFromAll",accountbookVo);
+	}
+	
+	public void insertNews(NewsVo newsVo) {
+		sqlSession.insert("accountbook.insertNews",newsVo);
 	}
 }

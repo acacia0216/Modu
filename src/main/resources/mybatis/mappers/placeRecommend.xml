@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="placeRecommend">
+
+	<select id="getRecommendList"  parameterType="Map"  resultType="com.modu.vo.PlaceRecommendVo">
+	    <![CDATA[
+	    select *
+		from (	select title,roadaddress,nvl(telephone,'-') telephone,maxperson,avgaccountbookspend/avgaccountbookpersonnel eachspend
+				from accountbookaddress_tbl join (  select accountbookaddressno,max(nvl(accountbookpersonnel,0)) maxperson,avg(accountbookspend) avgaccountbookspend,avg(accountbookpersonnel) avgaccountbookpersonnel,count(accountbookaddressno) addrcount
+				                                    from accountbook_tbl
+				                                    where accountbookaddressno is not null and accountbookspend is not null and accountbookpersonnel is not null			                                    	
+		]]>
+												<if test="recommendType == 'group'">
+													and groupno = #{groupNo}
+												</if>
+		<![CDATA[
+			                                    	group by accountbookaddressno) using(accountbookaddressno)
+		]]>	                              
+			<if test="mode == 'food'">      		                      
+				where category like ('육류,고기요리%') or category like ('한식%') or category like ('중식%') or category like ('일식%') or category like ('양식%') or category like ('음식점%') or category like ('분식%') or category like ('술집%') or category like ('카페,디저트%')		                    
+	    	</if>
+	    	<if test="mode == 'tour'">      		                      
+				where category like ('문화,예술%') or category like ('여행,명소%') or category like ('관람,체험%')
+			</if>
+	    	<if test="mode == 'game'">      		                      
+				where category like ('스포츠,오락%') or category like ('오락시설%') 
+			</if>
+	    	<if test="mode == 'stay'">      		                      
+				where category like ('숙박%')
+			</if>
+	    	
+	    	<if test="sortCol == ''">
+				order by addrcount desc
+			</if>
+	    	<if test="sortCol == 'title'">
+				order by title asc
+			</if>
+			<if test="sortCol == 'roadaddress'">
+				order by roadaddress asc
+			</if>
+			<if test="sortCol == 'telephone'">
+				order by telephone asc
+			</if>
+			<if test="sortCol == 'maxperson'">
+				order by maxperson asc
+			</if>
+			<if test="sortCol == 'eachspend'">
+				order by eachspend asc
+			</if>
+			<![CDATA[
+			)
+			where rownum<=15
+			]]>	 
+	</select>
+	
+	<select id="getBestRecommendList"  parameterType="Map"  resultType="com.modu.vo.PlaceRecommendVo">
+	    <![CDATA[
+            select *
+			from (  select title,roadaddress,nvl(telephone,'-') telephone,maxperson,eachspend,distperson,abs(eachspend-bestspend) distspend
+			        from (  select  title,roadaddress,nvl(telephone,'-') telephone,maxperson,avgaccountbookspend/avgaccountbookpersonnel eachspend,abs(maxperson-bestperson) distperson,bestspend,category
+			                from accountbookaddress_tbl join (  select  accountbookaddressno,
+			                                                    max(nvl(accountbookpersonnel,0)) maxperson,
+			                                                    avg(accountbookspend) avgaccountbookspend,
+			                                                    avg(accountbookpersonnel) avgaccountbookpersonnel,
+			                                                    count(accountbookaddressno) addrcount
+			                                            from accountbook_tbl
+			                                            where accountbookaddressno is not null and accountbookspend is not null and accountbookpersonnel is not null and groupNo=#{groupNo}	   
+			                                            having count(accountbookaddressno) > 1                                 	
+			                                            group by accountbookaddressno) using(accountbookaddressno) , (select avg(maxperson) bestperson, avg(eachspend) bestspend
+			                                                                                                         from (select title,roadaddress,nvl(telephone,'-') telephone,maxperson,avgaccountbookspend/avgaccountbookpersonnel eachspend
+			                                                                                                               from accountbookaddress_tbl join (  select  accountbookaddressno,
+			                                                                                                                                                        max(nvl(accountbookpersonnel,0)) maxperson,
+			                                                                                                                                                        avg(accountbookspend) avgaccountbookspend,
+			                                                                                                                                                        avg(accountbookpersonnel) avgaccountbookpersonnel,
+			                                                                                                                                                        count(accountbookaddressno) addrcount
+			                                                                                                                                                from accountbook_tbl
+			                                                                                                                                                where accountbookaddressno is not null and accountbookspend is not null and accountbookpersonnel is not null			                                    	
+			                                                                                                                                                group by accountbookaddressno) using(accountbookaddressno))) a)
+		]]>	       
+			        <if test="mode == 'food'">      		                      
+						where category like ('육류,고기요리%') or category like ('한식%') or category like ('중식%') or category like ('일식%') or category like ('양식%') or category like ('음식점%') or category like ('분식%') or category like ('술집%') or category like ('카페,디저트%')		                    
+			    	</if>
+			    	<if test="mode == 'tour'">      		                      
+						where category like ('문화,예술%') or category like ('여행,명소%') or category like ('관람,체험%')
+					</if>
+			    	<if test="mode == 'game'">      		                      
+						where category like ('스포츠,오락%') or category like ('오락시설%') 
+					</if>
+			    	<if test="mode == 'stay'">      		                      
+						where category like ('숙박%')
+					</if>
+		<![CDATA[			
+			        order by distperson,distspend asc)
+			where rownum<=1   
+		]]>	                              	
+	</select>
+	
+	<select id="getBestRecommendInfo" parameterType="int" resultType="com.modu.vo.PlaceRecommendVo">
+		<![CDATA[
+			select *
+			from (  select avg(accountbookspend) avgspend, avg(accountbookpersonnel) avgpersonnel
+			        from accountbook_tbl), (select pointx maxpointx, pointy maxpointy
+			                                from accountbookaddress_tbl
+			                                where accountbookaddressno in ( select accountbookaddressno
+			                                                                from (  select accountbookaddressno
+			                                                                        from accountbook_tbl 
+												where groupno = #{groupno}
+			                                                                        group by accountbookaddressno
+			                                                                        order by count(accountbookaddressno) desc)
+			                                                                where rownum = 1))
+		]]>
+	</select>
+	
+	<select id="getBestRecommend" parameterType="Map" resultType="com.modu.vo.PlaceRecommendVo">
+		<![CDATA[
+			select title,roadaddress,telephone,maxperson,avgaccountbookspend/avgaccountbookpersonnel eachspend
+			from (  select accountbookaddressno,distspend,distpersonnel,title,roadaddress,telephone,category,distpoint,maxperson,avgaccountbookspend,avgaccountbookpersonnel
+			        from (  select distinct accountbookaddressno, ABS(#{avgspend}-accountbookspend) distspend , ABS(#{avgpersonnel}-accountbookpersonnel) distpersonnel
+			                from accountbook_tbl
+			                where accountbookaddressno is not null and accountbookspend is not null and accountbookpersonnel is not null and groupno = #{groupNo} ) join (  select distinct accountbookaddressno,title,roadaddress,nvl(telephone,'-') telephone,category,sqrt( power(#{maxpointx}-pointx,2) + power(#{maxpointy}-pointy,2) ) distpoint
+					                                                                                                                                                        from accountbookaddress_tbl) using (accountbookaddressno) join (select  accountbookaddressno,max(nvl(accountbookpersonnel,0)) maxperson , avg(accountbookspend) avgaccountbookspend, avg(accountbookpersonnel) avgaccountbookpersonnel
+					                                                                                                                                                                                                                        from accountbook_tbl
+					                                                                                                                                                                                                                        where accountbookaddressno is not null and accountbookspend is not null and accountbookpersonnel is not null
+					                                                                                                                                                                                                                        group by accountbookaddressno) using (accountbookaddressno)
+			        ]]>	       
+			        <if test="mode == 'food'">      		                      
+						where category like ('육류,고기요리%') or category like ('한식%') or category like ('중식%') or category like ('일식%') or category like ('양식%') or category like ('음식점%') or category like ('분식%') or category like ('술집%') or category like ('카페,디저트%')		                    
+			    	</if>
+			    	<if test="mode == 'tour'">      		                      
+						where category like ('문화,예술%') or category like ('여행,명소%') or category like ('관람,체험%')
+					</if>
+			    	<if test="mode == 'game'">      		                      
+						where category like ('스포츠,오락%') or category like ('오락시설%') 
+					</if>
+			    	<if test="mode == 'stay'">      		                      
+						where category like ('숙박%')
+					</if>
+		<![CDATA[                   	
+			        order by distpersonnel,distspend,distpoint asc)
+			where rownum <= 1     
+		]]>
+	</select>
+	
+</mapper>

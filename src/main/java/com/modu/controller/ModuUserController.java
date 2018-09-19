@@ -73,5 +73,20 @@ public class ModuUserController {
         session.invalidate();
         return "redirect:/main";
     }
+    
+    @RequestMapping(value = "/getUserInfoForAndroid",method = RequestMethod.POST)
+    @ResponseBody
+    public String getUserInfoForAndroid(@ModelAttribute ModuUserVo userVo) {
+        System.out.println("아이디 체크하러가자 : "+userVo.toString());
+         ModuUserVo moduUserVo = moduUserService.userLoginCheck(userVo);
+         System.out.println("아이디 체크하고 왔다 : " + moduUserVo.toString());
+
+         if (moduUserVo.getUserNo() != 0) {
+             return String.valueOf(moduUserVo.getUserNo());
+         } else {
+             System.out.println("로그인 실패");
+             return "0";
+         }
+    }
 
 }

@@ -18,9 +18,14 @@
 
 table {
 	font-family: 'Nanum Gothic', sans-serif;
-	font-weight: 600;
-	font-size: 0.9em;
+	font-weight: 200;
+	font-size: 1.0em;
 	text-align: center;
+}
+
+#myChart .jqplot-point-label {
+	font-family:"Nanum Gothic" , serif; 
+	font-size: 0.7em;	
 }
 
 </style>
@@ -31,46 +36,53 @@ table {
 
 	<!----------------- container------------------->
 	<div class="container">
+	  <div class="calendar-content my-4" style="margin-left: 500px">
+		<input type="text" class="form-control page-link col-4 text-center smTitle" style="font-size: 25px" id="monthCal" value="">
+	  </div>
 
 		<!----------------- 통계 그래프------------------->
 		<center>
-			<div id="chartCanvas">
-				<canvas class="m-4 w-75" id="myChart" width="50" height="13"></canvas>
-			</div>
+			<%-- <div id="chartCanvas">
+				<canvas class="my-2 w-100" id="myChart" width="50" height="10"></canvas>
+			</div> --%>
+			<div class="my-2 w-100" id="myChart" style="width: 100%; height: 400px;"></div>
 		</center>
 
 		<!----------------- 월 선택 달력------------------->
-		<div class="calendar-content" style="margin-left: 500px">
-			<input type="text" class="form-control page-link col-4 text-center" style="font-size: 25px" id="monthCal" value="">
-		</div>
-		<hr>
+		
+		<br>
+		<!-- <hr> -->
 
+		<!-----------------수입/지출, 그래프 숨김/보이기 , 카테고리 수정 버튼 ------------------->
+		<div class="float-left">
+			<button id="spendBtn" type="button" class="btn btn-outline-primary smContent">수입</button>
+			<button id="hiddenGraph" type="button" class="btn btn-outline-secondary smContent">그래프 숨기기</button>
+		</div>
+		
 		<!----------------- 검색 창------------------->
-		<div class="form-inline ml-2 float-left">
-			<select class="custom-select" id="searchMode">
+		<div class="form-inline float-right">
+			<select class="custom-select smContent" id="searchMode">
 				<option selected>검색 유형</option>
 				<option value="1">날짜 검색</option>
 				<option value="2">태그 검색</option>
 				<option value="3">내역 검색</option>
 			</select> 
 			
-			<input class="form-control mr-sm-2 ml-2" type="search" id="searchText" placeholder="검색" aria-label="search">
+			<input class="form-control mr-sm-2 ml-2 smContent" type="search" id="searchText" placeholder="검색" aria-label="search">
 			<div id="searchDateDiv">
-			<input class="form-control mr-sm-2 ml-2" type="search" id="searchDate1" placeholder="검색" aria-label="search">
+			<input class="form-control mr-sm-2 ml-2 smContent" type="search" id="searchDate1" placeholder="검색" aria-label="search">
 			~
-			<input class="form-control mr-sm-2 ml-2" type="search" id="searchDate2" placeholder="검색" aria-label="search">
+			<input class="form-control mr-sm-2 ml-2 smContent" type="search" id="searchDate2" placeholder="검색" aria-label="search">
 			</div>
-			<button class="btn btn-outline-primary my-2 my-sm-0" id="searchBtn">검색</button>
-		</div>
-
-		<!-----------------수입/지출, 그래프 숨김/보이기 , 카테고리 수정 버튼 ------------------->
-		<div class="float-right">
-			<button id="spendBtn" type="button" class="btn btn-primary">수입</button>
-			<button id="hiddenGraph" type="button" class="btn btn-primary">그래프 숨기기</button>
+			<button class="btn btn-outline-primary" style="border:none; background:transparent;" id="searchBtn">
+				<img style="width:20px;height:20px;" src="${pageContext.request.contextPath }/assets/images/search03.png">
+			</button>
 		</div>
 		
+		<div style="clear:both"></div>
+		
 		<!----------------- 가계부 테이블------------------->
-		<div class="table-responsive">
+		<div class="table-responsive mt-3">
 			<input type="hidden" id="groupNo" value="${gvo.groupNo}">
 			<input type="hidden" id="urlDate" value="${urlDate}">
 			<input type="hidden" id="groupManager" value="${gvo.manager}">
@@ -80,7 +92,7 @@ table {
 					<tr>
 						<th>
 							<div class="custom-control custom-checkbox">
-								<c:if test="${gvo.manager} eq ${authUser.userNo}">
+								<c:if test="${gvo.manager eq authUser.userNo}">
 									<input type="checkbox" class="custom-control-input" id="checkAll">
 									<label class="custom-control-label" for="checkAll">&nbsp;</label>
 								</c:if>
@@ -101,29 +113,64 @@ table {
 			</table>
 		</div>
 
-		<!----------------- 태그 버튼------------------->
+		<!-- 
+		----------------- 태그 버튼-------------------
 		<div class="float-left">
-			<button id="tagGroup" type="button" class="btn btn-primary">#태그</button>	
-			<button id="categoryUpdate" type="button" class="btn btn-primary">카테고리 수정</button>
-			<button id="alignBtn" type="button" class="btn btn-primary">정렬</button>
+			<button id="tagGroup" type="button" class="btn btn btn-light navText"  style="border:#54c9ad 2px solid; border-radius: 15px; font-weight:bold; cursor:pointer;">#태그</button>	
+			<button id="categoryUpdate" type="button" class="btn btn-outline-secondary smContent">카테고리 수정</button>
+			<button id="alignBtn" type="button" class="btn btn-outline-secondary smContent">정렬</button>
 		</div>
 
-		<!----------------- CRUD 버튼------------------->
+		--------------- CRUD 버튼-----------------
 		<div class="float-right">
-			<button id="writeBoard" type="button" class="btn btn-primary">글쓰기</button>
-			<button id="deleteAccountbook" type="button" class="btn btn-danger">삭제하기</button>
+			<button id="writeBoard" type="button" class="btn btn-outline-primary smContent">글쓰기</button>
+			<button id="deleteAccountbook" type="button" class="btn btn-outline-danger smContent">삭제하기</button>
 		</div>
-		<br> <br>
+		<br> <br> 
+		-->		
 	</div>
 	<br>
 	<br>
 	
+	<a class="float" id="menu-share" onclick="return false">
+		<i class="fa fa-twitter my-float smItem">
+			...
+		</i>
+	</a>
+	<ul class="ul" style="cursor:pointer;">
+		<li class="li">
+				<i id="tagGroup" class="fa fa-twitter my-float smItem">
+					태그<br>일괄적용
+				</i>
+		</li>
+		<li class="li">
+				<i id="categoryUpdate" class="fa fa-twitter my-float smItem">
+					카테고리<br>수정
+				</i>
+		</li>
+		<li class="li">
+				<i id="writeBoard" class="fa fa-twitter my-float smItem">
+					게시판<br>글쓰기
+				</i>
+		</li>
+		<li class="li">
+				<i id="alignBtn" class="fa fa-twitter my-float smItem">					
+					가계부<br>정렬하기
+				</i>
+		</li>
+		<li class="li">
+				<i id="deleteAccountbook" class="fa fa-twitter my-float smItem">
+					가계부<br>삭제하기
+				</i>
+		</li>	
+	</ul>
+
 	<!----------------- 모달 (개별 태그)------------------->
 	<div class="modal fade" id="eachTagModal" tabindex="-1" role="dialog">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title">태그</h5>
+	        <h5 class="modal-title smTitle">태그</h5>
 	        <input type="hidden" id="hiddenAnoTag" value="">	
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
@@ -132,8 +179,7 @@ table {
 	      <div class="modal-body" id="tagBody">					
 	      </div>
 	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      	<button type="button" id="tagInsert" class="btn btn-primary mr-2">태그 추가</button>
+	      	<button type="button" id="tagInsert" class="btn btn-primary mr-2 smContent">태그 추가</button>
 	      </div>
 	    </div>
 	  </div>
@@ -144,7 +190,7 @@ table {
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title">태그</h5>
+	        <h5 class="modal-title smTitle">태그</h5>
 	        <input type="hidden" id="hiddenAnoTag" value="">	
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
@@ -154,8 +200,7 @@ table {
 	      	<input class='form-control mr-sm-2 ml-2 w-100' type='search' id='inputTagsName' value=''>				
 	      </div>
 	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      	<button type="button" id="saveTag" class="btn btn-primary mr-2">저장하기</button>
+	      	<button type="button" id="saveTag" class="btn btn-primary mr-2 smContent">저장하기</button>
 	      </div>
 	    </div>
 	  </div>
@@ -166,7 +211,7 @@ table {
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title">카테고리</h5>
+	        <h5 class="modal-title smTitle">카테고리</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -174,8 +219,7 @@ table {
 	      <div class="modal-body" id="categoryBody">					
 	      </div>
 	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      	<button type="button" id="categoryInsert" class="btn btn-primary mr-2">카테고리 추가</button>
+	      	<button type="button" id="categoryInsert" class="btn btn-primary mr-2 smContent">카테고리 추가</button>
 	      </div>
 	    </div>
 	  </div>
@@ -184,14 +228,37 @@ table {
 	<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/js/bootstrap.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/js/header.js"></script>
 	<script src="${pageContext.request.contextPath }/assets/jquery/jquery.mtz.monthpicker.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/locales/bootstrap-datetimepicker.ko.js" charset="UTF-8"></script>
-
+	
+	<!-- 라인 그래프 출력을 위한 파일 include -->
+	<link class="include" rel="stylesheet" type="text/css"
+	      href="${pageContext.request.contextPath }/assets/jquery/jquery.jqplot.min.css"/>
+	<link class="include" rel="stylesheet" type="text/css"
+	      href="${pageContext.request.contextPath }/assets/jquery/jquery.jqplot.css"/>
+	<script type="text/javascript" src="${pageContext.request.contextPath }/assets/jquery/jquery.jqplot.min.js"></script>
+	<!-- 막대 그래프 출력을 위한 파일 include -->
+	<script class="include" type="text/javascript"
+	        src="${pageContext.request.contextPath }/assets/plugins/jqplot.barRenderer.min.js"></script>
+	<!-- 원형 그래프 출력을 위한 파일 include -->
+	<script type="text/javascript"
+	        src="${pageContext.request.contextPath }/assets/plugins/jqplot.pieRenderer.min.js"></script>
+	<!-- 그래프 수치 표시를 위한 include -->
+	<script type="text/javascript"
+	        src="${pageContext.request.contextPath }/assets/plugins/jqplot.pointLabels.min.js"></script>
+	<!-- 범례 표시 위한 include -->
+	<script type="text/javascript"
+	        src="${pageContext.request.contextPath }/assets/plugins/jqplot.enhancedLegendRenderer.min.js"></script>
+	<!--  -->
+	<script class="include" type="text/javascript"
+	        src="${pageContext.request.contextPath }/assets/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath }/assets/plugins/excanvas.min.js"></script>
+	
+	
 	<script>
 		$(document).ready( function() {	
 			
@@ -263,8 +330,71 @@ table {
 			
 			//차트 작성
 			function MyChart(chartDataList){
+							
+				$('#myChart').replaceWith('<div class="my-2 w-100" id="myChart" style="width: 100%; height: 400px;"></div>');
 				
-				 $('#myChart').replaceWith('<canvas class="m-4 w-75" id="myChart" width="50" height="13"></canvas>');
+				var chartCategoryList = new Array();
+				var chartCategoryDatas = new Array(); 
+				
+				for(var i=0; i<chartDataList.length; i++){
+					chartCategoryList.push(chartDataList[i].categoryName);
+					chartCategoryDatas.push(chartDataList[i].total);
+				} 
+				
+				$.jqplot('myChart', [chartCategoryDatas], {
+		            animate: true,
+		            seriesColors:['#99CAFF'],
+		            grid: {
+		            	background: '#FFFFFF',
+		            	gridLineColor: '#DDDDDD',
+		            	borderColor: '#CCCCCC',
+		            	shadow: false
+		            },
+		            series: [{//첫번째 그래프 설정
+		                renderer: $.jqplot.BarRenderer//막대그래프로 출력
+		                , label: '1'//막대 이름설정
+		                , pointLabels: {show: true, stackedValue: true}//수치 표기
+		                , rendererOptions: {//만들기 옵션
+		                    animation: {
+		                        speed: 1500    //animation 설정 시 속도
+		                    }
+		                    /* 그림자 */
+		                    , shadow: false
+		                    //shadowDepth: 10, 그림자
+		                    /* 막대에 관한 라인 */
+		                    , showLine: true
+		                    /* 각각의 막대그래프 램던 색 여부 */
+		                    , varyBarColor: false
+		                    /* 막대 넓이 */
+		                    , barWidth: 70      //bar width 설정
+		                    , barPadding: 10  //bar padding
+		                    , barMargin: 0      //bar간 간격
+		                }
+		            }],
+	
+		            axes: {//축 설정
+		                xaxis: {
+		                    renderer: $.jqplot.CategoryAxisRenderer, 
+		                    ticks: chartCategoryList,
+		                    tickOptions: {
+		                    	fontFamily: 'Nanum Gothic, Serif',
+		                        fontSize: '0.9em'                    
+		                    }
+		                },
+		                yaxis: {
+		                    tickOptions: {
+		                    	formatString: "%'d",
+		                    	fontFamily: 'Nanum Gothic, Serif',
+		                        fontSize: '0.9em'                    
+		                    }
+		                }
+		            }
+		        });
+			}
+			
+			/* function MyChart(chartDataList){
+				
+				 $('#myChart').replaceWith('<canvas class="my-2 w-100" id="myChart" width="50" height="10"></canvas>');
 				 
 				var chartCategoryList = new Array();
 				var chartCategoryDatas = new Array(); 
@@ -300,7 +430,9 @@ table {
 							}
 						} ]
 					},
-			     	legend: { display: false },
+			     	legend: { 
+			     		display: false
+			     	},
 			      	title: {
 			        	display: true
 			      	}
@@ -321,11 +453,11 @@ table {
 					adddata(i,chartCategoryDatas[i],chartCategoryList[i]);
 				}
 
-			}	
+			}	 */
 			
 			//통계 그래프 숨기기/보이기			
 			$('#hiddenGraph').on('click',function(){
-				$('#chartCanvas').toggle();
+				$('#myChart').toggle();
 				if ( $('#hiddenGraph').html() == '그래프 숨기기'){
 					$('#hiddenGraph').html('그래프 보이기');
 				}else{
@@ -337,7 +469,9 @@ table {
 			//지출/수입 전환 버튼
 			var spendFlag = 'spend';
 			$('#spendBtn').on('click',function(){
-				if ( $('#spendBtn').html() == '수입'){					
+				if ( $('#spendBtn').html() == '수입'){		
+					$('#spendBtn').removeClass('btn-outline-primary');
+					$('#spendBtn').addClass('btn-outline-danger');				
 					$('#spendTableHead').html('수입액');
 					$('#spendBtn').html('지출');
 					spendFlag = 'income';
@@ -348,6 +482,8 @@ table {
 						searching()
 					}	
 				}else{
+					$('#spendBtn').removeClass('btn-outline-danger');
+					$('#spendBtn').addClass('btn-outline-primary');
 					$('#spendTableHead').html('지출액');
 					$('#spendBtn').html('수입') ;
 					spendFlag = 'spend';
@@ -587,38 +723,38 @@ table {
 				str += "</td>"
 				str += "<td>"
 				if(authUserNo == manager){
-					str += "<input type='text' id='date" + i + "' readonly='readonly' class='date datepicker form-control text-center' value='" + accountbookVo.accountbookRegDate + "' style='margin-top:7px' tabindex='-1' placeholder='날짜'>";
+					str += "<input type='text' id='date" + i + "' readonly='readonly' class='smContent date datepicker form-control text-center' value='" + accountbookVo.accountbookRegDate + "' style='margin-top:7px' tabindex='-1' placeholder='날짜'>";
 				}else{
-					str += "<input type='text' id='date" + i + "' readonly='readonly' class='date form-control text-center' value='" + accountbookVo.accountbookRegDate + "' style='margin-top:7px' tabindex='-1' placeholder='날짜'>";
+					str += "<input type='text' id='date" + i + "' readonly='readonly' class='smContent date form-control text-center' value='" + accountbookVo.accountbookRegDate + "' style='margin-top:7px' tabindex='-1' placeholder='날짜'>";
 				}
 				str += "</td>";
 				str += "<td>";
 				if(authUserNo == manager){
-					str += "<input type='text' class='usage form-control text-center' style='margin-top: 7px' id='usage" + i + "' value='" + accountbookVo.accountbookUsage + "' placeholder='사용내역'>";
+					str += "<input type='text' class='smContent usage form-control text-center' style='margin-top: 7px' id='usage" + i + "' value='" + accountbookVo.accountbookUsage + "' placeholder='사용내역'>";
 				}else{
-					str += "<input type='text' class='usage form-control text-center' style='margin-top: 7px' id='usage" + i + "' value='" + accountbookVo.accountbookUsage + "' placeholder='사용내역' disabled='disabled'> ";
+					str += "<input type='text' class='smContent usage form-control text-center' style='margin-top: 7px' id='usage" + i + "' value='" + accountbookVo.accountbookUsage + "' placeholder='사용내역' disabled='disabled'> ";
 				}
 				str += "</td>";
 				str += "<td>";
 				if (spendFlag == 'spend'){
 					if(authUserNo == manager){
-						str += "<input type='text' class='spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='" + comma(accountbookVo.accountbookSpend) + "' placeholder='지출액'>";
+						str += "<input type='text' class='smContent spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='" + comma(accountbookVo.accountbookSpend) + "' placeholder='지출액'>";
 					}else{
-						str += "<input type='text' class='spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='" + comma(accountbookVo.accountbookSpend) + "' placeholder='지출액' disabled='disabled'>";
+						str += "<input type='text' class='smContent spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='" + comma(accountbookVo.accountbookSpend) + "' placeholder='지출액' disabled='disabled'>";
 					}
 				}else{
 					if(authUserNo == manager){
-						str += "<input type='text' class='spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='" + comma(accountbookVo.accountbookIncome) + "' placeholder='수입액'>";
+						str += "<input type='text' class='smContent spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='" + comma(accountbookVo.accountbookIncome) + "' placeholder='수입액'>";
 					}else{
-						str += "<input type='text' class='spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='" + comma(accountbookVo.accountbookIncome) + "' placeholder='수입액' disabled='disabled'>";
+						str += "<input type='text' class='smContent spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='" + comma(accountbookVo.accountbookIncome) + "' placeholder='수입액' disabled='disabled'>";
 					}
 				}
 				str += "</td>";
 				str += "<td>";
 				if(authUserNo == manager){
-					str += "<select class='category form-control custom-select text-center' style='margin-top: 7px' id='category" + i + "'>";
+					str += "<select class='smContent category form-control custom-select text-center' style='margin-top: 7px' id='category" + i + "'>";
 				}else{
-					str += "<select class='category form-control custom-select text-center' style='margin-top: 7px' id='category" + i + "' disabled='disabled'>";
+					str += "<select class='smContent category form-control custom-select text-center' style='margin-top: 7px' id='category" + i + "' disabled='disabled'>";
 				}
 				str += "<option value='0' selected>미분류</option>";
 
@@ -640,9 +776,9 @@ table {
 				if (accountbookVo.tagName == (" "))
 					accountbookVo.tagName = "";
 				if(authUserNo == manager){
-					str += "<input type='text' class='tag form-control text-center' style='margin-top: 7px' id='tag" + i + "' value='" + accountbookVo.tagName + "' tabindex='-1' placeholder='태그'>";
+					str += "<input type='text' class='smContent tag form-control text-center' style='margin-top: 7px' id='tag" + i + "' value='" + accountbookVo.tagName + "' tabindex='-1' placeholder='태그'>";
 				}else{
-					str += "<input type='text' class='tag form-control text-center' style='margin-top: 7px' id='tag" + i + "' value='" + accountbookVo.tagName + "' tabindex='-1' placeholder='태그' disabled='disabled'>";
+					str += "<input type='text' class='smContent tag form-control text-center' style='margin-top: 7px' id='tag" + i + "' value='" + accountbookVo.tagName + "' tabindex='-1' placeholder='태그' disabled='disabled'>";
 				}
 				str += "<td>";
 				str += "</tr>";
@@ -671,20 +807,20 @@ table {
 						str += "</div>";
 						str += "</td>"
 						str += "<td>"
-						str += "<input type='text' id='date" + i + "' readonly='readonly' class='date datepicker form-control text-center data" + i + "' value='' style='margin-top:7px' tabindex='-1' placeholder='날짜'>";
+						str += "<input type='text' id='date" + i + "' readonly='readonly' class='smContent date datepicker form-control text-center data" + i + "' value='' style='margin-top:7px' tabindex='-1' placeholder='날짜'>";
 						str += "</td>";
 						str += "<td>";
-						str += "<input type='text' class='usage form-control text-center' style='margin-top: 7px' id='usage" + i + "' value='' placeholder='사용내역'>";
+						str += "<input type='text' class='smContent usage form-control text-center' style='margin-top: 7px' id='usage" + i + "' value='' placeholder='사용내역'>";
 						str += "</td>";
 						str += "<td>";
 						if (spendFlag == 'spend'){
-							str += "<input type='text' class='spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='' placeholder='지출액'>";
+							str += "<input type='text' class='smContent spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='' placeholder='지출액'>";
 						}else{
-							str += "<input type='text' class='spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='' placeholder='수입액'>";
+							str += "<input type='text' class='smContent spend form-control text-center' style='margin-top: 7px' id='spend" + i + "' value='' placeholder='수입액'>";
 						}
 						str += "</td>";
 						str += "<td>";
-						str += "<select class='category form-control custom-select text-center' style='margin-top: 7px' id='category" + i + "'>";
+						str += "<select class='smContent category form-control custom-select text-center' style='margin-top: 7px' id='category" + i + "'>";
 						str += "<option value='0' selected>미분류</option>";
 
 						for (var i = 0; i < categoryList.length; i++) {
@@ -696,7 +832,7 @@ table {
 						str += "</select>";
 						str += "</td>";
 						str += "<td>";
-						str += "<input type='text' class='tag form-control text-center data" + i + "' style='margin-top: 7px' id='tag" + i + "' value='' tabindex='-1' placeholder='태그'>";
+						str += "<input type='text' class='smContent tag form-control text-center data" + i + "' style='margin-top: 7px' id='tag" + i + "' value='' tabindex='-1' placeholder='태그'>";
 						str += "<td>";
 						str += "</tr>";
 
@@ -730,6 +866,7 @@ table {
 						}else if(uncomma($(this).find(".spend").val()) != '' ){
 							var id = $(this).closest("tr").attr("id",0);
 							var spend = $(this).find(".spend").val();
+							spend = uncomma(spend);
 							var regexp = /^[0-9]*$/;
 							if( !regexp.test(spend) ) {
 								alert("숫자만 입력하세요");
@@ -998,8 +1135,8 @@ table {
 						str+="<input class='inputTag form-control mr-sm-2 ml-2 w-50 float-left' type='search' id='inputTag' name='" + tagList.tagno + "' value='" + tagList.tagname + "'>";
 					}
 					str+="<button type='button' name='tagDelete' class='btn btn-danger mr-1 float-left' id='" + tagList.tagno + "' value='" + tagRow + "' tabindex='-1'>삭제</button>";
-					str+="<button type='button' name='moveBoard' class='btn btn-primary mr-1 float-left' id='" + tagList.tagno + "' value='" + tagRow + "' tabindex='-1'>게시판 이동</button>";
-					str+="<div style='clear:both;''></div>";
+					str+="<button type='button' name='moveReport' class='btn btn-primary mr-1 float-left' id='" + tagList.tagno + "' value='" + tagRow + "' tabindex='-1'>통계 보기</button>";
+					str+="<div style='clear:both;'></div>";
 					str+="</div>";
 
 					$("#tagBody").append(str);
@@ -1008,8 +1145,8 @@ table {
 				}
 
 				//태그 삭제
-				$("#tagBody").on("click","[name=moveBoard]",function() {
-					location.href = '${pageContext.request.contextPath }/accountbook/${gvo.groupNo}';
+				$("#tagBody").on("click","[name=moveReport]",function() {
+					location.href = '${pageContext.request.contextPath }/reportbytag/${gvo.groupNo}/'+$(this).attr("id");
 				});
 
 				//태그 삭제
@@ -1175,12 +1312,12 @@ table {
 
 					str+="<div class='my-1' id='" + cateList.categoryNo + "'>";
 					if(typeof(cateList.categoryName) == 'undefined'){
-						str+="<input class='inputCategory form-control mr-sm-2 ml-2 w-75 float-left' type='search' id='inputCategory' name='' value='' placeholder='카테고리'>";
+						str+="<input class='inputCategory form-control mr-sm-2 ml-2 w-75 float-left smContent' type='search' id='inputCategory' name='' value='' placeholder='카테고리'>";
 					}
 					else{
-						str+="<input class='inputCategory form-control mr-sm-2 ml-2 w-75 float-left' type='search' id='inputCategory' name='" + cateList.categoryNo + "' value='" + cateList.categoryName + "'>";
+						str+="<input class='inputCategory form-control mr-sm-2 ml-2 w-75 float-left smContent' type='search' id='inputCategory' name='" + cateList.categoryNo + "' value='" + cateList.categoryName + "'>";
 					}
-					str+="<button type='button' name='categoryDelete' class='btn btn-danger mr-1 float-left' id='" + cateList.categoryNo + "' value='" + cateRow + "' tabindex='-1'>삭제</button>";
+					str+="<button type='button' name='categoryDelete' class='btn btn-danger mr-1 float-left smContent' id='" + cateList.categoryNo + "' value='" + cateRow + "' tabindex='-1'>삭제</button>";
 					str+="<div style='clear:both;''></div>";
 					str+="</div>";
 

@@ -7,8 +7,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.modu.vo.AccountbookAddressVo;
 import com.modu.vo.BoardVo;
 import com.modu.vo.FileVo;
+import com.modu.vo.NewsVo;
 
 @Repository
 public class BoardDao {
@@ -226,9 +228,10 @@ public class BoardDao {
 		return accountList;
 	}
 
-//	public List<BoardVo> getAccountbookList(Map map){
-//		return sqlsession.selectList("boardDB.getAccountbookList",map);
-//	}
+	public List<BoardVo> getAccountbookList(Map map){
+		return sqlsession.selectList("boardDB.getAccountbookList",map);	
+	}
+	
 	public BoardVo checkTag(BoardVo boardVo) {
 		//태그 존재 여부 확인
 		return sqlsession.selectOne("boardDB.checkTag",boardVo);
@@ -242,6 +245,35 @@ public class BoardDao {
 
 	public void connectTagGroup(BoardVo boardVo) {
 		sqlsession.insert("boardDB.connectTagGroup",boardVo);
+	}
+	
+	// ----------- 네이버 주소 정보 -------------
+	public AccountbookAddressVo insertAddr(AccountbookAddressVo addrVo) {
+		
+		System.out.println("넣기전에 확인좀--->"+addrVo.toString());
+		sqlsession.insert("boardDB.insertAddr",addrVo);
+		return addrVo;
+	}
+	public String checkAddr(AccountbookAddressVo addrVo) {
+		
+		String checkAddrNo = sqlsession.selectOne("boardDB.checkAddr",addrVo);
+		return checkAddrNo;
+	}
+	
+	public List<AccountbookAddressVo> getAddrList(String accountbookAddressNo) {
+		
+		List<AccountbookAddressVo> list = sqlsession.selectList("boardDB.getAddrList",accountbookAddressNo);
+		return list;
+	}
+	
+	public void updateAddrNo(Map<String, Object> addrMap) {
+		
+		sqlsession.update("boardDB.updateAddrNo",addrMap);
+	}
+	
+	public void insertNews(NewsVo newsVo) {
+		
+		sqlsession.insert("boardDB.insertNews",newsVo);
 	}
 }
 

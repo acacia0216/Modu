@@ -6,7 +6,7 @@
 	<select id="getAccountList" parameterType="Map" resultType="com.modu.vo.AccountbookVo">
 		<![CDATA[
 		
-		select accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,groupno,memberfeeno,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate
+		select accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,groupno,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate
 		from accountbook_tbl
 		where groupno=#{groupNo} and accountbookregdate between to_date(#{startDate},'yyyy-MM-dd') and to_date(#{endDate},'yyyy-MM-dd')
 		]]>
@@ -41,7 +41,7 @@
 	
 	<select id="searchAccountListByTag" parameterType="Map" resultType="com.modu.vo.AccountbookVo">
 		<![CDATA[
-		select distinct accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,abt.groupno,memberfeeno,categoryname,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate
+		select distinct accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,abt.groupno,categoryname,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate
 		from accountbook_tbl abt join category_tbl cate using(categoryno) join accountbook_tag_tbl using(accountbookno) join tag_tbl using(tagno)
 		where abt.groupno=#{groupNo} and tagname like #{data}
 		]]>
@@ -58,7 +58,7 @@
 
 	<select id="searchAccountListByUsage" parameterType="Map" resultType="com.modu.vo.AccountbookVo">
 		<![CDATA[
-		select accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,abt.groupno,memberfeeno,categoryname,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate
+		select accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,abt.groupno,categoryname,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate
 		from accountbook_tbl abt join category_tbl cate using(categoryno)
 		where abt.groupno=#{groupNo} and accountbookusage like #{data}
 		]]>
@@ -98,7 +98,7 @@
 			select seq_tagno.nextval from dual
 		</selectKey>
 		<![CDATA[
-			insert into tag_tbl(tagno,tagname,tagdate)
+			insert into tag_tbl(tagno,tagname,tagdate) 
 			values(#{tagno}
 			,#{tagname}
 			,sysdate)
@@ -108,8 +108,8 @@
 	<select id="checkTag" parameterType="com.modu.vo.AccountbookTagVo" resultType="com.modu.vo.AccountbookTagVo">
 		<![CDATA[
 			select tagno
-			from tag_tbl
-			where tagname = #{tagname}
+			from tag_tbl join accountbook_tag_tbl using(tagno) join accountbook_tbl using(accountbookno)
+			where tagname = #{tagname} and groupno = #{groupNo}
 		]]>
 	</select>
 	
@@ -125,8 +125,7 @@
 		]]>
 	</insert>
 	
-	<insert id="connectTagGroup" parameterType="hashmap">	
-	
+	<insert id="connectTagGroup" parameterType="hashmap">		
 		INSERT INTO accountbook_tag_tbl (accountbooktagno,accountbookno,tagno)
 		SELECT seq_accountbooktagno.nextval, T.*
 		FROM (
@@ -134,8 +133,7 @@
 		SELECT #{item},#{tagno}
 		FROM DUAL 
 		</foreach>
-		) T
-		
+		) T		
 	</insert>
 	
 	<update id="connectUpdateTag" parameterType="com.modu.vo.AccountbookTagVo">
@@ -305,7 +303,7 @@
 	<select id="getChartDataByTag" parameterType="Map" resultType="com.modu.vo.AccountbookCategoryVo">
 		<![CDATA[
 		select sum(nvl(accountbookspend,0)) total,categoryname
-		from (  select accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,abt.groupno,memberfeeno,categoryname,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate,tagname
+		from (  select accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,abt.groupno,categoryname,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate,tagname
 		        from accountbook_tbl abt join category_tbl cate using(categoryno) join accountbook_tag_tbl using(accountbookno) join tag_tbl using(tagno)
 		        where abt.groupno=#{groupNo} and tagname like #{data} 
 				   	]]>
@@ -318,7 +316,7 @@
 									<![CDATA[      
 				order by accountbookregdate , accountbookno asc)	        
 		where rowid IN (SELECT MAX(rowid) 
-						from (  	select accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,abt.groupno,memberfeeno,categoryname,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate,tagname
+						from (  	select accountbookno,accountbookusage,accountbookspend,accountbookincome,categoryno,abt.groupno,categoryname,to_char(accountbookregdate,'yyyy"년" mm"월" dd"일"') accountbookregdate,tagname
      								from accountbook_tbl abt join category_tbl cate using(categoryno) join accountbook_tag_tbl using(accountbookno) join tag_tbl using(tagno)
      								where abt.groupno=#{groupNo} and tagname like #{data} 
 				   					]]>
@@ -392,7 +390,6 @@
 	<select id="getRecommendCategory" parameterType="String" resultType="com.modu.vo.AccountbookCategoryVo">
 		<![CDATA[
 			select categoryno,total,categoryname
-
 			from (  select categoryno,count(categoryno) total
 			        from accountbook_tbl
 			        where groupno=#{groupNo} and accountbookusage=#{accountbookUsage}
@@ -400,5 +397,26 @@
 			order by total desc
 		]]>
 	</select>
+	
+	<select id="getRecommendCategoryFromAll" parameterType="String" resultType="com.modu.vo.AccountbookCategoryVo">
+		<![CDATA[
+			select categoryno,total,categoryname
+			from (  select categoryno,count(categoryno) total
+			        from accountbook_tbl
+			        where accountbookusage=#{accountbookUsage}
+			        group by categoryno) join category_tbl using (categoryno)
+			order by total desc
+		]]>
+	</select>
+	
+	<insert id="insertNews" parameterType="com.modu.vo.NewsVo">
+		<![CDATA[
+			insert into news_tbl
+			values(seq_newsno.nextval,
+					#{news},
+					sysdate,
+					#{groupNo})
+		]]>
+	</insert>
 
 </mapper>

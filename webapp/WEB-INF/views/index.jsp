@@ -37,9 +37,8 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <div class="carousel-caption d-none d-md-block mb-5">
-                    <h1 class="mr-5">누구나, 한눈에 볼 수 있는 &ensp;&ensp;</h1>
-
-                    <h1 class="ml-4">&nbsp;&ensp;&ensp;&ensp; 투명한 재정관리 </h1>
+                    <h1 class="lgbanner">누구나, 한눈에 볼 수 있는</h1>
+                    <h1 class="lgbanner">투명한 재정관리 </h1>
                     <br><br>
                     <button class="btn btn-primary btn-lg" name="startAccountbook">모두의 가계부 시작하기</button>
                     <br>
@@ -51,22 +50,22 @@
             </div>
             <div class="carousel-item">
                 <div class="carousel-caption d-none d-md-block mb-5">
-                    <h1> 여러 모임 속에서 </h1>
-                    <h1> 다양한 가계부를 한눈에 </h1>
+                    <h1 class="lgbanner"> 여러 모임 속에서 </h1>
+                    <h1 class="lgbanner"> 다양한 가계부를 한눈에 </h1>
                     <br>
                     <br>
-                    <button class="btn btn-primary btn-lg" name="startAccountbook">지금 바로 시작하기</button>
+                    <button class="btn btn-primary btn-lg" name="startAccountbook">모두의 가계부 시작하기</button>
                 </div>
                 <img class="d-block w-100" src="${pageContext.request.contextPath }/assets/images/main02.png"
                      alt="Second slide">
             </div>
             <div class="carousel-item">
                 <div class="carousel-caption d-none d-md-block mb-5">
-                    <h1> 총무에게 편리한 </h1>
-                    <h1> &ensp; &ensp;회비 관리 서비스</h1>
+                    <h1 class="lgbanner"> 총무에게 편리한 </h1>
+                    <h1 class="lgbanner"> 회비 관리 서비스</h1>
                     <br>
                     <br>
-                    <button class="btn btn-primary btn-lg" name="startAccountbook">바로 시작하기</button>
+                    <button class="btn btn-primary btn-lg" name="startAccountbook">모두의 가계부 시작하기</button>
                 </div>
                 <img class="d-block w-100" src="${pageContext.request.contextPath }/assets/images/main03.png"
                      alt="Third slide">
@@ -83,9 +82,9 @@
     </div>
     <div class="ment" style="text-align: center;">
         <br>
-        <span class="ment01" style="color: #0070c0;"> 모두의</span>
-        <span class="ment02"> 가계부</span>
-        <span class="ment03">만의 확실한 서비스</span>
+        <span class="lgTitle ment01" style="color: #0070c0;"> 모두의</span>
+        <span class="lgTitle ment02"> 가계부</span>
+        <span class="lgTitle ment03">만의 확실한 서비스</span>
 
     </div>
     <div class="card-deck mt-5">
@@ -93,8 +92,8 @@
             <img class="w-40 mx-auto" src="${pageContext.request.contextPath }/assets/images/skill01.png"
                  alt="Card image cap">
             <div class="card-body" style="text-align: center">
-                <h4 class="card-title">빅데이터 기반 <br> 맞춤 추천 서비스</h4>
-                <p class="card-text">다양한 모임장소 데이터를 기반으로 <br>우리 모임에게 적절한<br> 모임 장소를 추천</p>
+                <h4 class="lgTitle card-title">빅데이터 기반 <br> 맞춤 추천 서비스</h4>
+                <p class="lgContent card-text">다양한 모임장소 데이터를 기반으로 <br>우리 모임에게 적절한<br> 모임 장소를 추천</p>
             </div>
 
         </div>
@@ -102,16 +101,16 @@
             <img class="w-40 mx-auto" src="${pageContext.request.contextPath }/assets/images/skill02.png"
                  alt="Card image cap">
             <div class="card-body" style="text-align: center">
-                <h4 class="card-title">다중 가계부</h4>
-                <p class="card-text">여러 모임에<br> 다양한 가계부를<br> 한번에 정리할 수 있어요</p>
+                <h4 class="lgTitle card-title">다중 가계부</h4>
+                <p class="lgContent card-text">여러 모임에<br> 다양한 가계부를<br> 한번에 정리할 수 있어요</p>
             </div>
         </div>
         <div class="card" style="border: none">
-            <img class="w-40 mx-auto" src="${pageContext.request.contextPath }/assets/images/skill03.png"
+            <img class="w-40 mx-auto pl-4" src="${pageContext.request.contextPath }/assets/images/skill03.png"
                  alt="Card image cap">
             <div class="card-body" style="text-align: center">
-                <h4 class="card-title">SMS 인식 기반 <br> 자동 입력 기능</h4>
-                <p class="card-text">모든 sms알람을 <br>자동으로 인식하여 <br>편하게 입력할 수 있어요</p>
+                <h4 class="lgTitle card-title">SMS 인식 기반 <br> 자동 입력 기능</h4>
+                <p class="lgContent card-text">모든 sms알람을 <br>자동으로 인식하여 <br>편하게 입력할 수 있어요</p>
             </div>
         </div>
     </div>
@@ -183,13 +182,13 @@
 
                         <img class="float-left ml-4 m-0 p-0"
                              src="${pageContext.request.contextPath }/assets/images/password.jpg" style="width:35px">
-                        <input type="text" name="userPassword" class="form-control w-75" aria-label="Large"
+                        <input type="password" name="userPassword" class="form-control w-75" aria-label="Large"
                                aria-describedby="inputGroup-sizing-sm" placeholder="비밀번호" id="userPassword"
                                onblur="passwordCheck()"><br>
 
                         <img class="float-left ml-4 m-0 p-0"
                              src="${pageContext.request.contextPath }/assets/images/password.jpg" style="width:35px">
-                        <input type="text" class="form-control w-75" aria-label="Large"
+                        <input type="password" class="form-control w-75" aria-label="Large"
                                aria-describedby="inputGroup-sizing-sm" placeholder="비밀번호 확인" id="userPasswordConfirm"
                                onblur="passwordCheckConfirm()"><br>
 
@@ -312,6 +311,16 @@
         return unescape(cookieValue);
     }
     $(document).ready (function () {
+    	
+    	
+    	$("#loginPassword").keypress(function(e){
+    		
+    		if(e.which ==13){
+    			
+    			loginFinalCheck();
+    		}
+    		
+    	})
     	   $('.form_day').datetimepicker({
                language: 'ko',
                weekStart: 1,
@@ -510,8 +519,7 @@
             return false;
         } else if (agree == true) {
             $("#duplicateCheck").html("");
-            alert("회원 가입 성공");
-            alert(userName + "," + userEmail + "," + userPassword + "," + userBirthday);
+            // alert("회원 가입 성공");
             return true;
         }
     };
@@ -529,6 +537,7 @@
             dataType: "json",
             success: function (result) {
                 if (result > 0) {
+                    // alert("로그인 성공");
                     $("#loginEmail").val("");
                     $("#loginPassword").val("");
                     location.href = "${pageContext.request.contextPath }/main";

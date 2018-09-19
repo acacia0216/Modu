@@ -27,8 +27,8 @@ public class ReportVo {
     private String paymentDay;
     //테그_플래이스 테이블
 //    private int tagPlaceNo;
-    private String si;
-    private String gu;
+//    private String si;
+//    private String gu;
     //태그 테이블
     private int tagNo;
     private String tagName;
@@ -36,14 +36,14 @@ public class ReportVo {
     private String accountbookPlace;
     private int accountbookPersonnel;
 //페이징
-final int listCnt = 3;
-    final int pageBtnCount = 1;
+final int listCnt = 5;
+    final int pageBtnCount = 3;
     private int crtPage;
 
     public ReportVo() {
     }
 
-    public ReportVo(int year, int monthNo, int groupNo, String groupName, int categoryNo, String categoryName, int accountbookNo, String accountbookRegdate, String accountbookUsage, int totalSpend, int totalIncome, int paymentAmount, String paymentDay, String si, String gu, int tagNo, String tagName, String tagDate, String accountbookPlace, int accountbookPersonnel, int crtPage) {
+    public ReportVo(int year, int monthNo, int groupNo, String groupName, int categoryNo, String categoryName, int accountbookNo, String accountbookRegdate, String accountbookUsage, int totalSpend, int totalIncome, int paymentAmount, String paymentDay, int tagNo, String tagName, String tagDate, String accountbookPlace, int accountbookPersonnel, int crtPage) {
         this.year = year;
         this.monthNo = monthNo;
         this.groupNo = groupNo;
@@ -57,8 +57,6 @@ final int listCnt = 3;
         this.totalIncome = totalIncome;
         this.paymentAmount = paymentAmount;
         this.paymentDay = paymentDay;
-        this.si = si;
-        this.gu = gu;
         this.tagNo = tagNo;
         this.tagName = tagName;
         this.tagDate = tagDate;
@@ -171,22 +169,6 @@ final int listCnt = 3;
         this.paymentDay = paymentDay;
     }
 
-    public String getSi() {
-        return si;
-    }
-
-    public void setSi(String si) {
-        this.si = si;
-    }
-
-    public String getGu() {
-        return gu;
-    }
-
-    public void setGu(String gu) {
-        this.gu = gu;
-    }
-
     public int getTagNo() {
         return tagNo;
     }
@@ -259,8 +241,6 @@ final int listCnt = 3;
                 ", totalIncome=" + totalIncome +
                 ", paymentAmount=" + paymentAmount +
                 ", paymentDay='" + paymentDay + '\'' +
-                ", si='" + si + '\'' +
-                ", gu='" + gu + '\'' +
                 ", tagNo=" + tagNo +
                 ", tagName='" + tagName + '\'' +
                 ", tagDate='" + tagDate + '\'' +

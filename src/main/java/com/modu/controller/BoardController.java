@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.modu.service.BoardService;
 import com.modu.service.ModuGroupService;
+import com.modu.vo.AccountbookAddressVo;
 import com.modu.vo.BoardVo;
 import com.modu.vo.FileVo;
 import com.modu.vo.ModuGroupVo;
@@ -77,7 +78,8 @@ public class BoardController {
 		boardVo.setUserNo(userNo);
 		boardVo.setGroupNo(authUser.getGroupNo());
 		List<BoardVo> postList =(List<BoardVo>)service.getPostList(boardVo);
-		System.out.println(postList);
+//		System.out.println("뿌리기 직전-->>>" +postList);
+//		System.out.println("뿌리기 직전-->>>" +postList.toString());
 		return postList;
 	
 	}
@@ -95,8 +97,9 @@ public class BoardController {
 	
 	@RequestMapping("/write")
 	public String goBoardWrite(Model model, @PathVariable("groupNo") int groupNo, HttpSession session,
-			@RequestParam( value="AccountbookList", required=false, defaultValue="") String AccountbookList){
-
+			@RequestParam( value="AccountbookList", required=false, defaultValue="") String AccountbookList,
+			@RequestParam( value="placePlan", required=false, defaultValue="") String placePlan){
+		
 		// 모임 카테고리
 	    ModuUserVo uservo =  (ModuUserVo) session.getAttribute("authUser");
 		List<ModuGroupVo> gList  = groupService.selectGroup(uservo.getUserNo());
@@ -110,9 +113,9 @@ public class BoardController {
 		model.addAttribute("tagList",tagList);
 		System.out.println(tagList);
 		System.out.println("글쓰기 입장");
-
-//		List<BoardVo> AccountList = service.getAccountbookList(AccountbookList);
-//		model.addAttribute("fromAccountbookList",AccountList);
+	
+		model.addAttribute("fromAccountbookList",AccountbookList);
+		model.addAttribute("placePlan",placePlan);
 
 		return "/board/boardWrite";
 		
@@ -180,8 +183,10 @@ public class BoardController {
 			                @ModelAttribute BoardVo boardVo,
 							@RequestParam("files") MultipartFile[] files ,
 							@ModelAttribute FileVo fileVo,
+							
 							Model model) {
 		
+		System.out.println("@@#!@#"+boardVo.getAddressList());
 		System.out.println("@@@@@@글쓰기 저장 오긴 왔음"+boardVo.getAccountList()+"\n");
 		/*service.addPost(boardVo);*/
 		
@@ -199,7 +204,7 @@ public class BoardController {
 		
 		service.addPost(boardVo,map);
 
-
+		
 
 	
 		
@@ -293,7 +298,11 @@ public class BoardController {
 	public List<BoardVo> getAccountBook(@ModelAttribute BoardVo boardVo) {
 		
 		List<BoardVo> list = service.getAccountList(boardVo);
-		System.out.println("$$$$$$$$$ 확인하겠소--"+list);
+//		System.out.println("$$$$$$$$$ 확인하겠소--"+list);
+		for(BoardVo vo : list) {
+			List<AccountbookAddressVo> addrList =vo.getAddressList();
+//			System.out.println("@@@@@@@@@ 확인하겠소--"+addrList);
+		}
 		return list;
 		
 	}
@@ -310,6 +319,14 @@ public class BoardController {
 		
 	}
 
+	@ResponseBody
+	@RequestMapping(value="/getAccountListFromAccountbook", method=RequestMethod.POST)
+	public List<BoardVo> getAccountListFromAccountbook(@RequestParam("AccountbookList") String AccountbookList, @PathVariable("groupNo") int groupNo ) {
+		
+		List<BoardVo> list = service.getAccountbookList(AccountbookList);
+		return list;
+		
+	}
 	
 	
 	@RequestMapping("/goCal")
